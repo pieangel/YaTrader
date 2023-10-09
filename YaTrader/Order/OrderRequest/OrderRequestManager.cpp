@@ -3,6 +3,7 @@
 #include "OrderRequestManager.h"
 #include "../../Global/SmTotalManager.h"
 #include "../../Client/ViStockClient.h"
+#include "../../Yuanta/YaStockClient.h"
 #include "../../Global/SmTotalManager.h"
 #include "../../Json/json.hpp"
 #include "../../Global/SmTotalManager.h"

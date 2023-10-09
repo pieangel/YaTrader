@@ -2,6 +2,7 @@
 #include "SmTaskRequestManager.h"
 #include "../Global/SmTotalManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 namespace DarkHorse {
 
 	SmTaskRequestManager::SmTaskRequestManager()

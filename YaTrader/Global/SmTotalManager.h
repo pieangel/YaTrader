@@ -4,6 +4,7 @@
 #include "../Order/SmTotalOrderManager.h"
 namespace DarkHorse {
 	class ViStockClient;
+	class YaStockClient;
 	class SmLoginManager;
 	class SmTaskRequestMaker;
 	class SmServerDataReceiver;
@@ -38,7 +39,7 @@ namespace DarkHorse {
 		void CreateManagers();
 		std::shared_ptr<SmTaskRequestMaker> ReqMkr() const { return _ReqMkr; }
 		std::shared_ptr<SmServerDataReceiver> SvrDataRcvr() const { return _SvrDataRcvr; }
-		std::shared_ptr<ViStockClient> Client() const { return _Client; }
+		std::shared_ptr<YaStockClient> Client() const { return _Client; }
 		std::shared_ptr<SmLoginManager> LoginMgr() const { return _LoginMgr; }
 		std::shared_ptr<SmSymbolManager> SymMgr() const { return _SymMgr; }
 		std::shared_ptr<SmSymbolReader> SymRdr() const { return _SymRdr; }
@@ -73,7 +74,7 @@ namespace DarkHorse {
 	private:
 		bool use_dark_theme_ = false;
 		std::shared_ptr<SmCallbackManager> _CallbackMgr = nullptr;
-		std::shared_ptr<ViStockClient> _Client = nullptr;
+		std::shared_ptr<YaStockClient> _Client = nullptr;
 		std::shared_ptr<SmLoginManager> _LoginMgr = nullptr;
 		std::shared_ptr<SmTaskRequestMaker> _ReqMkr = nullptr;
 		std::shared_ptr<SmServerDataReceiver> _SvrDataRcvr = nullptr;

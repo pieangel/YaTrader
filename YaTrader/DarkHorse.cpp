@@ -15,6 +15,7 @@
 #include <string>
 #include "Global/SmTotalManager.h"
 #include "Client/ViStockClient.h"
+#include "Yuanta/YaStockClient.h"
 #include "Login/SmLoginDlg.h"
 #include "Dump/CrashHandler.h"
 #include "Config/SystemConfig.h"
@@ -122,7 +123,7 @@ BOOL CDarkHorseApp::InitInstance()
 
 	SetRegistryBase(_T("Settings"));
 
-	RegisterOCX();
+	//RegisterOCX();
 
 	// Initialize all Managers for usage. They are automatically constructed
 	// if not yet present

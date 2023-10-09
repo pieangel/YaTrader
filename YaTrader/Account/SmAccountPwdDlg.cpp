@@ -18,7 +18,7 @@
 #include "../Client/ViClient.h"
 #include "../Archieve/SmSaveManager.h"
 #include "../MainFrm.h"
-
+#include "../Yuanta/YaStockClient.h"
 using namespace DarkHorse;
 
 // SmAccountPwdDlg dialog

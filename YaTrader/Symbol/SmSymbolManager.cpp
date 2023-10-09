@@ -8,6 +8,7 @@
 #include "../Task/SmTaskRequestMaker.h"
 #include "../Task/SmServerDataReceiver.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Config/SmConfigManager.h"
 #include "../Log/MyLogger.h"
 #include "../Util/VtStringUtil.h"

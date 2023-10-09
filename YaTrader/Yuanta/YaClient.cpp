@@ -14,6 +14,7 @@
 #include "../MainFrm.h"
 #include "../Account/SmAccount.h"
 #include "../Account/SmAccountManager.h"
+#include "../Config/SmConfigManager.h"
 
 class CMainFrame;
 using namespace DarkHorse;
@@ -150,7 +151,7 @@ LRESULT YaClient::OnReceiveRealData(WPARAM wParam, LPARAM lParam)
 	}
 	else if (0 == strAutoID.Compare(_T("71")))
 	{
-		byte gubun48 = 0;
+		BYTE gubun48 = 0;
 		g_iYuantaAPI.YOA_GetTRFieldByte(_T("71"), _T("OutBlock1"), _T("gubun48"), &gubun48);
 
 		TCHAR data[1024] = { 0, };
@@ -228,8 +229,9 @@ void YaClient::init()
 	else if (3 == nCurSel)
 		strServer = _T("real.tradarglobal.api.com");
 
+	const std::string app_path = mainApp.config_manager()->GetApplicationPath();
 	//if ( RESULT_SUCCESS == g_iYuantaAPI.YOA_Initial( strServer, GetSafeHwnd(), NULL, WMU_STARTMSGID ) )
-	if (RESULT_SUCCESS == g_iYuantaAPI.YOA_Initial(strServer, GetSafeHwnd(), _T("C:\\YuantaAPI"), WMU_STARTMSGID))
+	if (RESULT_SUCCESS == g_iYuantaAPI.YOA_Initial(strServer, GetSafeHwnd(), app_path.c_str(), WMU_STARTMSGID, FALSE))
 	{
 		if (0 == nCurSel || 2 == nCurSel)
 			AfxMessageBox(_T("모의투자로 접속합니다.\n모의투자의 계좌비밀번호는 0000입니다."));
@@ -760,6 +762,7 @@ void YaClient::get_account_list()
 			std::shared_ptr<DarkHorse::SmAccount> account_t = std::make_shared<DarkHorse::SmAccount>();
 			const std::string account_type = "9";
 			account_t->Type(account_type);
+			account_t->No(account);
 			memset(acctInfo, 0x00, sizeof(acctInfo));
 			if (g_iYuantaAPI.YOA_GetAccountInfo(ACCOUNT_INFO_NAME, account, acctInfo, sizeof(acctInfo)))
 			{
@@ -776,20 +779,24 @@ void YaClient::get_account_list()
 	}
 }
 
-void YaClient::read_domestic_symbols(const int market_type)
+void YaClient::get_symbol_list(const int market_type)
 {
 	int nCount = g_iYuantaAPI.YOA_GetCodeCount(market_type);
+
+	TCHAR szJang[10] = { 0, };
+	g_iYuantaAPI.YOA_GetCodeInfo(MARKET_TYPE_INTERNAL, CODE_INFO_JANG_GUBUN, _T("003470"), szJang, sizeof(szJang));
+
 	for (int i = 0; i < nCount; i++) {
 		TCHAR code[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL, CODE_INFO_CODE, i, code, sizeof(code));
+		g_iYuantaAPI.YOA_GetCodeInfoByIndex(market_type, CODE_INFO_CODE, i, code, sizeof(code));
 		TCHAR standard_code[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL, CODE_INFO_STANDARD_CODE, i, standard_code, sizeof(standard_code));
+		g_iYuantaAPI.YOA_GetCodeInfoByIndex(market_type, CODE_INFO_STANDARD_CODE, i, standard_code, sizeof(standard_code));
 		TCHAR name[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL, CODE_INFO_NAME, i, name, sizeof(name));
+		g_iYuantaAPI.YOA_GetCodeInfoByIndex(market_type, CODE_INFO_NAME, i, name, sizeof(name));
 		TCHAR eng_name[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL, CODE_INFO_ENG_NAME, i, eng_name, sizeof(eng_name));
+		g_iYuantaAPI.YOA_GetCodeInfoByIndex(market_type, CODE_INFO_ENG_NAME, i, eng_name, sizeof(eng_name));
 		TCHAR jang_gubun[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL, CODE_INFO_JANG_GUBUN, i, jang_gubun, sizeof(jang_gubun));
+		g_iYuantaAPI.YOA_GetCodeInfoByIndex(market_type, CODE_INFO_JANG_GUBUN, i, jang_gubun, sizeof(jang_gubun));
 	}
 }
 

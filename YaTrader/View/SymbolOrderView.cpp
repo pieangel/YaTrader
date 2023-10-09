@@ -16,6 +16,7 @@
 #include <windows.h>
 #include "../Global/SmTotalManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Account/SmAccount.h"
 #include "../Order/SmSymbolOrderManager.h"
 #include "../Order/SmTotalOrderManager.h"

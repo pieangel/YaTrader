@@ -2523,7 +2523,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="EzTrader.rc">
+    <ResourceCompile Include="YaTrader.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

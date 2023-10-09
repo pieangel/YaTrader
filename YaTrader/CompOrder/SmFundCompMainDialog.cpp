@@ -14,6 +14,7 @@
 #include "../Global/SmTotalManager.h"
 #include "../Account/SmAccountManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../MessageDefine.h"
 #include "../Event/SmCallbackManager.h"
 
@@ -22,6 +23,7 @@
 #include "../Position/SmPosition.h"
 #include "../Order/SmOrderRequest.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Order/SmOrderRequestManager.h"
 #include "../Order/SmTotalOrderManager.h"
 #include "SmCompOrderDialog.h"
@@ -30,7 +32,7 @@
 #include "../Symbol/SmSymbol.h"
 #include "../Fund/SmFundManager.h"
 #include "../Fund/SmFund.h"
-
+#include "../Yuanta/YaStockClient.h"
 using namespace DarkHorse;
 
 const int CtrlHeight = 32;

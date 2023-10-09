@@ -12,6 +12,7 @@
 #include "SmAccount.h"
 #include "../Order/SmOrderRequest.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Order/SmOrderRequestManager.h"
 #include "../Event/SmCallbackManager.h"
 #include "SubAccountEditor.h"

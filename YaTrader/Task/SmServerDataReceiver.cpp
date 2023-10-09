@@ -5,6 +5,7 @@
 #include "IProgressDialog.h"
 #include <chrono>
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "SmTaskRequestMaker.h"
 #include "../Global/SmTotalManager.h"
 #include "../Symbol/SmSymbolManager.h"

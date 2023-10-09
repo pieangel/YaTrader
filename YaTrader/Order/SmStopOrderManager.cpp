@@ -3,6 +3,7 @@
 #include "SmOrderRequest.h"
 #include "../Symbol/SmSymbol.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Global/SmTotalManager.h"
 
 void DarkHorse::SmStopOrderManager::RemoveOrderRequest(const int& request_id)

@@ -6,6 +6,7 @@
 #include "SmLoginDlg.h"
 #include "../Global/SmTotalManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Json/json.hpp"
 #include "../Archieve/SmSaveManager.h"
 #include "../Login/SmLoginManager.h"

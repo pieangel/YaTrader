@@ -320,6 +320,11 @@ void DarkHorse::YaStockClient::SendOrderFilledData()
 	order_info["custom_info"] = "";
 }
 
+void YaStockClient::get_symbol_list(const int market_type)
+{
+	_ViCtrol->get_symbol_list(market_type);
+}
+
 int DarkHorse::YaStockClient::CheckAccountPassword(task_arg&& arg)
 {
 	return 1; // return _ViCtrol->check_account_password(std::move(arg));
@@ -349,7 +354,7 @@ DarkHorse::YaStockClient::~YaStockClient()
 void DarkHorse::YaStockClient::CreateControl()
 {
 	_ViCtrol = std::make_shared<YaClient>(nullptr, *this);
-	_ViCtrol->Create(IDD_VI_CLIENT);
+	_ViCtrol->Create(IDD_YA_CLIENT);
 	_ViCtrol->ShowWindow(SW_HIDE);
 }
 

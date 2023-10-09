@@ -84,6 +84,7 @@ namespace DarkHorse {
 
 		bool TestMode() const { return _TestMode; }
 		void TestMode(bool val) { _TestMode = val; }
+		void get_symbol_list(const int market_type);
 		int GetSymbolMaster(task_arg&& arg);
 		int GetSymbolQuote(task_arg&& arg);
 		int GetSymbolHoga(task_arg&& arg);

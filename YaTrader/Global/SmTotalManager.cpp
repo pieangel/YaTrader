@@ -30,6 +30,7 @@
 #include "../OutSystem/SmOutSystemManager.h"
 #include "../FileWatch/VtFileEventMonitor.h"
 #include "../Config/SmConfigManager.h"
+#include "../Yuanta/YaStockClient.h"
 #include <string>
 
 using namespace DarkHorse;
@@ -39,7 +40,7 @@ DarkHorse::SmTotalManager mainApp;
 void SmTotalManager::CreateManagers()
 {
 	use_dark_theme_ = false;
-	_Client = std::make_shared<ViStockClient>();
+	_Client = std::make_shared<YaStockClient>();
 	_LoginMgr = std::make_shared<SmLoginManager>();
 	_ReqMkr = std::make_shared<SmTaskRequestMaker>();
 	_SvrDataRcvr = std::make_shared<SmServerDataReceiver>();

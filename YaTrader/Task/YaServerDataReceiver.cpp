@@ -8,6 +8,7 @@
 #include "../Account/SmAccount.h"
 #include "../Account/SmAccountManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Global/SmTotalManager.h"
 #include "../Symbol/SmSymbolManager.h"
 #include "../Symbol/SmSymbolReader.h"

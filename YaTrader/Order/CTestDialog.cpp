@@ -15,6 +15,7 @@
 #include "../Global/SmTotalManager.h"
 #include "../Account/SmAccountManager.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Util/SmUtil.h"
 
 const int CtrlHeight = 32;

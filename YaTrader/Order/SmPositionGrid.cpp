@@ -14,6 +14,7 @@
 #include "../Position/SmPosition.h"
 #include "SmOrderRequest.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "SmOrderRequestManager.h"
 #include "../Fund/SmFund.h"
 

@@ -5,6 +5,7 @@
 #include "../Global/SmTotalManager.h"
 #include "../Symbol/SmSymbolManager.h"
 #include "../Client/ViClient.h"
+#include "../Yuanta/YaStockClient.h"
 namespace DarkHorse {
 
 	int SmAccountManager::_Id = 0;

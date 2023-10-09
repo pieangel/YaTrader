@@ -30,6 +30,7 @@ DmAccountOrderWindow::~DmAccountOrderWindow()
 #include "../../Global/SmTotalManager.h"
 #include "../../Account/SmAccountManager.h"
 #include "../../Client/ViStockClient.h"
+#include "../../Yuanta/YaStockClient.h"
 #include "../../MessageDefine.h"
 #include "../../Event/SmCallbackManager.h"
 

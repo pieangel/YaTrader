@@ -33,6 +33,7 @@
 #include "../../Position/SmPosition.h"
 #include "../../Order/SmOrderRequest.h"
 #include "../../Client/ViStockClient.h"
+#include "../../Yuanta/YaStockClient.h"
 #include "../../Order/SmOrderRequestManager.h"
 #include "../SmOrderSetDialog.h"
 #include "../../Global/SmTotalManager.h"

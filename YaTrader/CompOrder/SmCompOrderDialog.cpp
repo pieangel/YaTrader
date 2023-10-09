@@ -12,6 +12,7 @@
 #include "../Symbol/SmSymbolManager.h"
 #include "../Symbol/SmSymbol.h"
 #include "../Client/ViStockClient.h"
+#include "../Yuanta/YaStockClient.h"
 #include "../Util/VtStringUtil.h"
 #include "../Log/MyLogger.h"
 
