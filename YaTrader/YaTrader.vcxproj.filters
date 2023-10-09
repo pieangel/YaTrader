@@ -1,0 +1,2541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkHorse.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkHorseDoc.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkHorseView.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputBar.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesViewBar.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkSpaceBar.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkSpaceBar2.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SmAccount.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SmAccountManager.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SmAccountPwdDlg.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmChartData.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmChartDataManager.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\hdfcommagent.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\ViClient.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\ViStockClient.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Config\SmConfigManager.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Dump\CrashHandler.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="Global\SmTotalManager.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\customcells.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\GridCell.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\GridCellBase.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\GridCtrl.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\GridDropTarget.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\InPlaceEdit.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid\TitleTip.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Hoga\SmHoga.cpp">
+      <Filter>Hoga</Filter>
+    </ClCompile>
+    <ClCompile Include="Hoga\SmHogaManager.cpp">
+      <Filter>Hoga</Filter>
+    </ClCompile>
+    <ClCompile Include="Hoga\SmHogaProcessor.cpp">
+      <Filter>Hoga</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\MyLogger.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Login\SmLoginDlg.cpp">
+      <Filter>Login</Filter>
+    </ClCompile>
+    <ClCompile Include="Login\SmLoginManager.cpp">
+      <Filter>Login</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\pugixml.cpp">
+      <Filter>Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\tinyxml2.cpp">
+      <Filter>Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SmUtil.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\VtStringUtil.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\DataProgressDialog.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\IProgressDialog.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\SmServerDataReceiver.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\SmTaskRequestMaker.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmMarket.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmProduct.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmProductYearMonth.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmSymbol.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmSymbolManager.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmSymbolReader.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Quote\SmQuote.cpp">
+      <Filter>Quote</Filter>
+    </ClCompile>
+    <ClCompile Include="Quote\SmQuoteManager.cpp">
+      <Filter>Quote</Filter>
+    </ClCompile>
+    <ClCompile Include="Quote\SmQuoteProcessor.cpp">
+      <Filter>Quote</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\SmAccountPositionManager.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\SmPosition.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\SmTotalPositionManager.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmAccountOrderManager.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmOrder.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmOrderRequestManager.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmSymbolOrderManager.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmTotalOrderManager.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolBar.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MfcMdiAppGlue.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBar\ExtLabel.cpp">
+      <Filter>StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBar\ExtStatusControlBar.cpp">
+      <Filter>StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmStopOrderManager.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmCell.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmGrid.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmOrderArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmPositionArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmQuoteArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmAcceptedArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmAccountArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmFavoriteArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmFilledArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmAssetArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmSymbolArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmOrderViewer.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmSymbolTableArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SmButton.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SmAccountAsset.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Event\SmCallbackManager.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmRow.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SmWndRefreshManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SmWndManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFund.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundManager.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundDialog.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundEditDialog.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundGrid.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundNewDialog.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundOrderArea.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundOrderDialog.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundPositionArea.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmAcceptedGrid.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmCheckGrid.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmFavoriteGrid.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmLineGrid.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmListCtrl.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderSetView.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmPositionGrid.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SmSymbolTableDialog.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SmNumberFunc.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundOrderCenterWnd.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmAccountGrid.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundAccountGrid.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmEditItem.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmAccountItem.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundItem.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundOrderLeft.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Fund\SmFundOrderRight.cpp">
+      <Filter>Fund</Filter>
+    </ClCompile>
+    <ClCompile Include="Archieve\SmSaveManager.cpp">
+      <Filter>Archieve</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\CTestDialog.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmFilledRemainButton.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmOrderSetDialog.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\SmRemainButton.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmChartFrame.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmChartFrameManager.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmExternalStorage.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\SmStockSeries.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmCompOrderArea.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmCompOrderDialog.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmOrderCompMainDialog.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmOrderRightComp.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmOrderLeftComp.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmOrderButton.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderState\SmFilledGrid.cpp">
+      <Filter>OrderState</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderState\SmFilledListDialog.cpp">
+      <Filter>OrderState</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmJangoAccountArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmJangoPositionArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="SmGrid\SmTotalAssetArea.cpp">
+      <Filter>SmGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmFundCompLeftDialog.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmFundCompMainDialog.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="CompOrder\SmFundCompRightDialog.cpp">
+      <Filter>CompOrder</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\SmTaskRequestManager.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SmMultiSpreadChart.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="SmCenterValueMap.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="SmJangGoDialog.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="SmTotalAssetDialog.cpp">
+      <Filter>Order</Filter>
+    </ClCompile>
+    <ClCompile Include="DataFrame\Utils\DateTime.cc">
+      <Filter>DataFrame\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DataFrame\Vectors\HeteroPtrView.cc">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClCompile>
+    <ClCompile Include="DataFrame\Vectors\HeteroVector.cc">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClCompile>
+    <ClCompile Include="DataFrame\Vectors\HeteroView.cc">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeData\SmTimeData.cpp">
+      <Filter>TimeData</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeData\SmTimeDataManager.cpp">
+      <Filter>TimeData</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeData\SmCompData.cpp">
+      <Filter>TimeData</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartViewer.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\GaSpreadChart.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SmSetSpread.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SmStockChart.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Pnf\PnfMaker.cpp">
+      <Filter>Pnf</Filter>
+    </ClCompile>
+    <ClCompile Include="Pnf\PnfManager.cpp">
+      <Filter>Pnf</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtBaseTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtElement.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtEllipse.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtFibo.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtFiboTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtHandle.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtHLine.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtHLineHandle.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtHLineTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtLine.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtLineTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtMultiLine.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtMultiLineTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtPoint.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtPointHandle.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtRect.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtRectTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtRedimHandle.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtShapesCollection.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtText.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtUndoBuffer.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtUniqueID.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtVLine.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtVLineHandle.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing\VtVLineTracker.cpp">
+      <Filter>Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\RealTimeMultiChart.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SetSpreadDialog.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SetSpreadHsDialog.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDialog\SmTrendChart.cpp">
+      <Filter>ChartDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmSignal.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmSystemData.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmSystemFactor.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmSystemManager.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\SmArrayMath.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\SymbolManager.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderRequest\OrderRequestManager.cpp">
+      <Filter>Order\OrderRequest</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderProcess\OrderProcessor.cpp">
+      <Filter>Order\OrderProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="View\AccountOrderView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\AccountPositionView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\AccountProfitLossView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\BuyStopOrderView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\FavoriteSymbolView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SymbolPositionView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SymbolTickView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Event\EventHub.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SymbolProfitLossView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SymbolInfoView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\AccountPositionManager.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\TotalPositionManager.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderProcess\AccountOrderManager.cpp">
+      <Filter>Order\OrderProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderProcess\SymbolOrderManager.cpp">
+      <Filter>Order\OrderProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderProcess\TotalOrderManager.cpp">
+      <Filter>Order\OrderProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\IdGenerator.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderUi\DmAccountOrderWindow.cpp">
+      <Filter>Order\OrderUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderUi\DmAccountOrderCenterWindow.cpp">
+      <Filter>Order\OrderUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderUi\DmAccountOrderLeftWindow.cpp">
+      <Filter>Order\OrderUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderUi\DmAccountOrderRightWindow.cpp">
+      <Filter>Order\OrderUi</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SymbolOrderView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\DmFutureView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\DmOptionView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\AccountOrderControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\AccountPositionControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\AccountProfitLossControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\HogaControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ProductControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\QuoteControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\SymbolPositionControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\SymbolTickControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\StopOrderControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\OrderControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\AbAccountOrderLeftWindow.cpp">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\AbAccountOrderRightWindow.cpp">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\AbAccountOrderWindow.cpp">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\AbAccountOrderCenterWindow.cpp">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\ViServerDataReceiver.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\VtProgressDlg.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\GradientStatic.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\AccountAssetControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="View\AccountAssetView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\TotalAssetProfitLossView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\MiniJangoDialog.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\TotalAssetProfitLossDialog.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\OrderUi\DmFundOrderWindow.cpp">
+      <Filter>Order\OrderUi</Filter>
+    </ClCompile>
+    <ClCompile Include="Order\AbFundOrderWindow.cpp">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\MainAccountGrid.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SubAccountEditor.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Account\SubAccountGrid.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="Position\GroupPositionManager.cpp">
+      <Filter>Position</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\SubOrderControl.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmOutSystem.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmOutSystemManager.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\CompletionRoutineRequest.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\CompletionRoutineServer.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\IoCompletionPortReqeust.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\IoCompletionPortServer.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\ReadDirectoryChanges.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\ReadDirectoryRequest.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatch\ReadDirectoryServer.cpp">
+      <Filter>FileWatch</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\HdFuturePage.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\HdOptionPage.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\HdSymbolSelecter.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\ActiveOutSystemView.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\OutSystemDefView.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\OutSystemView.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SymbolFutureView.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmAddConnectSignalDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmAddOutSigDefDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmAutoSignalManagerDialog.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\AccountFundView.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmOutSignalDef.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmAccountFundSelector.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\OutSigDefSelector.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmSystemOrderConfig.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\SmLayoutManager.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCBType.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCell.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCelTyp.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCnrBtn.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCTarrw.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGCtrl.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGDLType.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGDrgDrp.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGDrwHnt.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGDtaSrc.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGEdit.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGEditBase.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugformat.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\uggdinfo.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGGrid.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGHint.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ughscrol.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugLstBox.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGMEdit.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGMemMan.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGMultiS.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugprint.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugptrlst.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugsidehd.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGStrOp.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugtab.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGTopHdg.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\ugvscrol.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\UGXPThemes.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\VtGrid.cpp">
+      <Filter>UGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTafnt.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTAutoSize.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTbutn.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTDropGrid.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTdtp.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\ugctelps.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTExpand.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTLabeled.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTMailSort.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTMarquee.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTNote.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\ugctnotewnd.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTOutlookHeader.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTpie.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTpro1.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTprog.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTRado.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTsarw.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTSeperateText.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTsldr.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\CellTypes\UGCTSpin.cpp">
+      <Filter>UGrid\CellType</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\EditControls\UTEdit.cpp">
+      <Filter>UGrid\EditCtrls</Filter>
+    </ClCompile>
+    <ClCompile Include="UGrid\EditControls\UTMaskedEdit.cpp">
+      <Filter>UGrid\EditCtrls</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\VtAutoSignalManagerDialog.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\VtSignalConnectionGrid.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\VtSignalDefinitionGrid.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\VtTotalSignalGrid.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Yuanta\YaClient.cpp">
+      <Filter>Yuanta</Filter>
+    </ClCompile>
+    <ClCompile Include="Task\YaServerDataReceiver.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Yuanta\YaStockClient.cpp">
+      <Filter>Yuanta</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkHorse.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkHorseDoc.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkHorseView.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputBar.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesViewBar.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar2.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SmAccount.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SmAccountManager.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SmAccountPwdDlg.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmChartConsts.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmChartData.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmChartDataManager.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\ClientConst.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\hdfcommagent.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\ViClient.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\ViStockClient.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BlockingCollection.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Queue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Config\SmConfigManager.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Dump\CrashHandler.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\SmTotalManager.h">
+      <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\CellRange.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\customcells.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\GridCell.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\GridCellBase.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\GridCtrl.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\GridDropTarget.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\InPlaceEdit.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\MemDC.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid\TitleTip.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Hoga\SmHoga.h">
+      <Filter>Hoga</Filter>
+    </ClInclude>
+    <ClInclude Include="Hoga\SmHogaManager.h">
+      <Filter>Hoga</Filter>
+    </ClInclude>
+    <ClInclude Include="Hoga\SmHogaProcessor.h">
+      <Filter>Hoga</Filter>
+    </ClInclude>
+    <ClInclude Include="Json\json.hpp">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\MyLogger.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Login\SmLoginDlg.h">
+      <Filter>Login</Filter>
+    </ClInclude>
+    <ClInclude Include="Login\SmLoginManager.h">
+      <Filter>Login</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\pugiconfig.hpp">
+      <Filter>Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\pugixml.hpp">
+      <Filter>Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\tinyxml2.h">
+      <Filter>Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\conversion.hpp">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\cryptor.hpp">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Delegate.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\DHTime.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\formatstdstring.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Signal.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmUtil.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\VtStringUtil.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\VtTime.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="time\cpptime.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\DataProgressDialog.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\IProgressDialog.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmServerDataReceiver.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskConst.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskInfo.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskRequestMaker.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmMarket.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmMarketConst.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmProduct.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmProductYearMonth.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmSymbol.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmSymbolManager.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmSymbolReader.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Quote\SmQuote.h">
+      <Filter>Quote</Filter>
+    </ClInclude>
+    <ClInclude Include="Quote\SmQuoteManager.h">
+      <Filter>Quote</Filter>
+    </ClInclude>
+    <ClInclude Include="Quote\SmQuoteProcessor.h">
+      <Filter>Quote</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\SmAccountPositionManager.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\SmPosition.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\SmTotalPositionManager.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmAccountOrderManager.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrder.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderConst.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderGridConst.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderRequest.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderRequestManager.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmSymbolOrderManager.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmTotalOrderManager.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolBar.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MfcMdiAppGlue.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusBar\ExtLabel.h">
+      <Filter>StatusBar</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusBar\extstatuscontrolbar.h">
+      <Filter>StatusBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmStopOrderManager.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmCell.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmGrid.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmGridConsts.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmGridResource.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmOrderArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmPositionArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmQuoteArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmCellType.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmAcceptedArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmAccountArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmFavoriteArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmFilledArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmAssetArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmSymbolArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridDefine.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderViewer.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmSymbolTableArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmButton.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmButtonResource.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmButtonId.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SmAccountAsset.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\SmCallbackManager.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmRow.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmWndRefreshManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmWndEventDefine.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmWndManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFund.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundManager.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderSettings.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundDialog.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundEditDialog.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundGrid.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundNewDialog.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundOrderArea.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundOrderDialog.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundPositionArea.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmAcceptedGrid.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmCheckGrid.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmFavoriteGrid.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmLineGrid.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmListCtrl.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderSetView.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmPositionGrid.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SmSymbolTableDialog.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SmNumberFunc.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderWndConst.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundOrderCenterWnd.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmAccountGrid.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundAccountGrid.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmEditItem.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmAccountItem.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundItem.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundOrderLeft.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Fund\SmFundOrderRight.h">
+      <Filter>Fund</Filter>
+    </ClInclude>
+    <ClInclude Include="Archieve\SmSaveManager.h">
+      <Filter>Archieve</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\CTestDialog.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmFilledRemainButton.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmOrderSetDialog.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\SmRemainButton.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmChartFrame.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmChartFrameManager.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmExternalStorage.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\SmStockSeries.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmCompOrderArea.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmCompOrderDialog.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmOrderCompMainDialog.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmOrderRightComp.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="SmMenuDefine.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmOrderLeftComp.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmOrderButton.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderState\SmFilledGrid.h">
+      <Filter>OrderState</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderState\SmFilledListDialog.h">
+      <Filter>OrderState</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmJangoAccountArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmJangoPositionArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="SmGrid\SmTotalAssetArea.h">
+      <Filter>SmGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmFundCompLeftDialog.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmFundCompMainDialog.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="CompOrder\SmFundCompRightDialog.h">
+      <Filter>CompOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskRequestManager.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskArg.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskTypeDef.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SmChartStorage.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SmMultiSpreadChart.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="SmCenterValueMap.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="SmJangGoDialog.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="SmTotalAssetDialog.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Internals\DataFrame_functors.h">
+      <Filter>DataFrame\Internals</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Internals\DataFrame_private_decl.h">
+      <Filter>DataFrame\Internals</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\Aggregenerator.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\DateTime.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\FixedSizePriorityQueue.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\FixedSizeString.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\ThreadGranularity.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Utils\Utils.h">
+      <Filter>DataFrame\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Vectors\HeteroPtrView.h">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Vectors\HeteroVector.h">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Vectors\HeteroView.h">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Vectors\VectorPtrView.h">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\Vectors\VectorView.h">
+      <Filter>DataFrame\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrame.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameFinancialVisitors.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameMLVisitors.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameOperators.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameStatsVisitors.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameTransformVisitors.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameTypes.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\RandGen.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeData\SmTimeData.h">
+      <Filter>TimeData</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeData\SmTimeDataManager.h">
+      <Filter>TimeData</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeData\SmCompData.h">
+      <Filter>TimeData</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartViewer.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\GaSpreadChart.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SmSetSpread.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SmStockChart.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DataFrame\DataFrameExports.h">
+      <Filter>DataFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Pnf\pnfDefine.h">
+      <Filter>Pnf</Filter>
+    </ClInclude>
+    <ClInclude Include="Pnf\PnfMaker.h">
+      <Filter>Pnf</Filter>
+    </ClInclude>
+    <ClInclude Include="Pnf\PnfManager.h">
+      <Filter>Pnf</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtBaseTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtDrawingConstants.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtElement.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtEllipse.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtFibo.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtFiboTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtHandle.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtHLine.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtHLineHandle.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtHLineTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtLine.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtLineTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtMultiLine.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtMultiLineTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtPoint.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtPointHandle.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtRect.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtRectTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtRedimHandle.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtShapesCollection.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtText.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtUndoBuffer.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtUniqueID.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtValue.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtVLine.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtVLineHandle.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing\VtVLineTracker.h">
+      <Filter>Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\RealTimeMultiChart.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SetSpreadDialog.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="TaLib\tapp.h">
+      <Filter>TaLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SetSpreadHsDialog.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDialog\SmTrendChart.h">
+      <Filter>ChartDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmSignal.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmSystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmSystemData.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmSystemFactor.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmSystemManager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SmArrayMath.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\Symbol.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SymbolManager.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderRequest\OrderRequest.h">
+      <Filter>Order\OrderRequest</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderRequest\OrderRequestManager.h">
+      <Filter>Order\OrderRequest</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderProcess\OrderProcessor.h">
+      <Filter>Order\OrderProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="View\AccountOrderView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\AccountPositionView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\AccountProfitLossView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\BuyStopOrderView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\FavoriteSymbolView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SymbolPositionView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SymbolTickView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\EventHub.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SymbolProfitLossView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SymbolInfoView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\AccountPositionManager.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\TotalPositionManager.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderProcess\AccountOrderManager.h">
+      <Filter>Order\OrderProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderProcess\SymbolOrderManager.h">
+      <Filter>Order\OrderProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderProcess\TotalOrderManager.h">
+      <Filter>Order\OrderProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\Order.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\Position.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\IdGenerator.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmAccountOrderWindow.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\ControlId.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderContext.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmAccountOrderCenterWindow.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmAccountOrderLeftWindow.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmAccountOrderRightWindow.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SymbolOrderView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\DmFutureView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\DmOptionView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\MarketDefine.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\AccountOrderControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\AccountPositionControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\AccountProfitLossControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\HogaControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ProductControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\QuoteControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\SymbolPositionControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\SymbolTickControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmHoga.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmQuote.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmProduct.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmFuture.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmOption.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmDefine.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\StopOrderControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmOrder.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\OrderControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmPosition.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\AbAccountOrderLeftWindow.h">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\AbAccountOrderRightWindow.h">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\AbAccountOrderWindow.h">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\AbAccountOrderCenterWindow.h">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmAsset.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\VmAccountProfitLoss.h">
+      <Filter>ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\ViServerDataReceiver.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\SmTaskDefine.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\VtProgressDlg.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\GradientStatic.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\AccountAssetControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="View\AccountAssetView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\TotalAssetProfitLossView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\MiniJangoDialog.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\TotalAssetProfitLossDialog.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\EventHubArg.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\OrderUi\DmFundOrderWindow.h">
+      <Filter>Order\OrderUi</Filter>
+    </ClInclude>
+    <ClInclude Include="Order\AbFundOrderWindow.h">
+      <Filter>Order\OrderUI_AB</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\PositionConst.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\SymbolConst.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\MainAccountGrid.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SubAccountEditor.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Account\SubAccountGrid.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="Position\GroupPositionManager.h">
+      <Filter>Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\SubOrderControl.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmOutSystem.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmOutSystemManager.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\FileWatch.hpp">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\FileWatcher.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\auto_release.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\CompletionRoutineRequest.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\CompletionRoutineServer.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\IoCompletionPort.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\IoCompletionPortReqeust.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\IoCompletionPortServer.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\ReadDirectoryChanges.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\ReadDirectoryRequest.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\ReadDirectoryServer.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\ThreadSafeQueue.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWatch\VtFileEventMonitor.h">
+      <Filter>FileWatch</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\HdFuturePage.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\HdOptionPage.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\HdSymbolSelecter.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\ActiveOutSystemView.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\OutSystemDefView.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\OutSystemView.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SymbolFutureView.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmAddConnectSignalDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmAddOutSigDefDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmAutoSignalManagerDialog.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\AccountFundView.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmOutSignalDef.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmAccountFundSelector.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\OutSigDefSelector.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmSystemOrderConfig.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\SmLayoutManager.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\doublebufferedqueue.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UG64Bit.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGCBType.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGCell.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugceltyp.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGCnrBtn.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGCTarrw.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGCtrl.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugdefine.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGDLType.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGDrgDrp.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGDrwHnt.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGDtaSrc.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGEdit.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGEditBase.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugformat.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\uggdinfo.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGGrid.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGHint.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ughscrol.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\uglstbox.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGMEdit.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGMemMan.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGMultiS.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugprint.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugptrlst.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugsidehd.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGStrOp.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugstruct.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugtab.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\UGTopHdg.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugvscrol.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\ugxpthemes.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\VtGrid.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTafnt.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTAutoSize.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTbutn.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTDropGrid.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTdtp.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\ugctelps.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTExpand.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTLabeled.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTMailSort.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTMarquee.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTNote.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\ugctnotewnd.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTOutlookHeader.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTpie.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTpro1.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTprog.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTRado.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTsarw.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTSeperateText.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTsldr.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\CellTypes\UGCTSpin.h">
+      <Filter>UGrid\CellType</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\EditControls\UTEdit.h">
+      <Filter>UGrid\EditCtrls</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\EditControls\UTMaskedEdit.h">
+      <Filter>UGrid\EditCtrls</Filter>
+    </ClInclude>
+    <ClInclude Include="UGrid\VtCellLabel.h">
+      <Filter>UGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\VtAutoSignalManagerDialog.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\VtSignalConnectionGrid.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\VtSignalDefinitionGrid.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\VtTotalSignalGrid.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\SmConst.h">
+      <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Config\SystemConfig.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuanta\CommDef.h">
+      <Filter>Yuanta</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuanta\IYOA.h">
+      <Filter>Yuanta</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuanta\MessageDef.h">
+      <Filter>Yuanta</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuanta\YaClient.h">
+      <Filter>Yuanta</Filter>
+    </ClInclude>
+    <ClInclude Include="Task\YaServerDataReceiver.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuanta\YaStockClient.h">
+      <Filter>Yuanta</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\DarkHorse.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DarkHorseDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="UserImages.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Workspace.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\wall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar_hc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Thumbnails.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\DarkHorse.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\DarkHorse.toolbar.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_get.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_join.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_misc.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_opt.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_read.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_set.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_shift.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_standalone.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_visit.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\DataFrame_write.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Internals\RandGen.tcc">
+      <Filter>DataFrame\Internals</Filter>
+    </None>
+    <None Include="DataFrame\Vectors\HeteroPtrView.tcc">
+      <Filter>DataFrame\Vectors</Filter>
+    </None>
+    <None Include="DataFrame\Vectors\HeteroVector.tcc">
+      <Filter>DataFrame\Vectors</Filter>
+    </None>
+    <None Include="DataFrame\Vectors\HeteroView.tcc">
+      <Filter>DataFrame\Vectors</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Account">
+      <UniqueIdentifier>{bb67b183-a14a-48c7-baf4-8cb9da5ef858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chart">
+      <UniqueIdentifier>{02dbc951-682f-43c4-9866-4389dd0017d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client">
+      <UniqueIdentifier>{3c251e4f-cb6f-43b6-b41a-7a5456e3a4b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{8d8edb54-30de-47b3-bee5-f04fa866366a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{f763bfb5-1d77-4bc0-8dff-d9032a4646f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dump">
+      <UniqueIdentifier>{218749cf-3042-4deb-92cc-6e1071eb7ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{426664c9-8d55-4f80-8762-36ea7c8d19fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{af5ff11b-3b99-4e65-b7fa-4f717b679cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hoga">
+      <UniqueIdentifier>{f24f2fbd-97f1-459b-a549-9e48c533fdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{ace65778-c9da-4b19-9403-a77d9b3e8fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{4ee17d75-bd47-4a29-943b-6123d9d4fc4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Login">
+      <UniqueIdentifier>{d0ed0013-da69-471f-b6dc-fa52ceafd17c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order">
+      <UniqueIdentifier>{9025dd56-cf68-4681-9ce3-2752fc6843bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Position">
+      <UniqueIdentifier>{3e510d87-e296-432a-bb6c-6bdc51b111a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quote">
+      <UniqueIdentifier>{9e64481d-5fe2-4ccb-a548-20d6c2f1f2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Symbol">
+      <UniqueIdentifier>{8f53cb4e-65f5-4bbd-a091-f03acef6d991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{5b207743-4e76-4237-a22c-b7b14b503891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{d5f1b3fe-9946-4187-a5ee-a962ba7dad4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{5f3c2f35-1492-4f39-a196-f46ca290867b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Xml">
+      <UniqueIdentifier>{5e3d9caf-b730-4acb-9a7e-c7820f8e3575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{6b3f7f8a-f6ca-4f55-9da1-a486cd42b963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StatusBar">
+      <UniqueIdentifier>{887ca44e-55de-4739-ba3a-98a49b4ab62d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SmGrid">
+      <UniqueIdentifier>{f6ec771a-40ec-40bd-a31c-e410b76d6aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{0bff5db5-926e-488c-92f9-d58f50f5333f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fund">
+      <UniqueIdentifier>{1d3dfb6b-99d5-4937-b0e1-ea0a40bc177b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archieve">
+      <UniqueIdentifier>{ca7cf506-6574-4ce0-bab2-e91f98b465c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CompOrder">
+      <UniqueIdentifier>{62caa877-1efb-456a-b0d3-1bf879f0d60e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OrderState">
+      <UniqueIdentifier>{b2d9433e-7b37-4640-868d-079cd7898a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ChartDialog">
+      <UniqueIdentifier>{0083df59-2197-4cfc-8a7a-92c7ba34f626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TimeData">
+      <UniqueIdentifier>{888a4d71-a64a-41f5-b930-85d379aa4558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataFrame">
+      <UniqueIdentifier>{52f90c87-9f77-4b70-b56a-c6c31d7ba7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataFrame\Internals">
+      <UniqueIdentifier>{bb3ff5d3-abfc-4993-bf34-01c861067cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataFrame\Vectors">
+      <UniqueIdentifier>{fe0aeddd-a700-4bb6-9ee5-da54311325a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataFrame\Utils">
+      <UniqueIdentifier>{d8a62a87-8deb-45a6-8e09-092c8de2d160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pnf">
+      <UniqueIdentifier>{c07df4fb-b0e1-42c9-9ced-882655d2f723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawing">
+      <UniqueIdentifier>{85f59bb6-887c-4116-9e02-1d508ae5e96b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TaLib">
+      <UniqueIdentifier>{fe7468de-eeab-49e9-957c-1f5db58f4e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mongodb">
+      <UniqueIdentifier>{371fb65c-5e8a-4436-b000-7fd71dc0d59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{80635e55-ba61-4882-b2a2-f04c4e52c157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order\OrderRequest">
+      <UniqueIdentifier>{da3d86cf-7a66-4d28-8ac4-781f1beb6de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order\OrderProcess">
+      <UniqueIdentifier>{834125ae-ffa5-4b50-aed6-80f9e823ec11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{26091d7d-2635-462b-9955-d226b992dae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel">
+      <UniqueIdentifier>{efabd45b-371a-44f0-a74b-85b250651aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order\OrderUi">
+      <UniqueIdentifier>{108da138-840e-4fae-b1a9-2b6e91c71ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{79216b13-be01-4308-a327-9f56a4e7a7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order\OrderUI_AB">
+      <UniqueIdentifier>{909fecc4-7d82-405d-8393-7b1ff09b0892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Format">
+      <UniqueIdentifier>{c2263ed8-7b1c-455d-ac0b-996427abf03d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialog">
+      <UniqueIdentifier>{9630993d-84c4-4d0b-bf37-86da105b3c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OutSystem">
+      <UniqueIdentifier>{edd44995-e6cd-4787-961e-c1ebd5bc380e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileWatch">
+      <UniqueIdentifier>{a0023628-c7fb-484a-9337-e006fb8133c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UGrid">
+      <UniqueIdentifier>{51e789ef-c8d8-4471-b95c-8bf21248fe08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UGrid\CellType">
+      <UniqueIdentifier>{c93223bb-d15a-46a2-8281-e08095c49928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UGrid\EditCtrls">
+      <UniqueIdentifier>{ea5a1548-25d6-453e-9a9d-9db2b21dedca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Yuanta">
+      <UniqueIdentifier>{e10b1a03-4e03-40f7-9b44-a534f3e924ba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EzTrader.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Order\OrderProcess\ReadMe.txt">
+      <Filter>Order\OrderProcess</Filter>
+    </Text>
+    <Text Include="Order\OrderUi\ReadMe.txt">
+      <Filter>Order\OrderUi</Filter>
+    </Text>
+    <Text Include="Symbol\ReadMe.txt">
+      <Filter>Symbol</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
