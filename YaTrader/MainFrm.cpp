@@ -132,7 +132,7 @@ void CMainFrame::start_login()
 
 	//login_dialog_->Create(IDD_LOGIN_MAIN, this);
 	//login_dialog_->ShowWindow(SW_SHOW);
-	mainApp.Client()->get_symbol_list(5);
+	
 	//StartDataRequest();
 }
 
