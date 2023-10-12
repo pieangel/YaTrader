@@ -161,6 +161,11 @@ namespace DarkHorse {
 		void on_req_dm_change_order(const YA_REQ_INFO& req_info);
 		void on_req_dm_cancel_order(const YA_REQ_INFO& req_info);
 
+		void on_realtime_order();
+		void on_realtime_quote();
+		void on_realtime_hoga();
+		void on_realtime_accepted();
+
 		// WPARAM wParam, LPARAM lParam
 		virtual BOOL OnInitDialog();
 	};

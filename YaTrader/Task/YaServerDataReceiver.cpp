@@ -32,52 +32,52 @@ namespace DarkHorse {
 		switch (arg.task_type)
 		{
 		case DhTaskType::DmSymbolMasterFileDownload:
-			mainApp.Client()->dm_symbol_master_file_download(arg);
+			mainApp.Client()->dm_symbol_master_file_download(arg); // 제외
 			break;
 		case DhTaskType::AbSymbolMasterFileDownload:
-			mainApp.Client()->ab_symbol_master_file_download(arg);
+			mainApp.Client()->ab_symbol_master_file_download(arg); // 제외
 			break;
 		case DhTaskType::DmSymbolMaster:
-			mainApp.Client()->dm_symbol_master(arg);
+			mainApp.Client()->dm_symbol_master(arg); // 제외
 			break;
-		case DhTaskType::AbSymbolMaster:
-			mainApp.Client()->ab_symbol_master(arg);
+		case DhTaskType::AbSymbolMaster: 
+			mainApp.Client()->ab_symbol_master(arg); // 제외
 			break;
 		case DhTaskType::DmAccountAsset:
-			mainApp.Client()->dm_account_asset(arg);
+			mainApp.Client()->dm_account_asset(arg); // 포함
 			break;
 		case DhTaskType::AbAccountAsset:
-			mainApp.Client()->ab_account_asset(arg);
+			mainApp.Client()->ab_account_asset(arg); // 제외
 			break;
 		case DhTaskType::AbAccountProfitLoss:
-			mainApp.Client()->ab_account_profit_loss(arg);
+			mainApp.Client()->ab_account_profit_loss(arg); // 제외
 			break;
 		case DhTaskType::DmAccountProfitLoss:
-			mainApp.Client()->dm_account_profit_loss(arg);
+			mainApp.Client()->dm_account_profit_loss(arg); // 포함
 			break;
 		case DhTaskType::AbAcceptedOrderList:
-			mainApp.Client()->ab_accepted_order(arg);
+			mainApp.Client()->ab_accepted_order(arg); // 제외
 			break;
 		case DhTaskType::DmAcceptedOrderList:
-			mainApp.Client()->dm_accepted_order(arg);
+			mainApp.Client()->dm_accepted_order(arg); // 포함
 			break;
 		case DhTaskType::AbSymbolQuote:
-			mainApp.Client()->ab_symbol_quote(arg);
+			mainApp.Client()->ab_symbol_quote(arg); // 제외
 			break;
 		case DhTaskType::AbSymbolHoga:
-			mainApp.Client()->ab_symbol_hoga(arg);
+			mainApp.Client()->ab_symbol_hoga(arg); // 제외
 			break;
 		case DhTaskType::AbSymbolPosition:
-			mainApp.Client()->ab_symbol_position(arg);
+			mainApp.Client()->ab_symbol_position(arg); // 제외
 			break;
 		case DhTaskType::DmSymbolPosition:
-			mainApp.Client()->dm_symbol_position(arg);
+			mainApp.Client()->dm_symbol_position(arg); // 포함
 			break;
 		case DhTaskType::AbSymbolProfitLoss:
-			mainApp.Client()->ab_symbol_profit_loss(arg);
+			mainApp.Client()->ab_symbol_profit_loss(arg); // 제외
 			break;
 		case DhTaskType::DmSymbolProfitLoss:
-			mainApp.Client()->dm_symbol_profit_loss(arg);
+			mainApp.Client()->dm_symbol_profit_loss(arg); // 포함. 
 			break;
 		case DhTaskType::AbSymbolChartData:
 			//mainApp.Client().GetAbChartData(arg);
