@@ -35,6 +35,7 @@ SmSymbolManager::SmSymbolManager()
 {
 	InitFavoriteProduct();
 	InitDomesticProducts();
+	market_code_map_init_dm_ya();
 }
 
 SmSymbolManager::~SmSymbolManager()
@@ -45,6 +46,18 @@ SmSymbolManager::~SmSymbolManager()
 void DarkHorse::SmSymbolManager::InitDomesticProducts()
 {
 	_DomesticProductVec.push_back("101F");
+}
+
+void SmSymbolManager::market_code_map_init_dm_ya()
+{
+	ya_market_code_map_["21"] = "지수선물";
+	ya_market_code_map_["61"] = "미니선물";
+	ya_market_code_map_["84"] = "코닥선물";
+	ya_market_code_map_["45"] = "상품선물";
+	ya_market_code_map_["22"] = "코스피옵션";
+	ya_market_code_map_["53"] = "코스닥옵션";
+	ya_market_code_map_["64"] = "미니코스피옵션";
+	ya_market_code_map_["94"] = "코스피위클리옵션";
 }
 
 void SmSymbolManager::add_to_yearmonth(std::shared_ptr<SmSymbol> symbol)
@@ -243,6 +256,195 @@ void SmSymbolManager::add_to_yearmonth(std::shared_ptr<SmSymbol> symbol)
 	}
 }
 
+void SmSymbolManager::add_to_yearmonth_dm_ya(std::shared_ptr<SmSymbol> symbol)
+{
+	const std::string product_code = symbol->ProductCode();
+	const std::string symbol_name_kr = symbol->SymbolNameKr();
+	const std::string market_name = symbol->MarketName();
+	std::vector<std::string> name_vec = VtStringUtil::split(symbol_name_kr, " ", true);
+	if (symbol->ProductCode() == "101") { // 코스피200 F 202312
+		std::string year = name_vec.back().substr(0, 4);
+		std::string month = name_vec.back().substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "105") { // 미니코스피 F 202311
+		std::string year = name_vec.back().substr(0, 4);
+		std::string month = name_vec.back().substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "106") { // 코스닥150 F 202312
+		std::string year = name_vec.back().substr(0, 4);
+		std::string month = name_vec.back().substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "167") { // 3년국채    F 202312
+		std::string year = name_vec.back().substr(0, 4);
+		std::string month = name_vec.back().substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "175") { // USD F 202303
+		std::string year = symbol_name_kr.substr(0, 4);
+		std::string month = symbol_name_kr.substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "201") { // 코스피200 C 202311 205.0 
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "301") { // 코스피200 P 202311 205.0
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "205") { // 미니코스피 C 202311 237.5 
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "305") { // 미니코스피 P 202311 237.5
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "209") { // 코스피위클리 C 2310W3 285.0
+		std::string year = name_vec[2].substr(0, 2);
+		std::string month = name_vec[2].substr(2, 2);
+		std::string week = name_vec[2].substr(4, 2);
+		std::string year_month_name("20");
+		year_month_name.append(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		year_month_name.append("-");
+		year_month_name.append(week);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "309") { // 코스피위클리 P 2310W3 285.0
+		std::string year = name_vec[2].substr(0, 2);
+		std::string month = name_vec[2].substr(2, 2);
+		std::string week = name_vec[2].substr(4, 2);
+		std::string year_month_name("20");
+		year_month_name.append(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		year_month_name.append("-");
+		year_month_name.append(week);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "2AF") { // 코스피위클리M C 2310M3 280.0
+		std::string year = name_vec[2].substr(0, 2);
+		std::string month = name_vec[2].substr(2, 2);
+		std::string week = name_vec[2].substr(4, 2);
+		std::string year_month_name("20");
+		year_month_name.append(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		year_month_name.append("-");
+		year_month_name.append(week);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "3AF") { // 코스피위클리M P 2310M3 280.0
+		std::string year = name_vec[2].substr(0, 2);
+		std::string month = name_vec[2].substr(2, 2);
+		std::string week = name_vec[2].substr(4, 2);
+		std::string year_month_name("20");
+		year_month_name.append(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		year_month_name.append("-");
+		year_month_name.append(week);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "206") { // 코스닥150 C 202311 1,275
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+	else if (product_code == "306") { // 코스닥150 P 202311 1,275
+		std::string year = name_vec[2].substr(0, 4);
+		std::string month = name_vec[2].substr(4, 2);
+		std::string year_month_name(year);
+		year_month_name.append("-");
+		year_month_name.append(month);
+		std::shared_ptr<SmProduct> product = find_product(market_name, product_code);
+		if (!product) return;
+		std::shared_ptr<SmProductYearMonth> year_month = product->add_year_month(year_month_name);
+		year_month->AddSymbol(symbol);
+	}
+}
+
 void SmSymbolManager::sort_dm_option_symbol_vector()
 {
 	for (size_t i = 0; i < _DomesticOptionVec.size(); i++) {
@@ -352,7 +554,7 @@ void SmSymbolManager::read_domestic_productfile()
 		LOGINFO(CMyLogger::getInstance(), "error : %s", error.c_str());
 	}
 }
-void SmSymbolManager::read_domestic_masterfile()
+void SmSymbolManager::read_dm_masterfile_si()
 {
 	try {
 		std::string file_path;
@@ -433,6 +635,79 @@ void SmSymbolManager::read_domestic_masterfile()
 			AddSymbol(symbol);
 			//LOGINFO(CMyLogger::getInstance(), "read symbol %s complete!", symbol->SymbolCode().c_str());
 			add_to_yearmonth(symbol);
+		}
+
+		LOGINFO(CMyLogger::getInstance(), "read %s file complete!", full_name.c_str());
+	}
+	catch (std::exception& e) {
+		const std::string error = e.what();
+		LOGINFO(CMyLogger::getInstance(), "error : %s", error.c_str());
+	}
+}
+
+void SmSymbolManager::read_dm_masterfile_ya()
+{
+	try {
+		std::string file_path;
+		file_path = SmConfigManager::GetApplicationPath();
+		file_path.append(_T("\\"));
+		file_path.append(_T("table"));
+		file_path.append(_T("\\"));
+		std::string file_name = "master.tbl";
+		//TRACE(file_name.c_str());
+		std::string full_name = file_path + file_name;
+		std::ifstream infile(full_name);
+		std::string line;
+		std::string value;
+		while (std::getline(infile, line)) {
+			std::istringstream iss(line);
+			int index = 0;
+			std::string gubun = line.substr(index, 2); index += 2;
+
+			auto found = ya_market_code_map_.find(gubun);
+			if (found == ya_market_code_map_.end()) continue;
+
+			value = line.substr(index, 12); index += 12;
+			VtStringUtil::trim(value);
+			std::string symbol_code = value;
+			std::shared_ptr<SmSymbol> symbol = std::make_shared<SmSymbol>(std::move(symbol_code));
+			std::shared_ptr<SmQuote> quote_p = mainApp.QuoteMgr()->get_quote(value);
+			const std::string market_name = symbol->SymbolCode().substr(0, 1).at(0) == '1' ? DmFutureMarketName : DmOptionMarketName;
+			symbol->MarketName(market_name);
+			const std::string product_code = symbol->SymbolCode().substr(0, 3);
+			symbol->ProductCode(product_code);
+			value = line.substr(index, 12); index += 12;
+			VtStringUtil::trim(value);
+			symbol->FullCode(value);
+			value = line.substr(index, 30); index += 30;
+			VtStringUtil::trim(value);
+			symbol->SymbolNameKr(value);
+			
+			std::vector<std::string> name_vec = VtStringUtil::split(value, " ", true);
+
+			
+			value = line.substr(index, 24); index += 24;
+			VtStringUtil::trim(value);
+			if (name_vec[1] != "F") { // Only for the option
+				symbol->AtmType(_ttoi(value.c_str()));
+
+				symbol->Strike(name_vec.back());
+			}
+			value = line.substr(index, 40);
+
+			std::string standard_value = value.substr(0, 8);
+			std::string highest_price = value.substr(8, 8);
+			std::string lowest_price = value.substr(16, 8);
+
+			symbol->symbol_type(SymbolType::Domestic);
+			symbol->StartTime("084500");
+			symbol->EndTime("154500");
+			symbol->Exchange("KRX");
+			symbol->Currency("\\");
+			set_product_info(symbol);
+			AddSymbol(symbol);
+			LOGINFO(CMyLogger::getInstance(), "read symbol %s complete!", symbol->SymbolCode().c_str());
+			add_to_yearmonth_dm_ya(symbol);
 		}
 
 		LOGINFO(CMyLogger::getInstance(), "read %s file complete!", full_name.c_str());

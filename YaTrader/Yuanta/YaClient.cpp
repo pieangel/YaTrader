@@ -15,6 +15,7 @@
 #include "../Account/SmAccount.h"
 #include "../Account/SmAccountManager.h"
 #include "../Config/SmConfigManager.h"
+#include "../Symbol/SmSymbolManager.h"
 
 class CMainFrame;
 using namespace DarkHorse;
@@ -1740,53 +1741,7 @@ void YaClient::get_account_list()
 
 void YaClient::get_symbol_list(const int market_type)
 {
-	int nCount = g_iYuantaAPI.YOA_GetCodeCount(MARKET_TYPE_INTERNAL_KOSPIFUTURE);
-
-
-	for (int i = 0; i < nCount; i++) {
-		TCHAR code[200] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL_KOSPIFUTURE, CODE_INFO_CODE, i, code, sizeof(code));
-		CString msg;
-		
-		TCHAR standard_code[200] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL_KOSPIFUTURE, CODE_INFO_STANDARD_CODE, i, standard_code, sizeof(standard_code));
-		TCHAR name[200] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL_KOSPIFUTURE, CODE_INFO_NAME, i, name, sizeof(name));
-		TCHAR eng_name[200] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL_KOSPIFUTURE, CODE_INFO_ENG_NAME, i, eng_name, sizeof(eng_name));
-		TCHAR jang_gubun[200] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(MARKET_TYPE_INTERNAL_KOSPIFUTURE, CODE_INFO_JANG_GUBUN, i, jang_gubun, sizeof(jang_gubun));
-
-		msg.Format(_T("symbol code[%s], name[%s], standardcode[%s], jang_gubun[%s]\n"), code, name, eng_name, standard_code, jang_gubun);
-		TRACE(msg);
-	}
-
-
-
-
-	TCHAR szCodeInfo[256] = { 0, };
-	nCount = g_iYuantaAPI.YOA_GetCodeCount(CODETYPE_FUTURE);
-
-	for (int i = 0; i < nCount; i++)
-	{
-		TCHAR code[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(CODETYPE_FUTURE, CODE_INFO_CODE, i, code, sizeof(code));
-		CString msg;
-
-		TCHAR standard_code[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(CODETYPE_FUTURE, CODE_INFO_STANDARD_CODE, i, standard_code, sizeof(standard_code));
-		TCHAR name[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(CODETYPE_FUTURE, CODE_INFO_NAME, i, name, sizeof(name));
-		TCHAR eng_name[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(CODETYPE_FUTURE, CODE_INFO_ENG_NAME, i, eng_name, sizeof(eng_name));
-		TCHAR jang_gubun[20] = { 0, };
-		g_iYuantaAPI.YOA_GetCodeInfoByIndex(CODETYPE_FUTURE, CODE_INFO_JANG_GUBUN, i, jang_gubun, sizeof(jang_gubun));
-
-		msg.Format(_T("symbol code[%s], name[%s], eng_name[%s], standardcode[%s], jang_gubun[%s]\n"), code, name, eng_name, standard_code, jang_gubun);
-		TRACE(msg);
-	}
-
-
+	mainApp.SymMgr()->read_dm_masterfile_ya();
 }
 
 

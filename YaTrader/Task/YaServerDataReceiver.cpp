@@ -121,7 +121,7 @@ namespace DarkHorse {
 			mainApp.SymMgr()->MakeDomesticMarket();
 			mainApp.SymMgr()->ReadAbroadSymbols();
 			mainApp.SymMgr()->read_domestic_productfile();
-			mainApp.SymMgr()->read_domestic_masterfile();
+			mainApp.SymMgr()->read_dm_masterfile_si();
 			mainApp.SymMgr()->sort_dm_option_symbol_vector();
 			mainApp.SymMgr()->MakeAbFavorite();
 			start_ab_symbol_master();

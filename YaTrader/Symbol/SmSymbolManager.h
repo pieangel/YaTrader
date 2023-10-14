@@ -40,9 +40,12 @@ namespace DarkHorse {
 		std::vector<std::string> _DomesticProductVec;
 		std::vector<DmFuture> _DomesticFutureVec;
 		std::vector<DmOption> _DomesticOptionVec;
+		std::map<std::string, std::string> ya_market_code_map_;
 	private:
+		void market_code_map_init_dm_ya();
 		void InitDomesticProducts();
 		void add_to_yearmonth(std::shared_ptr<SmSymbol> symbol);
+		void add_to_yearmonth_dm_ya(std::shared_ptr<SmSymbol> symbol);
 		void set_product_info(std::shared_ptr<SmSymbol> symbol);
 		void set_quote_preday_close(std::shared_ptr<SmSymbol> symbol, const std::string& pre_day_str);
 	public:
@@ -70,7 +73,8 @@ namespace DarkHorse {
 		}
 		std::shared_ptr<SmMarket> get_dm_market_by_product_code(const std::string& product_code);
 		void sort_dm_option_symbol_vector();
-		void read_domestic_masterfile();
+		void read_dm_masterfile_si();
+		void read_dm_masterfile_ya();
 		void read_domestic_productfile();
 		void AddDomesticSymbolCode(const std::string& product_code, const std::string& symbol_code);
 		void MakeAbFavorite();
