@@ -181,6 +181,7 @@ BOOL CDarkHorseApp::InitInstance()
 	rect.right = rect.left + width;
 	rect.bottom = rect.top + 78;
 	pMainFrame->MoveWindow(rect);
+
 	// 주 창이 초기화되었으므로 이를 표시하고 업데이트합니다.
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();

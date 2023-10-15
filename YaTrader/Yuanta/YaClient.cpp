@@ -211,15 +211,44 @@ LRESULT YaClient::OnReceiveSystemMessage(WPARAM wParam, LPARAM lParam)
 
 LRESULT YaClient::OnLoginComplete(WPARAM wParam, LPARAM lParam)
 {
-	mainApp.LoginMgr()->IsLoggedIn(true);
+	LRESULT ret = 0;
 
-	LOGINFO(CMyLogger::getInstance(), "로그인 성공 사용자 저장 user id = %s", mainApp.LoginMgr()->id().c_str());
+	if (RESPONSE_LOGIN_SUCCESS == wParam)
+	{
+		mainApp.LoginMgr()->IsLoggedIn(true);
 
-	get_account_list();
+		LOGINFO(CMyLogger::getInstance(), "로그인 성공 사용자 저장 user id = %s", mainApp.LoginMgr()->id().c_str());
 
-	get_symbol_list(5);
+		get_account_list();
 
-	((CMainFrame*)AfxGetMainWnd())->SetAccountInfo();
+		get_symbol_list(5);
+
+		((CMainFrame*)AfxGetMainWnd())->SetAccountInfo();
+
+		g_bLogin = TRUE;
+
+	}
+	else if (RESPONSE_LOGIN_FAIL == wParam)
+	{
+		CString message;
+		if (ERROR_TIMEOUT_DATA == lParam)
+		{
+			message =_T("로그인이 실패하였습니다.\n");
+			message.Append(_T("서버로부터 로그인 응답이 없습니다. 다시 시도하여 주십시오."));
+		}
+		else
+		{
+			message = _T("로그인이 실패하였습니다.\n");
+
+			TCHAR msg[2048] = { 0, };
+
+			g_iYuantaAPI.YOA_GetErrorMessage(lParam, msg, sizeof(msg));
+			message.Append(msg);
+		}
+
+		AfxMessageBox(message);
+	}
+
 	
 	return 1;
 }

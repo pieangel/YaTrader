@@ -79,7 +79,7 @@ void SmLoginDlg::OnBnClickedBtnLogin()
 		return;
 	}
 
-	CDialog::EndDialog(IDOK);
+	//CDialog::EndDialog(IDOK);
 }
 
 
@@ -119,8 +119,24 @@ BOOL SmLoginDlg::OnInitDialog()
 	}
 
 	log_in_server_.SetCurSel(0);
+	CRect desktopRect, dialogRect;
+	GetDesktopWindow()->GetWindowRect(&desktopRect);
 
-	CenterWindow();
+	int screenWidth = desktopRect.Width();
+	int screenHeight = desktopRect.Height();
+
+	GetWindowRect(&dialogRect);
+	GetDesktopWindow()->ScreenToClient(dialogRect);
+	//	# Get the dimensions of the dialog / window
+	int	dialog_width = dialogRect.Width();
+	int	dialog_height = dialogRect.Height();
+
+	//	# Calculate the position to center the dialog
+	int	x_position = (screenWidth - dialog_width) / 2;
+	int	y_position = (screenHeight - dialog_height) / 2;
+
+	//# Set the position of the dialog
+	SetWindowPos(nullptr, x_position, y_position, dialog_width, dialog_height, SWP_NOSIZE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }

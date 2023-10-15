@@ -83,6 +83,7 @@ using namespace hmdf;
 #include "Config/SystemConfig.h"
 #include "Config/SmConfigManager.h"
 #include "FileWatch/VtFileEventMonitor.h"
+#include "Task/YaServerDataReceiver.h"
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -123,15 +124,15 @@ void CMainFrame::add_dm_order_wnd(DmAccountOrderWindow* wnd)
 
 void CMainFrame::start_login()
 {
-	SmLoginDlg loginDlg;
-	if (loginDlg.DoModal() == IDCANCEL)
-	{
-		SendMessage(WM_CLOSE);
-		return;
-	}
-
-	//login_dialog_->Create(IDD_LOGIN_MAIN, this);
-	//login_dialog_->ShowWindow(SW_SHOW);
+// 	SmLoginDlg loginDlg;
+// 	if (loginDlg.DoModal() == IDCANCEL)
+// 	{
+// 		SendMessage(WM_CLOSE);
+// 		return;
+// 	}
+	login_dialog_ = std::make_shared<SmLoginDlg>();
+	login_dialog_->Create(IDD_LOGIN_MAIN, nullptr);
+	login_dialog_->ShowWindow(SW_SHOW);
 	
 	//StartDataRequest();
 }
@@ -814,14 +815,14 @@ void CMainFrame::StartDataRequest()
 
 
 	// 진행상황 표시 대화상자를 할당해 준다.
-	mainApp.vi_server_data_receiver()->progress_dialog(ProgressDlg);
+	mainApp.ya_server_data_receiver()->progress_dialog(ProgressDlg);
 	// 심볼 코드를 가져오기 시작한다.
-	mainApp.vi_server_data_receiver()->start_dm_symbol_master_file_download();
+	mainApp.ya_server_data_receiver()->start_dm_account_asset();
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-	mainApp.vi_server_data_receiver()->execute_next();
+	mainApp.ya_server_data_receiver()->execute_next();
 
 	std::vector<int> lc = SmUtil::GetLocalDateTime();
 	CString msg;
@@ -836,6 +837,9 @@ void CMainFrame::SetMarketTree()
 
 void CMainFrame::SetAccountInfo()
 {
+	if (login_dialog_) {
+		login_dialog_->SendMessage(WM_CLOSE);
+	}
 	SmAccountPwdDlg dlg;
 	dlg.DoModal();
 }
