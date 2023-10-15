@@ -19,6 +19,7 @@
 #include "../Archieve/SmSaveManager.h"
 #include "../MainFrm.h"
 #include "../Yuanta/YaStockClient.h"
+#include "../Task/YaServerDataReceiver.h"
 using namespace DarkHorse;
 
 // SmAccountPwdDlg dialog
@@ -46,7 +47,7 @@ void SmAccountPwdDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(SmAccountPwdDlg, CBCGPDialog)
-	ON_BN_CLICKED(IDC_BTN_SAVE, &SmAccountPwdDlg::OnBnClickedBtnSave)
+	ON_BN_CLICKED(IDC_BTN_SAVE, &SmAccountPwdDlg::OnBtnConfirmAcntPwd)
 	ON_BN_CLICKED(IDC_BTN_CLOSE, &SmAccountPwdDlg::OnBnClickedBtnClose)
 	ON_MESSAGE(WM_PASSWORD_CONFIRMED, &SmAccountPwdDlg::OnUmPasswordConfirmed)
 	ON_WM_TIMER()
@@ -77,9 +78,10 @@ void SmAccountPwdDlg::handle_account_password_error()
 	}
 	else if (IDNO) {
 		//AfxMessageBox("NO¼±ÅÃ");
-		EndDialog(IDOK);
-		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-		pFrame->SendMessage(WM_CLOSE, 0, 0);
+		//EndDialog(IDOK);
+		//CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+		//pFrame->SendMessage(WM_CLOSE, 0, 0);
+		KillTimer(1);
 	}
 }
 
@@ -177,7 +179,7 @@ BOOL SmAccountPwdDlg::OnInitDialog()
 }
 // fe, 2f, 19
 
-void SmAccountPwdDlg::OnBnClickedBtnSave()
+void SmAccountPwdDlg::OnBtnConfirmAcntPwd()
 {
 	for (auto it = _RowToAccountMap.begin(); it != _RowToAccountMap.end(); ++it) {
 		const int row = it->first;
@@ -193,19 +195,8 @@ void SmAccountPwdDlg::OnBnClickedBtnSave()
 		std::shared_ptr<SmAccount> account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (!account) continue;
 		account->Pwd(pwd);
-		//task_arg arg = DarkHorse::SmTaskRequestMaker::MakeAccountAssetRequest(account_no, pwd);
-		//mainApp.Client()->CheckAccountPassword(std::move(arg));
 	}
 	
-	//CBCGPDialog::EndDialog(IDOK);
-	/*
-	mainApp.AcntMgr()->FindAccount(account_no);
-	auto account_pwd = _ReqQ.front();
-	task_arg arg = DarkHorse::SmTaskRequestMaker::MakeAccountAssetRequest(account_pwd.first, account_pwd.second);
-	mainApp.Client()->CheckAccountPassword(std::move(arg));
-	_ReqQ.pop_front();
-	*/
-
 	SetTimer(1, 700, NULL);
 }
 
@@ -257,11 +248,13 @@ void SmAccountPwdDlg::OnTimer(UINT_PTR nIDEvent)
 		std::shared_ptr<SmAccount> account = mainApp.AcntMgr()->FindAccount(account_pwd.first);
 		if (!account) return;
 				
-		task_arg arg = DarkHorse::SmTaskRequestMaker::MakeAccountAssetRequest(account_pwd.first, account_pwd.second, account->Type());
-		//if (account->Type() == "1")
-			mainApp.Client()->CheckAccountPassword(std::move(arg));
-		//else if (account->Type() == "9")
-		//	mainApp.Client()->CheckDmAccountPassword(std::move(arg));
+		DhTaskArg arg;
+		arg.detail_task_description = account->No();
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmAccountAsset;
+		arg.parameter_map["account_no"] = account->No();
+		arg.parameter_map["password"] = account->Pwd();
+		mainApp.Client()->confirm_account_password(arg);
 		_ReqQ.pop_front();
 	}
 	CBCGPDialog::OnTimer(nIDEvent);

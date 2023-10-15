@@ -16,6 +16,7 @@
 #include "../Account/SmAccountManager.h"
 #include "../Config/SmConfigManager.h"
 #include "../Symbol/SmSymbolManager.h"
+#include "../Event/SmCallbackManager.h"
 
 class CMainFrame;
 using namespace DarkHorse;
@@ -52,8 +53,8 @@ END_MESSAGE_MAP()
 // YaClient message handlers
 LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 {
-	const int nReqID = wParam;
-	auto found = ya_request_map_.find(nReqID);
+	const int request_id = wParam;
+	auto found = ya_request_map_.find(request_id);
 	if (found == ya_request_map_.end()) return 1;
 	const std::string& trade_code = found->second.dso_name.substr(3);
 	const std::string& desc = found->second.desc;
@@ -62,13 +63,13 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	{
 	case ERROR_TIMEOUT_DATA:			// 설정된 시간 안에 서버로부터 응답이 없는 경우, 타임아웃이 발생합니다. (기본 10초)
 	{
-		strMsg.Format(_T("Trade Code[%s] [%s] Request id[%d] :: Timeout %s 요청의 응답이 없습니다."), trade_code.c_str(), desc.c_str(), nReqID);
+		strMsg.Format(_T("Trade Code[%s] [%s] Request id[%d] :: Timeout %s 요청의 응답이 없습니다."), trade_code.c_str(), desc.c_str(), request_id);
 	}
 	break;
 	case ERROR_REQUEST_FAIL:			// 서버에서 조회TR(DSO) 처리중 오류가 있는 경우 발생합니다.
 	{
 		TCHAR msg[2048] = { 0, };
-		g_iYuantaAPI.YOA_GetErrorMessage(nReqID, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
+		g_iYuantaAPI.YOA_GetErrorMessage(request_id, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
 		strMsg.Format(_T("Trade code[%s] [%s] Request id[%d]\n%s"), trade_code.c_str(), desc.c_str(), msg);
 		strMsg.TrimRight();
 	}
@@ -90,6 +91,8 @@ LRESULT YaClient::OnReceiveData(WPARAM wParam, LPARAM lParam)
 		on_req_dm_order_filled(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_ORDERABLE)
 		on_req_dm_order_orderable(found->second);
+	else if (found->second.req == SERVER_REQ::DM_ASSET)
+		on_req_dm_asset(found->second);
 	else if (found->second.req == SERVER_REQ::DM_PROVISIONAL_SETTLEMENT)
 		on_req_dm_provisional_settlement(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ACCEPTED)
@@ -417,9 +420,49 @@ int YaClient::dm_order_orderable(DhTaskArg arg)
 
 int YaClient::dm_asset(DhTaskArg arg)
 {
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("입력값"), 0);		// 계좌 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("입력값"), 0);		// 계좌비밀번호 값을 설정합니다.
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ASSET)];
+	const std::string trade_code = req_info.dso_name.substr(3);
+	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	const std::string account_no = arg.parameter_map["account_no"];
+	const std::string password = arg.parameter_map["password"];
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// 계좌 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// 계좌비밀번호 값을 설정합니다.
+
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	req_info.request_id = req_id;
+	if (ERROR_MAX_CODE < req_id)
+	{
+		CString strMsg;
+		strMsg.Format(_T("[ReqID:%d] 자산정보 조회를 요청하였습니다."), req_id);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		request_map_[req_id] = arg;
+		ya_request_map_[req_id] = req_info;
+	}
+	else
+	{
+		TCHAR msg[1024] = { 0, };
+
+		int nErrorCode = g_iYuantaAPI.YOA_GetLastError();
+		g_iYuantaAPI.YOA_GetErrorMessage(nErrorCode, msg, sizeof(msg));
+
+		CString strErrorMsg;
+		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
+
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]자산정보 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+
+		auto account = mainApp.AcntMgr()->FindAccount(account_no);
+		if (account) {
+			const int account_id = account->id();
+			account->Confirm(0);
+			mainApp.CallbackMgr()->OnPasswordConfirmed(account_id, 0);
+			return 1;
+		}
+
+		//AfxMessageBox(strErrorMsg);
+		on_task_request_error(arg.argument_id);
+		return -1;
+	}
+
 	return 1;
 }
 
@@ -727,6 +770,18 @@ void YaClient::on_req_dm_order_orderable(const YA_REQ_INFO& req_info)
 
 void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
 {
+
+	auto found = request_map_.find(req_info.request_id);
+	if (found != request_map_.end()) {
+		const std::string account_no = found->second.parameter_map["account_no"];
+		auto account = mainApp.AcntMgr()->FindAccount(account_no);
+		if (account) {
+			const int account_id = account->id();
+			account->Confirm(1);
+			mainApp.CallbackMgr()->OnPasswordConfirmed(account_id, 1);
+		}
+	}
+
 	TCHAR data[1024] = { 0, };
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
@@ -2036,6 +2091,11 @@ void YaClient::on_realtime_accepted()
 	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// 순미결제약정수량_KOFEX 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// 순미결제약정전일대비수량_KOFEX 값을 가져옵니다.
+}
+
+int YaClient::confirm_account_password(DhTaskArg arg)
+{
+	return dm_asset(arg);
 }
 
 BOOL DarkHorse::YaClient::OnInitDialog()

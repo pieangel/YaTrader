@@ -396,10 +396,11 @@ namespace DarkHorse {
 
 	void ViServerDataReceiver::make_dm_account_asset() 
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
-			if (account->Type() != "9") continue;
+		std::vector<std::shared_ptr<SmAccount>> account_vector;
+		mainApp.AcntMgr()->get_main_account_vector(account_vector);
+		for (auto it = account_vector.begin(); it != account_vector.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
+			//if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
 			arg.detail_task_description = account->No();
@@ -418,10 +419,11 @@ namespace DarkHorse {
 	}
 	void ViServerDataReceiver::make_ab_account_asset() 
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
-			if (account->Type() != "1") continue;
+		std::vector<std::shared_ptr<SmAccount>> account_vector;
+		mainApp.AcntMgr()->get_main_account_vector(account_vector);
+		for (auto it = account_vector.begin(); it != account_vector.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
+			//if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
 			arg.detail_task_description = account->No();

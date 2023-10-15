@@ -156,6 +156,11 @@ int DarkHorse::YaStockClient::GetFilledOrderList(const std::string& account_no, 
 	return 1; // return _ViCtrol->ab_filled_order_list(account_no, pwd);
 }
 
+int YaStockClient::confirm_account_password(DhTaskArg arg)
+{
+	return _ViCtrol->confirm_account_password(arg);
+}
+
 int YaStockClient::ab_symbol_master(DhTaskArg arg)
 {
 	return 1; // return _ViCtrol->ab_symbol_master(arg);

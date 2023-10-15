@@ -33,7 +33,7 @@ private:
 	void handle_account_password_error();
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedBtnSave();
+	afx_msg void OnBtnConfirmAcntPwd();
 	afx_msg void OnBnClickedBtnClose();
 	afx_msg LRESULT OnUmPasswordConfirmed(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);

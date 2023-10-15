@@ -116,6 +116,7 @@ namespace DarkHorse {
 		BOOL CheckLogin();
 		afx_msg void OnDestroy();
 	public:
+		int confirm_account_password(DhTaskArg arg);
 		void get_symbol_list(const int market_type);
 		int dm_symbol_profit_loss(DhTaskArg arg);
 		int dm_order_filled(DhTaskArg arg);

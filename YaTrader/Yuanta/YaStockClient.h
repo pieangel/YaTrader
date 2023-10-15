@@ -95,6 +95,8 @@ namespace DarkHorse {
 		void UnRegAll();
 		int GetFilledOrderList(const std::string& account_no, const std::string& pwd);
 
+
+		int confirm_account_password(DhTaskArg arg);
 		int dm_symbol_master_file_download(DhTaskArg arg);
 		int ab_symbol_master_file_download(DhTaskArg arg);
 		int ab_symbol_master(DhTaskArg arg);
