@@ -20,6 +20,7 @@ namespace DarkHorse {
 		int CutSlip = 2;
 		int LossCutTick = 2;
 		int ProfitCutTick = 2;
+		int FutureOrOption = 0;
 		SmPriceType CutPriceType = SmPriceType::Price;
 		SmPositionType PositionType = SmPositionType::None;
 		SmOrderType OrderType = SmOrderType::None;

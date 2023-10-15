@@ -173,7 +173,7 @@ int YaStockClient::ab_account_profit_loss(DhTaskArg arg)
 
 int YaStockClient::dm_account_profit_loss(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->dm_account_profit_loss(arg);
+	return _ViCtrol->dm_position_info(arg);
 }
 
 
@@ -929,7 +929,7 @@ int DarkHorse::YaStockClient::ab_account_asset(DhTaskArg arg)
 }
 int DarkHorse::YaStockClient::dm_account_asset(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->dm_account_asset(arg);
+	return _ViCtrol->dm_account_asset(arg);
 }
 
 int YaStockClient::dm_symbol_position(DhTaskArg arg)

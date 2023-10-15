@@ -121,7 +121,7 @@ namespace DarkHorse {
 		int dm_symbol_profit_loss(DhTaskArg arg);
 		int dm_order_filled(DhTaskArg arg);
 		int dm_order_orderable(DhTaskArg arg);
-		int dm_asset(DhTaskArg arg);
+		int dm_account_asset(DhTaskArg arg);
 		int dm_provisional_settlement(DhTaskArg arg);
 		int dm_accepted(DhTaskArg arg);
 		int dm_position_info(DhTaskArg arg);

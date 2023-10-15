@@ -139,7 +139,7 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::DmAccountAsset:
 		{
-			start_ab_symbol_quote();
+			start_dm_account_profit_loss();
 		}
 		break;
 		case DhTaskType::AbSymbolQuote:
