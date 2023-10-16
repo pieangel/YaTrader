@@ -46,6 +46,8 @@ enum class DhTaskType
 	AbFilledDetail, // 해외 체결 주문
 	AbSymbolMasterFileDownload, // 심볼 마스터 파일 다운로드
 
+	DmSymbolQuote, // 국내 종목 시세
+	DmSymbolHoga, // 국내 종목 호가
 	DmAcceptedOrderList, // 접수확인 내역
 	DmFilledHistory, // 체결내역
 	DmSymbolPosition, // 잔고내역

@@ -503,7 +503,7 @@ void SmSymbolManager::read_domestic_productfile()
 		std::string file_path;
 		file_path = SmConfigManager::GetApplicationPath();
 		file_path.append(_T("\\"));
-		file_path.append(_T("mst"));
+		file_path.append(_T("table"));
 		file_path.append(_T("\\"));
 		std::string file_name = "dm_product.cod";
 		//TRACE(file_name.c_str());
@@ -670,11 +670,15 @@ void SmSymbolManager::read_dm_masterfile_ya()
 			value = line.substr(index, 12); index += 12;
 			VtStringUtil::trim(value);
 			std::string symbol_code = value;
+			const std::string product_code = symbol_code.substr(0, 3);
+			if (gubun == "45") {
+				if (!(product_code == "167" || product_code == "175")) continue;
+			}
 			std::shared_ptr<SmSymbol> symbol = std::make_shared<SmSymbol>(std::move(symbol_code));
 			std::shared_ptr<SmQuote> quote_p = mainApp.QuoteMgr()->get_quote(value);
 			const std::string market_name = symbol->SymbolCode().substr(0, 1).at(0) == '1' ? DmFutureMarketName : DmOptionMarketName;
 			symbol->MarketName(market_name);
-			const std::string product_code = symbol->SymbolCode().substr(0, 3);
+			//const std::string product_code = symbol->SymbolCode().substr(0, 3);
 			symbol->ProductCode(product_code);
 			value = line.substr(index, 12); index += 12;
 			VtStringUtil::trim(value);
@@ -698,7 +702,7 @@ void SmSymbolManager::read_dm_masterfile_ya()
 			std::string standard_value = value.substr(0, 8);
 			std::string highest_price = value.substr(8, 8);
 			std::string lowest_price = value.substr(16, 8);
-
+			symbol->gubun_code(gubun);
 			symbol->symbol_type(SymbolType::Domestic);
 			symbol->StartTime("084500");
 			symbol->EndTime("154500");
@@ -706,7 +710,7 @@ void SmSymbolManager::read_dm_masterfile_ya()
 			symbol->Currency("\\");
 			set_product_info(symbol);
 			AddSymbol(symbol);
-			LOGINFO(CMyLogger::getInstance(), "read symbol %s complete!", symbol->SymbolCode().c_str());
+			LOGINFO(CMyLogger::getInstance(), "read symbol [%s] gubun_code = [%s] complete!", symbol->SymbolCode().c_str(), gubun.c_str());
 			add_to_yearmonth_dm_ya(symbol);
 		}
 

@@ -90,7 +90,10 @@ namespace DarkHorse {
 		SymbolType symbol_type() const { return symbol_type_; }
 		void symbol_type(SymbolType val) { symbol_type_ = val; }
 
+		std::string gubun_code() const { return gubun_code_; }
+		void gubun_code(std::string val) { gubun_code_ = val; }
 	private:
+		std::string gubun_code_;
 		SymbolType symbol_type_{ SymbolType::None };
 		bool hoga_requested_{ false };
 		bool quote_requested_{ false };

@@ -802,6 +802,7 @@ void CMainFrame::StartDataRequest()
 	mainApp.SvrDataRcvr()->StartDataRequest();
 	*/
 
+
 	// 서버 데이터 가져오기를 표시하는 대화 상자를 생성한다.
 	ProgressDlg = std::make_shared<VtProgressDlg>();
 	ProgressDlg->Create(IDD_PROGRESS, this);

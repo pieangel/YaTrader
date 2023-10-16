@@ -108,6 +108,7 @@ namespace DarkHorse {
 		void on_task_request_error(const int argument_id);
 		void on_task_receive_error(const int server_request_id);
 		void log_in(const std::string& id, const std::string& pwd, const std::string& cert);
+		int convert_to_int(const std::string& symbol_code, const char* data);
 	public:
 		void get_account_list();
 		int Login(task_arg&& login_info);
@@ -116,6 +117,8 @@ namespace DarkHorse {
 		BOOL CheckLogin();
 		afx_msg void OnDestroy();
 	public:
+		int dm_symbol_quote(DhTaskArg arg);
+		int dm_symbol_hoga(DhTaskArg arg);
 		int confirm_account_password(DhTaskArg arg);
 		void get_symbol_list(const int market_type);
 		int dm_symbol_profit_loss(DhTaskArg arg);
@@ -165,7 +168,7 @@ namespace DarkHorse {
 		void on_realtime_order();
 		void on_realtime_quote();
 		void on_realtime_hoga();
-		void on_realtime_accepted();
+		void on_realtime_accepted_count();
 
 		// WPARAM wParam, LPARAM lParam
 		virtual BOOL OnInitDialog();

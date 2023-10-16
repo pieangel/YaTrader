@@ -64,7 +64,11 @@ namespace DarkHorse {
 		void start_dm_symbol_profit_loss();
 		void start_ab_symbol_hoga();
 		void start_ab_symbol_quote();
+		void start_dm_symbol_hoga();
+		void start_dm_symbol_quote();
 	private:
+		void make_dm_symbol_quote();
+		void make_dm_symbol_hoga();
 		void make_ab_symbol_quote();
 		void make_ab_symbol_hoga();
 		void make_ab_symbol_profit_loss();
@@ -85,5 +89,11 @@ namespace DarkHorse {
 		void make_dm_symbol_master(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map);
 		void make_dm_symbol_master(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
 		void make_dm_symbol_master(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+		void make_dm_symbol_quote(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+		void make_dm_symbol_hoga(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+		void make_dm_symbol_quote(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map);
+		void make_dm_symbol_hoga(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map);
+		void make_dm_symbol_hoga(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
+		void make_dm_symbol_quote(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
 	};
 }
