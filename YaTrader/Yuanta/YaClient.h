@@ -117,6 +117,10 @@ namespace DarkHorse {
 		BOOL CheckLogin();
 		afx_msg void OnDestroy();
 	public:
+		int register_symbol(const std::string& symbol_code);
+		int unregister_symbol(const std::string& symbol_code);
+		int register_account(const std::string& account_no);
+		int unregister_account(const std::string& account_no);
 		int dm_symbol_quote(DhTaskArg arg);
 		int dm_symbol_hoga(DhTaskArg arg);
 		int confirm_account_password(DhTaskArg arg);

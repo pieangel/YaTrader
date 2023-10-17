@@ -266,17 +266,22 @@ void DarkHorse::YaStockClient::CancelOrder(const std::shared_ptr<SmOrderRequest>
 
 void DarkHorse::YaStockClient::RegisterSymbol(const std::string& symbol_code)
 {
-	//_ViCtrol->register_symbol(symbol_code);
+	_ViCtrol->register_symbol(symbol_code);
 }
 
 void DarkHorse::YaStockClient::UnregisterSymbol(const std::string& symbol_code)
 {
-	//_ViCtrol->unregister_symbol(symbol_code);
+	_ViCtrol->unregister_symbol(symbol_code);
 }
 
 void DarkHorse::YaStockClient::RegisterAccount(const std::string& account_no)
 {
-	//_ViCtrol->register_account(account_no);
+	_ViCtrol->register_account(account_no);
+}
+
+void YaStockClient::UnregisterAccount(const std::string& account_no)
+{
+	_ViCtrol->unregister_account(account_no);
 }
 
 void DarkHorse::YaStockClient::SendOrderAcceptedData(const std::shared_ptr<SmOrderRequest>& order_req)

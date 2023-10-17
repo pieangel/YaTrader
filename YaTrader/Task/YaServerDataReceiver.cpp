@@ -153,6 +153,14 @@ namespace DarkHorse {
 			start_dm_symbol_hoga();
 		}
 		break;
+		case DhTaskType::DmSymbolHoga:
+		{
+			register_realtime();
+
+			server_data_receive_on_ = false;
+			end_all_task();
+		}
+		break;
 		case DhTaskType::AbSymbolQuote:
 		{
 			start_ab_symbol_hoga();
@@ -282,9 +290,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_ab_account_profit_loss()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -305,9 +314,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_dm_account_profit_loss()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -407,9 +417,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_dm_account_asset()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -429,9 +440,10 @@ namespace DarkHorse {
 	}
 	void YaServerDataReceiver::make_ab_account_asset()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -505,9 +517,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_dm_accepted_order()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -527,9 +540,10 @@ namespace DarkHorse {
 	}
 	void YaServerDataReceiver::make_ab_accepted_order()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -550,9 +564,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_ab_symbol_position()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -573,9 +588,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_dm_symbol_position()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -594,6 +610,27 @@ namespace DarkHorse {
 		task_info_.task_type = DhTaskType::DmSymbolPosition;
 	}
 
+
+	void YaServerDataReceiver::register_realtime()
+	{
+		const std::vector<DmFuture>& future_vec = mainApp.SymMgr()->get_dm_future_vec();
+		for (size_t i = 0; i < future_vec.size(); i++) {
+			const auto& year_month_map = future_vec[i].product->get_yearmonth_map();
+			const auto& year_month = year_month_map.begin()->second;
+			const auto& symbol = year_month->get_first_symbol();
+			register_symbol(symbol);
+		}
+
+		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
+		for (size_t i = 0; i < option_vec.size(); i++) {
+			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
+			register_symbol(call_year_month_map);
+			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
+			register_symbol(put_year_month_map);
+		}
+
+		register_account();
+	}
 
 	void YaServerDataReceiver::make_dm_symbol_quote()
 	{
@@ -646,6 +683,39 @@ namespace DarkHorse {
 
 		for (auto const& symbol : symbol_vec) {
 			make_dm_symbol_quote(symbol);
+		}
+	}
+
+	void YaServerDataReceiver::register_symbol(std::shared_ptr<DarkHorse::SmSymbol> symbol)
+	{
+		if (!symbol) return;
+		mainApp.Client()->RegisterSymbol(symbol->SymbolCode());
+	}
+
+	void YaServerDataReceiver::register_symbol(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map)
+	{
+		if (year_month_map.empty()) return;
+
+		auto& symbol_vec = year_month_map.begin()->second->get_symbol_vector();
+		register_symbol(symbol_vec);
+	}
+
+	void YaServerDataReceiver::register_symbol(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec)
+	{
+		if (symbol_vec.empty()) return;
+
+		for (auto const& symbol : symbol_vec) {
+			register_symbol(symbol);
+		}
+	}
+
+	void YaServerDataReceiver::register_account()
+	{
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
+			mainApp.Client()->RegisterAccount(account->No());
 		}
 	}
 
@@ -743,9 +813,10 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::make_ab_symbol_profit_loss()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;
@@ -765,9 +836,10 @@ namespace DarkHorse {
 	}
 	void YaServerDataReceiver::make_dm_symbol_profit_loss()
 	{
-		const std::unordered_map<std::string, std::shared_ptr<SmAccount>>& account_map = mainApp.AcntMgr()->GetAccountMap();
-		for (auto it = account_map.begin(); it != account_map.end(); it++) {
-			std::shared_ptr<SmAccount> account = it->second;
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
 			if (account->is_subaccount()) continue;
 			DhTaskArg arg;

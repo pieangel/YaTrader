@@ -67,6 +67,7 @@ namespace DarkHorse {
 		void start_dm_symbol_hoga();
 		void start_dm_symbol_quote();
 	private:
+		void register_realtime();
 		void make_dm_symbol_quote();
 		void make_dm_symbol_hoga();
 		void make_ab_symbol_quote();
@@ -95,5 +96,9 @@ namespace DarkHorse {
 		void make_dm_symbol_hoga(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map);
 		void make_dm_symbol_hoga(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
 		void make_dm_symbol_quote(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
+		void register_symbol(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+		void register_symbol(const std::map<std::string, std::shared_ptr<DarkHorse::SmProductYearMonth>>& year_month_map);
+		void register_symbol(const std::vector<std::shared_ptr<DarkHorse::SmSymbol>>& symbol_vec);
+		void register_account();
 	};
 }

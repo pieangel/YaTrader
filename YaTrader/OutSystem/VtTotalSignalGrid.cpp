@@ -293,7 +293,9 @@ void VtTotalSignalGrid::RefreshOrders()
 
 void VtTotalSignalGrid::on_update_quote()
 {
-
+	CString log;
+	log.Format("on_update_quote\n");
+	TRACE(log);
 }
 
 int VtTotalSignalGrid::OnButton(long ID, int col, long row, long msg, long param)

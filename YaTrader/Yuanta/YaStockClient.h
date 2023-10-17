@@ -65,6 +65,7 @@ namespace DarkHorse {
 		void RegisterSymbol(const std::string& symbol_code);
 		void UnregisterSymbol(const std::string& symbol_code);
 		void RegisterAccount(const std::string& account_no);
+		void UnregisterAccount(const std::string& account_no);
 
 		void NewOrder(const std::shared_ptr<SmOrderRequest>& order_req);
 		void ChangeOrder(const std::shared_ptr<SmOrderRequest>& order_req);
