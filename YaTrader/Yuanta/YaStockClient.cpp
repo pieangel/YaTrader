@@ -209,17 +209,17 @@ int YaStockClient::dm_symbol_master_file_download(DhTaskArg arg)
 
 void YaStockClient::ChangeOrder(order_request_p order_req)
 {
-	//_ViCtrol->change_order(order_req);
+	_ViCtrol->dm_change_order(order_req);
 }
 
 void YaStockClient::NewOrder(order_request_p order_req)
 {
-	//_ViCtrol->new_order(order_req);
+	_ViCtrol->dm_new_order(order_req);
 }
 
 void YaStockClient::CancelOrder(order_request_p order_req)
 {
-	//_ViCtrol->cancel_order(order_req);
+	_ViCtrol->dm_cancel_order(order_req);
 }
 
 void YaStockClient::dm_new_order(order_request_p order_req)

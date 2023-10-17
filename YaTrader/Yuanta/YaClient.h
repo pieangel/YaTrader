@@ -66,7 +66,7 @@ struct YA_REQ_INFO {
 namespace DarkHorse {
 	typedef std::map<std::string, std::any> task_arg;
 	class YaStockClient;
-	struct SmOrderRequest;
+	struct OrderRequest;
 	class YaClient : public CDialog
 	{
 		DECLARE_DYNAMIC(YaClient)
@@ -143,9 +143,9 @@ namespace DarkHorse {
 		int dm_commodity_sise(DhTaskArg arg);
 		int dm_commodity_hoga(DhTaskArg arg);
 		int dm_chart_n_min(DhTaskArg arg);
-		void dm_new_order(const std::shared_ptr<SmOrderRequest>& order_req);
-		void dm_change_order(const std::shared_ptr<SmOrderRequest>& order_req);
-		void dm_cancel_order(const std::shared_ptr<SmOrderRequest>& order_req);
+		void dm_new_order(const std::shared_ptr<OrderRequest>& order_req);
+		void dm_change_order(const std::shared_ptr<OrderRequest>& order_req);
+		void dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
 
 		void on_req_dm_symbol_profit_loss(const YA_REQ_INFO& req_info);
 		void on_req_dm_order_filled(const YA_REQ_INFO& req_info);

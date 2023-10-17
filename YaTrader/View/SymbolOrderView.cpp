@@ -1891,6 +1891,18 @@ void SymbolOrderView::put_order(
 			order_req->order_context.fund_id = fund_->Id();
 			order_req->order_context.fund_name = fund_->Name();
 		}
+
+		if (symbol_->gubun_code() == "21")
+			order_req->future_or_option = 0;
+		else if (symbol_->gubun_code() == "61")
+			order_req->future_or_option = 0;
+		else if (symbol_->gubun_code() == "84")
+			order_req->future_or_option = 0;
+		else if (symbol_->gubun_code() == "45")
+			order_req->future_or_option = 0;
+		else
+			order_req->future_or_option = 1;
+
 		SetProfitLossCut(order_req);
 		mainApp.order_request_manager()->add_order_request(order_req);
 	}

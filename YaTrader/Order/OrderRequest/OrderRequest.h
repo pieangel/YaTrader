@@ -18,6 +18,7 @@ namespace DarkHorse {
 		int order_price{ 0 };
 		int order_amount{ 0 };
 		std::string original_order_no{ "" };
+		int future_or_option{ 0 };
 		// for the loss and profit of the cut value
 		// order with the slippage for the loss and profit cut 
 		int cut_slip{ 2 };
