@@ -73,9 +73,11 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	case ERROR_REQUEST_FAIL:			// 서버에서 조회TR(DSO) 처리중 오류가 있는 경우 발생합니다.
 	{
 		TCHAR msg[2048] = { 0, };
-		g_iYuantaAPI.YOA_GetErrorMessage(request_id, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
+		long error_code = g_iYuantaAPI.YOA_GetLastError();
+		g_iYuantaAPI.YOA_GetErrorMessage(error_code, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
 		strMsg.Format(_T("Trade code[%s] [%s] Request id[%d] %s"), trade_code.c_str(), desc.c_str(), request_id, msg);
 		strMsg.TrimRight();
+		
 		auto found = request_map_.find(request_id);
 		if (found != request_map_.end())
 		{
@@ -2453,6 +2455,7 @@ void YaClient::on_realtime_order()
 	g_iYuantaAPI.YOA_GetFieldString(_T("cheqty"), data, sizeof(data), 0);		// 체결수량(c.yak_su) 값을 가져옵니다.
 	const int filled_count = _ttoi(data);
 	order_info["filled_count"] = _ttoi(data);
+
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("chesum"), data, sizeof(data), 0);		// 체결수량합 값을 가져옵니다.
@@ -2465,6 +2468,9 @@ void YaClient::on_realtime_order()
 	g_iYuantaAPI.YOA_GetFieldString(_T("bp_time"), data, sizeof(data), 0);		// data 수신 발생시간 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("tr_time"), data, sizeof(data), 0);		// 체결시간(c.yak_time) 값을 가져옵니다.
+	order_info["filled_date"] = data;
+	order_info["filled_time"] = data;
+
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결시간[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("op_id"), data, sizeof(data), 0);		// 고객 Login ID(user_id) 값을 가져옵니다.
@@ -2477,8 +2483,8 @@ void YaClient::on_realtime_order()
 	BYTE buy_or_sell;
 	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// 매수(4) 매도(8) 값을 가져옵니다.
 	
-	order_info["position_type"] = buy_or_sell == 49 ? "1" : "2";
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 매수(4) 매도(8)[%d]"), buy_or_sell);
+	order_info["position_type"] = ((buy_or_sell == '4') || (buy_or_sell == '1')) ? "1" : "2";
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 매수/매도gubun48[%c]"), buy_or_sell);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("stkcode"), data, sizeof(data), 0);		// 종목코드(c.jongcode) 값을 가져옵니다.
 	const std::string symbol_code = data;
@@ -2505,6 +2511,8 @@ void YaClient::on_realtime_order()
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// 체결가 또는 주문가 값을 가져옵니다.
 	order_info["order_price"] = convert_to_int(symbol_code, data);
+	order_info["filled_price"] = convert_to_int(symbol_code, data);
+
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결가 또는 주문가[%s]"), data);
 
 	if (filled_count > 0)

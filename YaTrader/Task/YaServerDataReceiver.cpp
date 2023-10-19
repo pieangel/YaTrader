@@ -642,13 +642,13 @@ namespace DarkHorse {
 			make_dm_symbol_quote(symbol);
 		}
 
-		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
-		for (size_t i = 0; i < option_vec.size(); i++) {
-			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
-			make_dm_symbol_quote(call_year_month_map);
-			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
-			make_dm_symbol_quote(put_year_month_map);
-		}
+// 		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
+// 		for (size_t i = 0; i < option_vec.size(); i++) {
+// 			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
+// 			make_dm_symbol_quote(call_year_month_map);
+// 			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
+// 			make_dm_symbol_quote(put_year_month_map);
+// 		}
 
 		task_info_.task_title = "국내 심볼 시세 다운로드 중입니다.";
 		task_info_.total_task_count = task_info_.argument_map.size();
@@ -729,13 +729,13 @@ namespace DarkHorse {
 			make_dm_symbol_hoga(symbol);
 		}
 
-		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
-		for (size_t i = 0; i < option_vec.size(); i++) {
-			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
-			make_dm_symbol_hoga(call_year_month_map);
-			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
-			make_dm_symbol_hoga(put_year_month_map);
-		}
+// 		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
+// 		for (size_t i = 0; i < option_vec.size(); i++) {
+// 			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
+// 			make_dm_symbol_hoga(call_year_month_map);
+// 			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
+// 			make_dm_symbol_hoga(put_year_month_map);
+// 		}
 
 		task_info_.task_title = "국내 심볼 호가 다운로드 중입니다.";
 		task_info_.total_task_count = task_info_.argument_map.size();
@@ -960,13 +960,13 @@ namespace DarkHorse {
 	void YaServerDataReceiver::start_dm_symbol_hoga()
 	{
 		make_dm_symbol_hoga();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(10);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(1000);
 	}
 
 	void YaServerDataReceiver::start_dm_symbol_quote()
 	{
 		make_dm_symbol_quote();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(10);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(1000);
 	}
 
 }
