@@ -330,6 +330,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPMDIFrameWnd)
 	ON_COMMAND(ID_DM_FUND_REMAIN, &CMainFrame::OnDmFundRemain)
 	ON_COMMAND(ID_AB_FUND_REMAIN, &CMainFrame::OnAbFundRemain)
 	ON_WM_DESTROY()
+	ON_COMMAND(ID_SIMUL_STARTSIMUL, &CMainFrame::OnSimulStartsimul)
+	ON_COMMAND(ID_SIMUL_STOPSIMUL, &CMainFrame::OnSimulStopsimul)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1529,4 +1531,16 @@ void CMainFrame::OnDestroy()
 	CBCGPMDIFrameWnd::OnDestroy();
 
 	
+}
+
+
+void CMainFrame::OnSimulStartsimul()
+{
+	mainApp.Client()->start_timer();
+}
+
+
+void CMainFrame::OnSimulStopsimul()
+{
+	mainApp.Client()->stop_timer();
 }

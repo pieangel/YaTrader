@@ -366,6 +366,16 @@ void DarkHorse::YaStockClient::UnRegAll()
 	//_ViCtrol->unregister_all_accounts();
 }
 
+void YaStockClient::start_timer()
+{
+	_ViCtrol->start_timer();
+}
+
+void YaStockClient::stop_timer()
+{
+	_ViCtrol->stop_timer();
+}
+
 DarkHorse::YaStockClient::~YaStockClient()
 {
 

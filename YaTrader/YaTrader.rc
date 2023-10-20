@@ -2253,6 +2253,11 @@ BEGIN
         MENUITEM "전략1",                         ID_STRATEGE1
         MENUITEM "OutSystem",                   ID_OUT_SYSTEM
     END
+    POPUP "Simul"
+    BEGIN
+        MENUITEM "StartSimul",                  ID_SIMUL_STARTSIMUL
+        MENUITEM "StopSimul",                   ID_SIMUL_STOPSIMUL
+    END
     POPUP "도움말"
     BEGIN
         MENUITEM "다크호스에관하여",                    ID_32908
@@ -2312,6 +2317,11 @@ BEGIN
     BEGIN
         MENUITEM "전략1",                         ID_STRATEGE1
         MENUITEM "OutSystem",                   ID_OUT_SYSTEM
+    END
+    POPUP "Simul"
+    BEGIN
+        MENUITEM "StartSimul",                  ID_SIMUL_STARTSIMUL
+        MENUITEM "StopSimul",                   ID_SIMUL_STOPSIMUL
     END
     POPUP "도움말"
     BEGIN

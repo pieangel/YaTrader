@@ -116,6 +116,9 @@ namespace DarkHorse {
 		BOOL CheckInit();
 		BOOL CheckLogin();
 		afx_msg void OnDestroy();
+		afx_msg void OnTimer(UINT_PTR nIDEvent);
+		void start_timer();
+		void stop_timer();
 	public:
 		int register_symbol(const std::string& symbol_code);
 		int unregister_symbol(const std::string& symbol_code);

@@ -232,4 +232,6 @@ public:
 	afx_msg void OnDmFundRemain();
 	afx_msg void OnAbFundRemain();
 	afx_msg void OnDestroy();
+	afx_msg void OnSimulStartsimul();
+	afx_msg void OnSimulStopsimul();
 };

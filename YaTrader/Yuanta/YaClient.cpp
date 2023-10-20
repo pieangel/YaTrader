@@ -21,6 +21,7 @@
 #include "YaStockClient.h"
 #include "../Symbol/SmSymbol.h"
 #include "../Order/OrderProcess/TotalOrderManager.h"
+#include <random>
 
 class CMainFrame;
 using namespace DarkHorse;
@@ -46,6 +47,7 @@ void YaClient::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(YaClient, CDialog)
+	ON_WM_TIMER()
 	ON_MESSAGE(WMU_RECEIVE_ERROR, OnReceiveError)
 	ON_MESSAGE(WMU_RECEIVE_DATA, OnReceiveData)
 	ON_MESSAGE(WMU_RECEIVE_REAL_DATA, OnReceiveRealData)
@@ -2437,6 +2439,7 @@ void YaClient::on_realtime_order()
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 지점별 주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunuv"), data, sizeof(data), 0);		// 주문단가(jumun_su) 값을 가져옵니다.
+	order_info["order_price"] = _ttoi(data);
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 주문단가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunqty"), data, sizeof(data), 0);		// 주문수량(jumun_price) 값을 가져옵니다.
@@ -2450,11 +2453,12 @@ void YaClient::on_realtime_order()
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order::  정정/취소 수량 [%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cheuv"), data, sizeof(data), 0);		// 체결단가(c.yak_price) 값을 가져옵니다.
+	order_info["filled_price"] = _ttoi(data);
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결단가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cheqty"), data, sizeof(data), 0);		// 체결수량(c.yak_su) 값을 가져옵니다.
 	const int filled_count = _ttoi(data);
-	order_info["filled_count"] = _ttoi(data);
+	order_info["filled_count"] = filled_count;
 
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
@@ -2510,8 +2514,8 @@ void YaClient::on_realtime_order()
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 시간[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// 체결가 또는 주문가 값을 가져옵니다.
-	order_info["order_price"] = convert_to_int(symbol_code, data);
-	order_info["filled_price"] = convert_to_int(symbol_code, data);
+	//order_info["order_price"] = convert_to_int(symbol_code, data);
+	//order_info["filled_price"] = convert_to_int(symbol_code, data);
 
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결가 또는 주문가[%s]"), data);
 
@@ -2931,6 +2935,96 @@ int YaClient::unregister_account(const std::string& account_no)
 	}
 
 	return 1;
+}
+
+void YaClient::OnTimer(UINT_PTR nIDEvent)
+{
+	{
+		LOGINFO(CMyLogger::getInstance(), _T("OnTimer:: "));
+
+		std::random_device rd;
+		std::mt19937 mt(rd());
+		std::uniform_int_distribution<int> dist(32295 / 5, 32450 / 5);
+
+		int random_number = dist(mt) * 5;
+
+		nlohmann::json quote;
+
+		quote["symbol_code"] = "101TC";
+		quote["symbol_name_kr"] = "101TC";
+		quote["delta_day"] = 5;
+		//quote["delta_day_sign"] = static_cast<const char*>(strDeltaDaySign.Trim());
+		quote["updown_rate"] = "-0.1";
+		quote["time"] = "20230907";
+		quote["close"] = random_number;
+		quote["open"] = 32355;
+		quote["high"] = 32355;
+		quote["low"] = 32355;
+		quote["pre_day_close"] = 32360;
+		quote["cumulative_amount"] = 0;
+		quote["volume"] = 0;
+		quote["up_down"] = 1;
+		quote["preday_volume"] = 0;
+
+
+		ya_stock_client_.OnSymbolQuote(std::move(quote));
+
+
+		nlohmann::json hoga;
+		hoga["symbol_code"] = "101TC";
+		hoga["hoga_time"] = "10:24:35";
+		hoga["tot_buy_qty"] = 100;
+		hoga["tot_sell_qty"] = 200;
+		hoga["tot_buy_cnt"] = 300;
+		hoga["tot_sell_cnt"] = 400;
+
+		hoga["hoga_items"][0]["sell_price"] = random_number;
+		hoga["hoga_items"][0]["buy_price"] = random_number;
+		hoga["hoga_items"][0]["sell_qty"] = 1;
+		hoga["hoga_items"][0]["buy_qty"] = 2;
+		hoga["hoga_items"][0]["sell_cnt"] = 3;
+		hoga["hoga_items"][0]["buy_cnt"] = 4;
+
+		hoga["hoga_items"][1]["sell_price"] = random_number - 5*1;
+		hoga["hoga_items"][1]["buy_price"] = random_number + 5*1;
+		hoga["hoga_items"][1]["sell_qty"] = 1;
+		hoga["hoga_items"][1]["buy_qty"] = 2;
+		hoga["hoga_items"][1]["sell_cnt"] = 3;
+		hoga["hoga_items"][1]["buy_cnt"] = 4;
+
+		hoga["hoga_items"][2]["sell_price"] = random_number - 5 * 2;
+		hoga["hoga_items"][2]["buy_price"] = random_number + 5 * 2;
+		hoga["hoga_items"][2]["sell_qty"] = 16;
+		hoga["hoga_items"][2]["buy_qty"] =25;
+		hoga["hoga_items"][2]["sell_cnt"] = 45;
+		hoga["hoga_items"][2]["buy_cnt"] = 34;
+
+		hoga["hoga_items"][3]["sell_price"] = random_number - 5 * 3;
+		hoga["hoga_items"][3]["buy_price"] = random_number + 5 * 3;
+		hoga["hoga_items"][3]["sell_qty"] = 34;
+		hoga["hoga_items"][3]["buy_qty"] = 45;
+		hoga["hoga_items"][3]["sell_cnt"] = 56;
+		hoga["hoga_items"][3]["buy_cnt"] = 67;
+
+		hoga["hoga_items"][4]["sell_price"] = random_number - 5 * 4;
+		hoga["hoga_items"][4]["buy_price"] = random_number + 5 * 4;
+		hoga["hoga_items"][4]["sell_qty"] = 23;
+		hoga["hoga_items"][4]["buy_qty"] = 90;
+		hoga["hoga_items"][4]["sell_cnt"] = 34;
+		hoga["hoga_items"][4]["buy_cnt"] = 45;
+
+		ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
+	}
+}
+
+void YaClient::start_timer()
+{
+	SetTimer(1, 10, NULL);
+}
+
+void YaClient::stop_timer()
+{
+	KillTimer(1);
 }
 
 BOOL DarkHorse::YaClient::OnInitDialog()

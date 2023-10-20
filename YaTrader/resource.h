@@ -646,13 +646,15 @@
 #define ID_DM_FUND_REMAIN               32896
 #define ID_32949                        32897
 #define ID_AB_FUND_REMAIN               32898
+#define ID_SIMUL_STARTSIMUL             32951
+#define ID_SIMUL_STOPSIMUL              32952
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
-#define _APS_NEXT_COMMAND_VALUE         32951
+#define _APS_NEXT_COMMAND_VALUE         32953
 #define _APS_NEXT_CONTROL_VALUE         1172
 #define _APS_NEXT_SYMED_VALUE           119
 #endif
