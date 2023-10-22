@@ -102,6 +102,7 @@ namespace DarkHorse {
 		int dm_symbol_hoga(DhTaskArg arg);
 
 		int confirm_account_password(DhTaskArg arg);
+		int dm_daily_profit_loss(DhTaskArg arg);
 		int dm_symbol_master_file_download(DhTaskArg arg);
 		int ab_symbol_master_file_download(DhTaskArg arg);
 		int ab_symbol_master(DhTaskArg arg);

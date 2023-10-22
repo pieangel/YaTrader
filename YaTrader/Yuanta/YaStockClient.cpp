@@ -156,6 +156,11 @@ int DarkHorse::YaStockClient::GetFilledOrderList(const std::string& account_no, 
 	return 1; // return _ViCtrol->ab_filled_order_list(account_no, pwd);
 }
 
+int YaStockClient::dm_daily_profit_loss(DhTaskArg arg)
+{
+	return _ViCtrol->dm_daily_profit_loss(arg);
+}
+
 int YaStockClient::dm_symbol_hoga(DhTaskArg arg)
 {
 	return _ViCtrol->dm_symbol_hoga(arg);
@@ -183,7 +188,7 @@ int YaStockClient::ab_account_profit_loss(DhTaskArg arg)
 
 int YaStockClient::dm_account_profit_loss(DhTaskArg arg)
 {
-	return _ViCtrol->dm_position_info(arg);
+	return _ViCtrol->dm_daily_profit_loss(arg);
 }
 
 
@@ -959,7 +964,7 @@ int DarkHorse::YaStockClient::dm_account_asset(DhTaskArg arg)
 
 int YaStockClient::dm_symbol_position(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->dm_symbol_position(arg);
+	return _ViCtrol->dm_symbol_position(arg);
 }
 
 int YaStockClient::ab_symbol_position(DhTaskArg arg)
@@ -973,7 +978,7 @@ int DarkHorse::YaStockClient::ab_accepted_order(DhTaskArg arg)
 }
 int DarkHorse::YaStockClient::dm_accepted_order(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->dm_accepted_order(arg);
+	return _ViCtrol->dm_accepted(arg);
 }
 
 int YaStockClient::ab_symbol_quote(DhTaskArg arg)

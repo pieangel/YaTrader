@@ -101,45 +101,45 @@ LRESULT YaClient::OnReceiveData(WPARAM wParam, LPARAM lParam)
 	if (found == ya_request_map_.end()) return 1;
 
 	if (found->second.req == SERVER_REQ::DM_ORDER_FILLED)
-		on_req_dm_order_filled(found->second);
+		on_dm_order_filled(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_ORDERABLE)
-		on_req_dm_order_orderable(found->second);
+		on_dm_order_orderable(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ASSET)
-		on_req_dm_asset(found->second);
+		on_dm_asset(found->second);
 	else if (found->second.req == SERVER_REQ::DM_PROVISIONAL_SETTLEMENT)
-		on_req_dm_provisional_settlement(found->second);
+		on_dm_provisional_settlement(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ACCEPTED)
-		on_req_dm_accepted(found->second);
+		on_dm_accepted(found->second);
 	else if (found->second.req == SERVER_REQ::DM_POSITION_INFO)
-		on_req_dm_position_info(found->second);
+		on_dm_symbol_position(found->second);
 	else if (found->second.req == SERVER_REQ::DM_DAILY_PROFIT_LOSS)
-		on_req_dm_daily_profit_loss(found->second);
+		on_dm_daily_profit_loss(found->second);
 	else if (found->second.req == SERVER_REQ::DM_LIQUIDABLE_QTY)
-		on_req_dm_liquidable_qty(found->second);
+		on_dm_liquidable_qty(found->second);
 	else if (found->second.req == SERVER_REQ::DM_TRADE_PROFIT_LOSS)
-		on_req_dm_trade_profit_loss(found->second);
+		on_dm_trade_profit_loss(found->second);
 	else if (found->second.req == SERVER_REQ::DM_OUTSTANDING_ORDER)
-		on_req_dm_outstanding_order(found->second);
+		on_dm_outstanding_order(found->second);
 	else if (found->second.req == SERVER_REQ::DM_FUT_SISE)
-		on_req_dm_fut_sise(found->second);
+		on_dm_fut_sise(found->second);
 	else if (found->second.req == SERVER_REQ::DM_FUT_HOGA)
-		on_req_dm_fut_hoga(found->second);
+		on_dm_fut_hoga(found->second);
 	else if (found->second.req == SERVER_REQ::DM_OPT_SISE)
-		on_req_dm_opt_sise(found->second);
+		on_dm_opt_sise(found->second);
 	else if (found->second.req == SERVER_REQ::DM_OPT_HOGA)
-		on_req_dm_opt_hoga(found->second);
+		on_dm_opt_hoga(found->second);
 	else if (found->second.req == SERVER_REQ::DM_COMMODITY_SISE)
-		on_req_dm_commodity_sise(found->second);
+		on_dm_commodity_sise(found->second);
 	else if (found->second.req == SERVER_REQ::DM_COMMODITY_HOGA)
-		on_req_dm_commodity_hoga(found->second);
+		on_dm_commodity_hoga(found->second);
 	else if (found->second.req == SERVER_REQ::DM_CHART_N_MIN)
-		on_req_dm_chart_n_min(found->second);
+		on_dm_chart_n_min(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_NEW)
-		on_req_dm_new_order(found->second);
+		on_dm_new_order(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_MOD)
-		on_req_dm_change_order(found->second);
+		on_dm_change_order(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_CANCEL)
-		on_req_dm_cancel_order(found->second);
+		on_dm_cancel_order(found->second);
 	return 0;
 }
 
@@ -462,7 +462,7 @@ int YaClient::dm_account_asset(DhTaskArg arg)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 자산정보 조회를 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -510,10 +510,56 @@ int YaClient::dm_accepted(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetFieldString(_T("date"), _T("입력값"), 0);		// 조회시작일 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("입력값"), 0);		// 순서구분 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("work_tp"), _T("입력값"), 0);		// 업무구분 값을 설정합니다.
+	//return 1;
+
+
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ACCEPTED)];
+	const std::string trade_code = req_info.dso_name.substr(3);
+	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	const std::string account_no = arg.parameter_map["account_no"];
+	const std::string password = arg.parameter_map["password"];
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// 계좌 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// 계좌비밀번호 값을 설정합니다.
+
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	req_info.request_id = req_id;
+	if (ERROR_MAX_CODE < req_id)
+	{
+		CString strMsg;
+		strMsg.Format(_T("[ReqID:%d] 미체결 주문 조회를 요청하였습니다."), req_id);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
+		request_map_[req_id] = arg;
+		ya_request_map_[req_id] = req_info;
+	}
+	else
+	{
+		TCHAR msg[1024] = { 0, };
+
+		int nErrorCode = g_iYuantaAPI.YOA_GetLastError();
+		g_iYuantaAPI.YOA_GetErrorMessage(nErrorCode, msg, sizeof(msg));
+
+		CString strErrorMsg;
+		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
+
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]미체결 주문 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+
+		auto account = mainApp.AcntMgr()->FindAccount(account_no);
+		if (account) {
+			const int account_id = account->id();
+			account->Confirm(0);
+			mainApp.CallbackMgr()->OnPasswordConfirmed(account_id, 0);
+			return 1;
+		}
+
+		//AfxMessageBox(strErrorMsg);
+		on_task_request_error(arg.argument_id);
+		return -1;
+	}
+
 	return 1;
 }
 
-int YaClient::dm_position_info(DhTaskArg arg)
+int YaClient::dm_symbol_position(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_POSITION_INFO)];
 	const std::string trade_code = req_info.dso_name.substr(3);
@@ -968,7 +1014,7 @@ void YaClient::init_ya_req_info_list()
 	ya_req_info_list_.push_back(req_info);
 
 	req_info.desc = "선물옵션 잔고 조회";
-	req_info.dso_name = "DSO251002";
+	req_info.dso_name = "DSO250032";
 	req_info.req = SERVER_REQ::DM_POSITION_INFO;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
@@ -1058,13 +1104,13 @@ void YaClient::init_ya_req_info_list()
 	ya_req_info_list_.push_back(req_info);
 }
 
-void YaClient::on_req_dm_symbol_profit_loss(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_symbol_profit_loss(const YA_REQ_INFO& req_info)
 {
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_order_filled(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_order_filled(const YA_REQ_INFO& req_info)
 {
 	const std::string& trade_code = req_info.desc.substr(3);
 	long list_cnt = 0;
@@ -1110,7 +1156,7 @@ void YaClient::on_req_dm_order_filled(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_order_orderable(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_order_orderable(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -1128,7 +1174,7 @@ void YaClient::on_req_dm_order_orderable(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_asset(const YA_REQ_INFO& req_info)
 {
 	if (mainApp.LoginMgr()->IsLoggedIn()) {
 		auto found = request_map_.find(req_info.request_id);
@@ -1149,10 +1195,11 @@ void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌 값을 가져옵니다.
+	account_asset["account_no"] = std::string(data);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("kyejwa"), data, sizeof(data), 0);		// 계좌 값을 가져옵니다.
-	account_asset["account_no"] = std::string(data);
+	
 
 	memset(data, 0x00, sizeof(data));
 	BYTE jang_gubun = 0;
@@ -1160,19 +1207,26 @@ void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
 	
-	double dData;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("tot"), &dData, 0);// 예탁총액 값을 가져옵니다.
-	account_asset["balance"] = dData;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("debirate"), &dData, 0);// 위탁증거금총액 값을 가져옵니다.
-	account_asset["entrust_total"] = data;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("orddeposit"), &dData, 0);// 주문가능총증거금 값을 가져옵니다.
-	account_asset["order_deposit"] = data;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("drawtot"), &dData, 0);// 인출가능총액 값을 가져옵니다.
-	account_asset["outstanding_deposit"] = data;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("keepdeposit"), &dData, 0);// 유지증거금총액 값을 가져옵니다.
-	account_asset["entrust_deposit"] = data;
-	g_iYuantaAPI.YOA_GetFieldDouble(_T("addtot"), &dData, 0);// 추가증거금총액 값을 가져옵니다.
-	account_asset["additional_margin"] = data;
+
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("tot"), data, sizeof(data), 0);// 예탁총액 값을 가져옵니다.
+	account_asset["balance"] = _ttof(data);
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("deposittot"), data, sizeof(data), 0);// 위탁증거금총액 값을 가져옵니다.
+	account_asset["entrust_total"] = _ttof(data);
+	account_asset["open_trust_total"] = _ttof(data);
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("orddeposit"), data, sizeof(data), 0);// 주문가능총증거금 값을 가져옵니다.
+	account_asset["order_deposit"] = _ttof(data);
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("drawtot"), data, sizeof(data), 0);// 인출가능총액 값을 가져옵니다.
+	account_asset["outstanding_deposit"] = _ttof(data);
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("keepdeposit"), data, sizeof(data), 0);// 유지증거금총액 값을 가져옵니다.
+	account_asset["entrust_deposit"] = _ttof(data);
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("addtot"), data, sizeof(data), 0);// 추가증거금총액 값을 가져옵니다.
+	account_asset["additional_margin"] = _ttof(data);
 	account_asset["currency"] = "KRW";
 	
 	
@@ -1182,7 +1236,7 @@ void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
 	account_asset["settled_profit_loss"] = 0;
 	account_asset["fee"] = 0;
 	account_asset["open_profit_loss"] = 0;
-	account_asset["open_trust_total"] = 0;
+	
 	account_asset["order_margin"] = 0;
 	
 
@@ -1193,7 +1247,7 @@ void YaClient::on_req_dm_asset(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_provisional_settlement(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_provisional_settlement(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -1257,89 +1311,151 @@ void YaClient::on_req_dm_provisional_settlement(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_accepted(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_accepted(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
+	nlohmann::json order_info;
+
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("InBlock1"));
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
+	const std::string account_no = data;
+	order_info["account_no"] = account_no;
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 계좌번호[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총조회건수 값을 가져옵니다.
+	const int list_cnt = _ttoi(data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 총조회건수[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// 계좌구분 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 계좌구분[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), 0);		// 주문번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매도매수구분 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("order_qty"), data, sizeof(data), 0);		// 주문수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("order_idx"), data, sizeof(data), 0);		// 주문지수 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("che_remn_qty"), data, sizeof(data), 0);		// 미체결잔량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_tp"), data, sizeof(data), 0);		// 주문유형 값을 가져옵니다.
+	for (int i = 0; i < list_cnt; i++) {
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), i);		// 주문번호 값을 가져옵니다.
+		order_info["order_no"] = data;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문번호[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), i);		// 종목코드 값을 가져옵니다.
+		order_info["symbol_code"] = data;
+		const std::string symbol_code = data;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 종목코드[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), i);		// 종목명 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 종목명[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), i);		// 매도매수구분 값을 가져옵니다.
+		std::string buy_sell_tp = data;
+		auto npos = buy_sell_tp.find("매도");
+		if (npos != std::string::npos) {
+			buy_sell_tp = "2";
+		}
+		else {
+			buy_sell_tp = "1";
+		}
+		order_info["position_type"] = buy_sell_tp;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 매도매수구분[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("order_qty"), data, sizeof(data), i);		// 주문수량 값을 가져옵니다.
+		order_info["order_amount"] = _ttoi(data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문수량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("order_idx"), data, sizeof(data), i);		// 주문지수 값을 가져옵니다.
+		order_info["order_price"] = convert_to_int(symbol_code, data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문지수[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("che_remn_qty"), data, sizeof(data), i);		// 미체결잔량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 미체결잔량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("ord_tp"), data, sizeof(data), i);		// 주문유형 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문유형[%s]"), data);
+
+
+		order_info["order_event"] = OrderEvent::OE_Accepted;
+		order_info["order_time"] = "00:00:00";
+		order_info["order_date"] = "20231020";
+		order_info["order_type"] = "1";
+		//order_info["price_type"] = static_cast<const char*>(strPriceType.Trim());
+		order_info["original_order_no"] = "";
+		order_info["first_order_no"] = "";
+		//order_info["order_type"] = static_cast<const char*>(strMan.Trim());
+		order_info["remain_count"] = 0;
+		order_info["cancelled_count"] = 0;
+		order_info["modified_count"] = 0;
+		order_info["filled_count"] = 0;
+		order_info["order_sequence"] = 0;
+		order_info["custom_info"] = "";
+
+		mainApp.total_order_manager()->on_order_event(std::move(order_info));
+	}
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock3"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// 다음버튼 값을 가져옵니다.
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
+
 }
 
-void YaClient::on_req_dm_position_info(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_symbol_position(const YA_REQ_INFO& req_info)
 {
 
 	TCHAR data[1024] = { 0, };
 
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("InBlock1"));
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
+	const std::string account_no = data;
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 계좌번호[%s]"), data);
+
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총조회건수 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 총조회건수[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목코드[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목명[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매매구분 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매매구분[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// 평균가 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평균가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cur_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// 매도호가 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// 매도잔량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// 매수호가 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// 매수잔량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// 약정수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// 미결제약정수량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 현재가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cnt"), data, sizeof(data), 0);		// 보유수량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 보유수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cntclear"), data, sizeof(data), 0);		// 청산가능수량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 청산가능수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("eval_amt"), data, sizeof(data), 0);		// 평가금액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가금액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// 수익률 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 수익률[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목별단위금액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 오토시세용종목코드[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("meaip"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매입가액[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock3"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
@@ -1357,53 +1473,80 @@ void YaClient::on_req_dm_position_info(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
+
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("InBlock1"));
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
+	const std::string account_no = data;
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 계좌번호[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총조회건수 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총조회건수[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// 시장구분 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 시장구분[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
+
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목코드[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목명[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매수/매도구분 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수/매도구분[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("now_amount"), data, sizeof(data), 0);		// 보유잔량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 보유잔량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("buy_price"), data, sizeof(data), 0);		// 매입가 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("total_buy_price"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("now_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("total_now_price"), data, sizeof(data), 0);		// 현재가액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// 매도호가 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도호가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// 매도잔량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도잔량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// 매수호가 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수호가[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// 매수잔량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수잔량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// 약정수량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 약정수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// 미결제약정수량 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 미결제약정수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("maemae_son"), data, sizeof(data), 0);		// 매매손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매매손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// 청산손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 청산손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// 총손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목별단위금액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
 
@@ -1412,22 +1555,30 @@ void YaClient::on_req_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// 다음여부 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("son"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 평가손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// 청산분손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 청산분손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// 총손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("today_total_son"), data, sizeof(data), 0);		// 당일총손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 당일총손익[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("total_property"), data, sizeof(data), 0);		// 추정예탁 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 추정예탁[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("buy_opt_amt"), data, sizeof(data), 0);		// 매수옵션현재가액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수옵션현재가액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("sell_opt_amt"), data, sizeof(data), 0);		// 매도옵션현재가액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도옵션현재가액[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("d1yesu"), data, sizeof(data), 0);		// d+1예수금_오토처리용 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// 수수료 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 수수료[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("call_sell_amt"), data, sizeof(data), 0);		// 콜매도옵션평가액 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
@@ -1441,7 +1592,7 @@ void YaClient::on_req_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_liquidable_qty(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_liquidable_qty(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -1474,7 +1625,7 @@ void YaClient::on_req_dm_liquidable_qty(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_trade_profit_loss(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_trade_profit_loss(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -1490,7 +1641,7 @@ void YaClient::on_req_dm_trade_profit_loss(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_outstanding_order(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_outstanding_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -1520,9 +1671,8 @@ void YaClient::on_req_dm_outstanding_order(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_fut_sise(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_fut_sise(const YA_REQ_INFO& req_info)
 {
-
 	auto found = request_map_.find(req_info.request_id);
 	if (found == request_map_.end()) {
 		return;
@@ -1688,7 +1838,7 @@ void YaClient::on_req_dm_fut_sise(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_fut_hoga(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_fut_hoga(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 	nlohmann::json hoga;
@@ -1777,7 +1927,7 @@ void YaClient::on_req_dm_fut_hoga(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_opt_sise(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_opt_sise(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	유안타증권 Open API 출력코드 예제입니다.
@@ -1928,7 +2078,7 @@ void YaClient::on_req_dm_opt_sise(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_opt_hoga(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_opt_hoga(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	유안타증권 Open API 출력코드 예제입니다.
@@ -2020,7 +2170,7 @@ void YaClient::on_req_dm_opt_hoga(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_commodity_sise(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_commodity_sise(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	유안타증권 Open API 출력코드 예제입니다.
@@ -2181,7 +2331,7 @@ void YaClient::on_req_dm_commodity_sise(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_commodity_hoga(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_commodity_hoga(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	유안타증권 Open API 출력코드 예제입니다.
@@ -2271,13 +2421,13 @@ void YaClient::on_req_dm_commodity_hoga(const YA_REQ_INFO& req_info)
 
 }
 
-void YaClient::on_req_dm_chart_n_min(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_chart_n_min(const YA_REQ_INFO& req_info)
 {
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_new_order(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_new_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -2291,7 +2441,7 @@ void YaClient::on_req_dm_new_order(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_change_order(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_change_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
@@ -2305,7 +2455,7 @@ void YaClient::on_req_dm_change_order(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 }
 
-void YaClient::on_req_dm_cancel_order(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_cancel_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 

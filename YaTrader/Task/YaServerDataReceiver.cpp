@@ -77,7 +77,7 @@ namespace DarkHorse {
 			mainApp.Client()->ab_symbol_profit_loss(arg); // 제외
 			break;
 		case DhTaskType::DmSymbolProfitLoss:
-			mainApp.Client()->dm_symbol_profit_loss(arg); // 포함. 
+			mainApp.Client()->dm_daily_profit_loss(arg); // 포함. 
 			break;
 		case DhTaskType::DmSymbolQuote:
 			mainApp.Client()->dm_symbol_quote(arg); // 포함. 
@@ -155,10 +155,7 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::DmSymbolHoga:
 		{
-			register_realtime();
-
-			server_data_receive_on_ = false;
-			end_all_task();
+			start_dm_symbol_position();
 		}
 		break;
 		case DhTaskType::AbSymbolQuote:
@@ -184,7 +181,10 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::DmAcceptedOrderList:
 		{
-			start_ab_symbol_position();
+			register_realtime();
+
+			server_data_receive_on_ = false;
+			end_all_task();
 		}
 		break;
 		case DhTaskType::AbSymbolPosition:
@@ -200,7 +200,7 @@ namespace DarkHorse {
 
 		case DhTaskType::DmAccountProfitLoss:
 		{
-			start_ab_symbol_profit_loss();
+			start_dm_accepted_order();
 		}
 		break;
 		case DhTaskType::AbSymbolProfitLoss:
@@ -421,8 +421,8 @@ namespace DarkHorse {
 		mainApp.AcntMgr()->get_main_account_vector(account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
-			if (account->Type() != "9") continue;
-			if (account->is_subaccount()) continue;
+			//if (account->Type() != "9") continue;
+			//if (account->is_subaccount()) continue;
 			DhTaskArg arg;
 			arg.detail_task_description = account->No();
 			arg.argument_id = YaServerDataReceiver::get_argument_id();

@@ -674,6 +674,10 @@ void SmSymbolManager::read_dm_masterfile_ya()
 			if (gubun == "45") {
 				if (!(product_code == "167" || product_code == "175")) continue;
 			}
+
+			//if (symbol_code.substr(0, 1).at(0) == '1')
+			//	symbol_code.append("000");
+
 			std::shared_ptr<SmSymbol> symbol = std::make_shared<SmSymbol>(std::move(symbol_code));
 			std::shared_ptr<SmQuote> quote_p = mainApp.QuoteMgr()->get_quote(value);
 			const std::string market_name = symbol->SymbolCode().substr(0, 1).at(0) == '1' ? DmFutureMarketName : DmOptionMarketName;
