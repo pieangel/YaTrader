@@ -1196,10 +1196,12 @@ void YaClient::on_dm_asset(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 계좌[%s]"), data);
 	account_asset["account_no"] = std::string(data);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("kyejwa"), data, sizeof(data), 0);		// 계좌 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: kyejwa[%s]"), data);
 	
 
 	memset(data, 0x00, sizeof(data));
@@ -1211,22 +1213,29 @@ void YaClient::on_dm_asset(const YA_REQ_INFO& req_info)
 
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("tot"), data, sizeof(data), 0);// 예탁총액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 예탁총액[%s]"), data);
+	account_asset["entrust_total"] = _ttof(data);
 	account_asset["balance"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("deposittot"), data, sizeof(data), 0);// 위탁증거금총액 값을 가져옵니다.
-	account_asset["entrust_total"] = _ttof(data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 위탁증거금총액[%s]"), data);
+	
 	account_asset["open_trust_total"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("orddeposit"), data, sizeof(data), 0);// 주문가능총증거금 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 주문가능총증거금[%s]"), data);
 	account_asset["order_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("drawtot"), data, sizeof(data), 0);// 인출가능총액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 인출가능총액[%s]"), data);
 	account_asset["outstanding_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("keepdeposit"), data, sizeof(data), 0);// 유지증거금총액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 유지증거금총액[%s]"), data);
 	account_asset["entrust_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("addtot"), data, sizeof(data), 0);// 추가증거금총액 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: 추가증거금총액[%s]"), data);
 	account_asset["additional_margin"] = _ttof(data);
 	account_asset["currency"] = "KRW";
 	

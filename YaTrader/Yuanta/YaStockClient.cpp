@@ -458,7 +458,7 @@ void DarkHorse::YaStockClient::ExecTask(DhTaskArg&& task)
 	switch (task.task_type)
 	{
 	case DhTaskType::AccountProfitLoss:
-		//_ViCtrol->account_profit_loss(std::move(task));
+		_ViCtrol->dm_symbol_profit_loss(std::move(task));
 		break;
 	case DhTaskType::DmSymbolMaster:
 		//_ViCtrol->dm_symbol_master(std::move(task));

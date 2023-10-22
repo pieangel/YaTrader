@@ -203,8 +203,8 @@ void TotalAssetProfitLossView::update_account_profit_loss()
 	auto cell = _Grid->FindCell(0, 1);
 	const int decimal = account_->Type() == "1" ? 2 : 0;
 	std::string value;
-	value = VtStringUtil::get_format_value(asset.entrust_total, decimal, true);
-	if (cell) cell->Text(value);
+	//value = VtStringUtil::get_format_value(asset.entrust_total, decimal, true);
+	//if (cell) cell->Text(value);
 	cell = _Grid->FindCell(1, 1);
 	value = VtStringUtil::get_format_value(account_profit_loss.open_profit_loss, decimal, true);
 	if (account_profit_loss.open_profit_loss > 0) {
