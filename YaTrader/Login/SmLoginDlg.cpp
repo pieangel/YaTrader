@@ -54,6 +54,12 @@ END_MESSAGE_MAP()
 
 void SmLoginDlg::OnBnClickedBtnLogin()
 {
+	const int index = combol_log_in_server_.GetCurSel();
+	if (index == 0) {
+		AfxMessageBox("접속할 서버를 선택해 주세요!");
+		return;
+	}
+
 	// TODO: Add your control notification handler code here
 	CString id, pwd, cert;
 	//-----------------------------------------------------------------------------
@@ -114,6 +120,7 @@ BOOL SmLoginDlg::OnInitDialog()
 #endif
 
 	std::vector<std::string> server_list;
+	server_list.push_back("서버선택");
 	server_list.push_back("국내모의");
 	server_list.push_back("국내운영");
 	server_list.push_back("해외모의");
@@ -149,6 +156,6 @@ BOOL SmLoginDlg::OnInitDialog()
 
 void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 {
-	mainApp.LoginMgr()->ya_server_index(combol_log_in_server_.GetCurSel());
+	mainApp.LoginMgr()->ya_server_index(combol_log_in_server_.GetCurSel() - 1);
 	mainApp.Client()->init();
 }

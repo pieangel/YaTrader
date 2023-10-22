@@ -53,7 +53,10 @@ namespace DarkHorse {
 		std::weak_ptr<SmAccount> parent_account_;
 		std::string fund_name_;
 		bool is_server_side_{ false };
+		bool skip_confirm_{ false };
 	public:
+		bool skip_confirm() const { return skip_confirm_; }
+		void skip_confirm(bool val) { skip_confirm_ = val; }
 		bool is_server_side() const { return is_server_side_; }
 		void is_server_side(bool val) { is_server_side_ = val; }
 

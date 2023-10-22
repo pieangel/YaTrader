@@ -2548,6 +2548,7 @@ void YaClient::get_account_list()
 {
 	TCHAR account[64];
 	TCHAR acctInfo[1024];
+	TCHAR acct_gubun[1024];
 
 	int nCnt = g_iYuantaAPI.YOA_GetAccountCount();
 	for (int i = 0; i < nCnt; i++)
@@ -2556,15 +2557,30 @@ void YaClient::get_account_list()
 
 		if (RESULT_SUCCESS == g_iYuantaAPI.YOA_GetAccount(i, account, sizeof(account)))
 		{
+			std::string account_type = "9";
+			if (g_iYuantaAPI.YOA_GetAccountInfo(ACCOUNT_INFO_TYPE, account, acct_gubun, sizeof(acct_gubun)))
+			{
+				std::string gubun_code = acct_gubun;
+				if (gubun_code == "A05010001")
+					account_type = "9";
+				else if (gubun_code == "A05020001")
+					account_type = "1";
+				else
+					account_type = "4";
+			}
+
 			std::shared_ptr<DarkHorse::SmAccount> account_t = std::make_shared<DarkHorse::SmAccount>();
-			const std::string account_type = "9";
 			account_t->Type(account_type);
 			account_t->No(account);
 			memset(acctInfo, 0x00, sizeof(acctInfo));
+			memset(acct_gubun, 0x00, sizeof(acct_gubun));
 			if (g_iYuantaAPI.YOA_GetAccountInfo(ACCOUNT_INFO_NAME, account, acctInfo, sizeof(acctInfo)))
 			{
 				account_t->Name(acctInfo);
 			}
+			
+
+			LOGINFO(CMyLogger::getInstance(), _T("get_account_list:: account_no[%s], account_name[%s], account_type[%s]"), account, acctInfo, acct_gubun);
 			account_t->is_server_side(true);
 			mainApp.AcntMgr()->AddAccount(account_t);
 		}

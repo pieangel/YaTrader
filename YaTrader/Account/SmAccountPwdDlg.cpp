@@ -20,6 +20,7 @@
 #include "../MainFrm.h"
 #include "../Yuanta/YaStockClient.h"
 #include "../Task/YaServerDataReceiver.h"
+#include "../Login/SmLoginManager.h"
 using namespace DarkHorse;
 
 // SmAccountPwdDlg dialog
@@ -130,6 +131,14 @@ BOOL SmAccountPwdDlg::OnInitDialog()
 	for (auto it = main_acnt_vector.begin(); it != main_acnt_vector.end(); it++) {
 		auto account = *it;
 		if (account->is_subaccount()) continue;
+		const int server_index = mainApp.LoginMgr()->ya_server_index();
+// 		if (server_index == 0 || server_index == 1) {
+// 			if (account->Type()!= "9") continue;
+// 		}
+// 
+// 		if (server_index == 2 || server_index == 3) {
+// 			if (account->Type() != "1") continue;
+// 		}
 		// Create new row:
 		CBCGPGridRow* pRow = m_wndGrid.CreateRow(nColumns);
 		// Set each column data:
@@ -202,15 +211,21 @@ void SmAccountPwdDlg::OnBtnConfirmAcntPwd()
 		const int row = it->first;
 		CBCGPGridRow* pRow = m_wndGrid.GetRow(row);
 		CString strValue = pRow->GetItem(1)->GetValue();
-		
 		std::string account_no, pwd;
 		account_no = static_cast<const char*>(strValue);
 		strValue = pRow->GetItem(2)->GetValue();
 		pwd = static_cast<const char*>(strValue);
-		_ReqQ.push_back(std::make_pair(account_no, pwd));
 
 		std::shared_ptr<SmAccount> account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (!account) continue;
+
+		if (!pRow->GetCheck()) {
+			account->skip_confirm(true);
+			continue;
+		}
+
+		_ReqQ.push_back(std::make_pair(account_no, pwd));
+
 		account->Pwd(pwd);
 	}
 	
@@ -224,6 +239,10 @@ void SmAccountPwdDlg::OnBnClickedBtnClose()
 		const int row = it->first;
 		CBCGPGridRow* pRow = m_wndGrid.GetRow(row);
 		CString strValue = pRow->GetItem(3)->GetValue();
+
+		if (!pRow->GetCheck()) {
+			continue;
+		}
 
 		if (strValue.GetLength() == 0 || strValue == "X") {
 			AfxMessageBox("계좌 비밀번호를 확인하여 주십시오!");
