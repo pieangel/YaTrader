@@ -16,6 +16,7 @@ namespace DarkHorse {
 	class YaStockClient : public std::enable_shared_from_this<YaStockClient>
 	{
 	public:
+		void init();
 		void start_timer();
 		void stop_timer();
 		YaStockClient() {};

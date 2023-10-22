@@ -31,6 +31,6 @@ public:
 	CBCGPButton _CheckSave;
 	CBCGPButton _CheckSimul;
 	virtual BOOL OnInitDialog();
-	CComboBox log_in_server_;
+	CComboBox combol_log_in_server_;
 	afx_msg void OnCbnSelchangeComboLoginServer();
 };

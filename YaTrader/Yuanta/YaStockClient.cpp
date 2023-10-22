@@ -381,6 +381,11 @@ void YaStockClient::stop_timer()
 	_ViCtrol->stop_timer();
 }
 
+void YaStockClient::init()
+{
+	_ViCtrol->init();
+}
+
 DarkHorse::YaStockClient::~YaStockClient()
 {
 

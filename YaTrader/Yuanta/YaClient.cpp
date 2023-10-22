@@ -21,6 +21,7 @@
 #include "YaStockClient.h"
 #include "../Symbol/SmSymbol.h"
 #include "../Order/OrderProcess/TotalOrderManager.h"
+#include "../Position/TotalPositionManager.h"
 #include <random>
 
 class CMainFrame;
@@ -1416,46 +1417,64 @@ void YaClient::on_dm_symbol_position(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총조회건수 값을 가져옵니다.
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 총조회건수[%s]"), data);
 
+	const int list_cnt = _ttoi(data);
+
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목코드[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목명[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매매구분 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매매구분[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// 평균가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평균가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cur_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 현재가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cnt"), data, sizeof(data), 0);		// 보유수량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 보유수량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cntclear"), data, sizeof(data), 0);		// 청산가능수량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 청산가능수량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("eval_amt"), data, sizeof(data), 0);		// 평가금액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가금액[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가손익[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// 수익률 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 수익률[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목별단위금액[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 오토시세용종목코드[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("meaip"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매입가액[%s]"), data);
+	for (int i = 0; i < list_cnt; i++) {
+		nlohmann::json symbol_position;
+		symbol_position["account_no"] = account_no;
+		symbol_position["account_name"] = "";
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
+		const std::string symbol_code = data;
+		symbol_position["symbol_code"] = symbol_code;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목코드[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목명[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매매구분 값을 가져옵니다.
+		const std::string buy_sell_tp = data;
+		symbol_position["symbol_position"] = buy_sell_tp == "매수" ? 1 : -1;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매매구분[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// 평균가 값을 가져옵니다.
+		symbol_position["symbol_avg_price"] = convert_to_int(symbol_code, data);
+		symbol_position["symbol_unit_price"] = convert_to_int(symbol_code, data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평균가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("cur_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 현재가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("cnt"), data, sizeof(data), 0);		// 보유수량 값을 가져옵니다.
+		symbol_position["symbol_open_qty"] = _ttoi(data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 보유수량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("cntclear"), data, sizeof(data), 0);		// 청산가능수량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 청산가능수량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("eval_amt"), data, sizeof(data), 0);		// 평가금액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가금액[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
+		symbol_position["symbol_open_profit_loss"] = _ttof(data);
+		symbol_position["symbol_pre_open_qty"] = 0;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 평가손익[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// 수익률 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 수익률[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 종목별단위금액[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 오토시세용종목코드[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("meaip"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 매입가액[%s]"), data);
+
+		mainApp.total_position_manager()->on_symbol_position(std::move(symbol_position));
+	}
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock3"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
@@ -1470,7 +1489,7 @@ void YaClient::on_dm_symbol_position(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("tot_rate"), data, sizeof(data), 0);		// 총평가손익 값을 가져옵니다.
 
 	on_task_complete(req_info.request_id);
-	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
+	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);	
 }
 
 void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
@@ -1486,69 +1505,87 @@ void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총조회건수 값을 가져옵니다.
+	const int list_cnt = _ttoi(data);
+
 	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총조회건수[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// 시장구분 값을 가져옵니다.
 	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 시장구분[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
+	for (int i = 0; i < list_cnt; i++) {
 
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목코드[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목명[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매수/매도구분 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수/매도구분[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("now_amount"), data, sizeof(data), 0);		// 보유잔량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 보유잔량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("buy_price"), data, sizeof(data), 0);		// 매입가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("total_buy_price"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가액[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("now_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("total_now_price"), data, sizeof(data), 0);		// 현재가액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가액[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// 매도호가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도호가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// 매도잔량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도잔량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// 매수호가 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수호가[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// 매수잔량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수잔량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// 약정수량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 약정수량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// 미결제약정수량 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 미결제약정수량[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maemae_son"), data, sizeof(data), 0);		// 매매손익 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매매손익[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// 청산손익 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 청산손익[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// 총손익 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총손익[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목별단위금액[%s]"), data);
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
+		nlohmann::json symbol_profit_loss;
+		symbol_profit_loss["account_no"] = account_no;
+		symbol_profit_loss["account_name"] = "";
+		symbol_profit_loss["currency"] = "KRW";
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
+		const std::string symbol_code = data;
+		symbol_profit_loss["symbol_code"] = symbol_code;
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목코드[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목명[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// 매수/매도구분 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수/매도구분[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("now_amount"), data, sizeof(data), 0);		// 보유잔량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 보유잔량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_price"), data, sizeof(data), 0);		// 매입가 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_buy_price"), data, sizeof(data), 0);		// 매입가액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매입가액[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("now_price"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_now_price"), data, sizeof(data), 0);		// 현재가액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 현재가액[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// 매도호가 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도호가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// 매도잔량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매도잔량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// 매수호가 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수호가[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// 매수잔량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매수잔량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// 약정수량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 약정수량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// 미결제약정수량 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 미결제약정수량[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("maemae_son"), data, sizeof(data), 0);		// 매매손익 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 매매손익[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// 청산손익 값을 가져옵니다.
+		symbol_profit_loss["trade_profit_loss"] = _ttof(data);
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 청산손익[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// 총손익 값을 가져옵니다.
+		symbol_profit_loss["pure_trade_profit_loss"] = _ttof(data);
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 총손익[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// 종목별단위금액 값을 가져옵니다.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: 종목별단위금액[%s]"), data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// 오토시세용종목코드 값을 가져옵니다.
+
+		symbol_profit_loss["trade_fee"] = 0.0f;
+		
+		symbol_profit_loss["open_profit_loss"] = 0.0f;
+
+		mainApp.total_position_manager()->on_symbol_profit_loss(std::move(symbol_profit_loss));
+	}
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock3"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
@@ -1587,6 +1624,9 @@ void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("put_sell_amt"), data, sizeof(data), 0);		// 풋매도옵션평가액 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("put_buy_amt"), data, sizeof(data), 0);		// 풋매수옵션평가액 값을 가져옵니다.
+
+
+	mainApp.total_position_manager()->update_account_profit_loss(account_no);
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -3011,7 +3051,10 @@ int YaClient::convert_to_int(const std::string& symbol_code, const char* data)
 
 int YaClient::register_symbol(const std::string& symbol_code)
 {
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("41"), _T("InBlock1"), _T("jongcode"), symbol_code.c_str());
+	std::string symbol_code_to_send = symbol_code;
+	if (symbol_code.substr(0, 1).at(0) == '1')
+		symbol_code_to_send.append("000");
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("41"), _T("InBlock1"), _T("jongcode"), symbol_code_to_send.c_str());
 	int nResult = g_iYuantaAPI.YOA_RegistAuto(GetSafeHwnd(), _T("41"));
 
 	if (ERROR_MAX_CODE < nResult)
@@ -3182,7 +3225,7 @@ BOOL DarkHorse::YaClient::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  Add extra initialization here
-	init();
+	//init();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

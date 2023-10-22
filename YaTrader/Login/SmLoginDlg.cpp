@@ -13,6 +13,7 @@
 #include <any>
 #include <map>
 #include <string>
+#include <vector>
 
 using namespace nlohmann;
 // SmLoginDlg dialog
@@ -37,7 +38,7 @@ void SmLoginDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_PWD, _EditPwd);
 	DDX_Control(pDX, IDC_CHECK_SAVE, _CheckSave);
 	DDX_Control(pDX, IDC_CHECK_SIMUL, _CheckSimul);
-	DDX_Control(pDX, IDC_COMBO_LOGIN_SERVER, log_in_server_);
+	DDX_Control(pDX, IDC_COMBO_LOGIN_SERVER, combol_log_in_server_);
 }
 
 
@@ -112,13 +113,17 @@ BOOL SmLoginDlg::OnInitDialog()
 	_EditCert.SetWindowText(mainApp.LoginMgr()->cert().c_str());
 #endif
 
-	const auto& log_in_server = mainApp.LoginMgr()->yuanta_server_list();
-	for (const auto& server : log_in_server)
+	std::vector<std::string> server_list;
+	server_list.push_back("국내모의");
+	server_list.push_back("국내운영");
+	server_list.push_back("해외모의");
+	server_list.push_back("해외운영");
+	for (const auto& server : server_list)
 	{
-		log_in_server_.AddString(server.c_str());
+		combol_log_in_server_.AddString(server.c_str());
 	}
 
-	log_in_server_.SetCurSel(0);
+	combol_log_in_server_.SetCurSel(0);
 	CRect desktopRect, dialogRect;
 	GetDesktopWindow()->GetWindowRect(&desktopRect);
 
@@ -144,5 +149,6 @@ BOOL SmLoginDlg::OnInitDialog()
 
 void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 {
-	mainApp.LoginMgr()->ya_server_index(log_in_server_.GetCurSel());
+	mainApp.LoginMgr()->ya_server_index(combol_log_in_server_.GetCurSel());
+	mainApp.Client()->init();
 }
