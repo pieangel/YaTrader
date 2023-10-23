@@ -138,6 +138,14 @@ account_position_manager_p TotalPositionManager::find_position_manager(const std
 	auto it = account_position_manager_map_.find(account_no);
 	return it != account_position_manager_map_.end() ? it->second : nullptr;
 }
+
+void TotalPositionManager::update_trade_profit_loss(const std::string& account_no, const double trade_profit_loss, const double trade_fee)
+{
+	account_position_manager_p position_manager = get_account_position_manager(account_no);
+	if (!position_manager) return;
+	position_manager->update_trade_profit_loss(trade_profit_loss, trade_fee);
+}
+
 account_position_manager_p TotalPositionManager::create_position_manager(const std::string& account_no)
 {
 	account_position_manager_p position_manager = std::make_shared<AccountPositionManager>(*this, account_no);
@@ -266,6 +274,19 @@ void TotalPositionManager::on_symbol_profit_loss(nlohmann::json&& arg)
 	}
 }
 
+
+void TotalPositionManager::on_trade_profit_loss(nlohmann::json&& arg)
+{
+	try {
+		const std::string& account_no = arg["account_no"];
+		const double trade_profit_loss = arg["trade_profit_loss"];
+		const double trade_fee = arg["trade_fee"];
+	}
+	catch (const std::exception& e) {
+		const std::string error = e.what();
+		LOGINFO(CMyLogger::getInstance(), "error = %s", error.c_str());
+	}
+}
 
 double TotalPositionManager::calculate_symbol_open_profit_loss(
 	const int& position_open_quantity, 

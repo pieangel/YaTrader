@@ -629,7 +629,7 @@ namespace DarkHorse {
 			register_symbol(symbol);
 			break;
 		}
-		/*
+		
 		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
 		for (size_t i = 0; i < option_vec.size(); i++) {
 			const auto& call_year_month_map = option_vec[i].call_product->get_yearmonth_map();
@@ -637,7 +637,7 @@ namespace DarkHorse {
 			const auto& put_year_month_map = option_vec[i].put_product->get_yearmonth_map();
 			register_symbol(put_year_month_map);
 		}
-		*/
+		
 
 		register_account();
 	}

@@ -183,6 +183,12 @@ void AccountPositionManager::get_active_positions(std::map<std::string, position
 	}
 }
 
+void AccountPositionManager::update_trade_profit_loss(const double trade_profit_loss, const double trade_fee)
+{
+	account_profit_loss_->trade_profit_loss = trade_profit_loss;
+	account_profit_loss_->trade_fee = trade_fee;
+}
+
 void AccountPositionManager::set_symbol_id(position_p position, const std::string& symbol_code)
 {
 	if (!position || position->symbol_id != 0) return;

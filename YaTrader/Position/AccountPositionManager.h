@@ -36,6 +36,7 @@ public:
 	void update_position(position_p position);
 	void update_position(position_p position, VmPosition& dest_position);
 	void get_active_positions(std::map<std::string, position_p>& position_vector);
+	void update_trade_profit_loss(const double trade_profit_loss, const double trade_fee);
 private:
 	std::mutex mutex_; // Mutex for thread synchronization
 	void set_symbol_id(position_p position, const std::string& symbol_code);

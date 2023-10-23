@@ -40,6 +40,7 @@ public:
 	void update_position(quote_p quote);
 	void on_symbol_position(nlohmann::json&& arg);
 	void on_symbol_profit_loss(nlohmann::json&& arg);
+	void on_trade_profit_loss(nlohmann::json&& arg);
 	static double calculate_symbol_open_profit_loss
 	(
 		const int& position_open_quantity,
@@ -58,6 +59,7 @@ public:
 	group_position_manager_p find_fund_group_position_manager(const std::string& fund_name);
 	group_position_manager_p find_account_group_position_manager(const std::string& account_no);
 	account_position_manager_p find_position_manager(const std::string& account_no);
+	void update_trade_profit_loss(const std::string& account_no, const double trade_profit_loss, const double trade_fee);
 private:
 	//std::mutex mutex_; // Mutex for thread synchronization
 	group_position_manager_p find_add_account_group_position_manager(const std::string& account_no);
