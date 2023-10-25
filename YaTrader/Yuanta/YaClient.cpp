@@ -360,27 +360,86 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 void YaClient::dm_change_order(const std::shared_ptr<OrderRequest>& order_req)
 {
 	ya_request_map_.clear();
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_MOD)];
+	const std::string trade_code = req_info.dso_name.substr(3);
+	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 정정주문수량 값을 설정합니다.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("160003"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("입력값"), 0);		// 계좌번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("입력값"), 0);		// 비밀번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), _T("입력값"), 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), _T("입력값"), 0);		// 원주문번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_cnt"), _T("입력값"), 0);		// 정정주문수량 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), _T("입력값"), 0);		// 주문가격 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), _T("입력값"), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("입력값"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
+	CString format_price;
+	format_price.Format("%.2f", static_cast<double>(order_req->order_price / 100.0));
+	std::string order_price = std::string(CT2CA(format_price));
+
+	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
+
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	req_info.request_id = req_id;
+	if (ERROR_MAX_CODE < req_id)
+	{
+		CString strMsg;
+		strMsg.Format(_T("[ReqID:%d] 국내선물 정정주문 요청하였습니다."), req_id);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		//request_map_[req_id] = arg;
+		ya_request_map_[req_id] = req_info;
+	}
+	else
+	{
+		TCHAR msg[1024] = { 0, };
+
+		int nErrorCode = g_iYuantaAPI.YOA_GetLastError();
+		g_iYuantaAPI.YOA_GetErrorMessage(nErrorCode, msg, sizeof(msg));
+
+		CString strErrorMsg;
+		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
+
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]국내선물 정정주문 요청중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+
+		//on_task_request_error(arg.argument_id);
+		//return -1;
+	}
 }
 
 void YaClient::dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 {
 	ya_request_map_.clear();
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_CANCEL)];
+	const std::string trade_code = req_info.dso_name.substr(3);
+	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 취소주문수량 값을 설정합니다.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("160004"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("입력값"), 0);		// 계좌번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("입력값"), 0);		// 비밀번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), _T("입력값"), 0);		// 원주문번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_cnt"), _T("입력값"), 0);		// 취소주문수량 값을 설정합니다.
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	req_info.request_id = req_id;
+	if (ERROR_MAX_CODE < req_id)
+	{
+		CString strMsg;
+		strMsg.Format(_T("[ReqID:%d] 국내선물 취소주문 요청하였습니다."), req_id);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		//request_map_[req_id] = arg;
+		ya_request_map_[req_id] = req_info;
+	}
+	else
+	{
+		TCHAR msg[1024] = { 0, };
+
+		int nErrorCode = g_iYuantaAPI.YOA_GetLastError();
+		g_iYuantaAPI.YOA_GetErrorMessage(nErrorCode, msg, sizeof(msg));
+
+		CString strErrorMsg;
+		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
+
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]국내선물 취소주문 요청중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+
+		//on_task_request_error(arg.argument_id);
+		//return -1;
+	}
 }
 
 int YaClient::dm_order_filled(DhTaskArg arg)
@@ -505,12 +564,14 @@ int YaClient::dm_provisional_settlement(DhTaskArg arg)
 
 int YaClient::dm_accepted(DhTaskArg arg)
 {
+	/*
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("입력값"), 0);		// 계좌 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("입력값"), 0);		// 계좌비밀번호 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("date"), _T("입력값"), 0);		// 조회시작일 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("입력값"), 0);		// 순서구분 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("work_tp"), _T("입력값"), 0);		// 업무구분 값을 설정합니다.
+	*/
 	//return 1;
 
 
