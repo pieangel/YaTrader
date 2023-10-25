@@ -2672,11 +2672,12 @@ void YaClient::on_realtime_order()
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunqty"), data, sizeof(data), 0);		// 주문수량(jumun_price) 값을 가져옵니다.
 	order_info["order_amount"] = _ttoi(data);
+	order_info["remain_count"] = _ttoi(data);
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 주문수량[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("corqty"), data, sizeof(data), 0);		// 정정/취소 수량 값을 가져옵니다.
 	const int modified_count = _ttoi(data);
-	order_info["remain_count"] = 0;
+	
 	order_info["cancelled_count"] = modified_count;
 	order_info["modified_count"] = modified_count;
 
@@ -2760,10 +2761,12 @@ void YaClient::on_realtime_order()
 
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결가 또는 주문가[%s]"), data);
 
-	if (filled_count > 0)
-		order_info["order_event"] = OrderEvent::OE_Accepted;
+	if (filled_count > 0) {
+		order_info["order_event"] = OrderEvent::OE_Filled;
+		order_info["remain_count"] = 0;
+	}
 	else
-		order_info["order_event"] = OrderEvent::OE_Unfilled;
+		order_info["order_event"] = OrderEvent::OE_Accepted;
 	
 	order_info["order_sequence"] = 0;
 	//order_info["price_type"] = static_cast<const char*>(strPriceType.Trim());

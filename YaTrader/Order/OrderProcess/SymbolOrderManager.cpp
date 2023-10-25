@@ -53,7 +53,7 @@ void SymbolOrderManager::on_order_accepted(order_p order, OrderEvent order_event
 	order->order_state = SmOrderState::Accepted;
 	if (order->order_type != SmOrderType::Cancel) {
 		add_accepted_order(order);
-		mainApp.event_hub()->process_order_event(order, order_event);
+		//mainApp.event_hub()->process_order_event(order, order_event);
 	}
 }
 void SymbolOrderManager::on_order_unfilled(order_p order, OrderEvent order_event)
@@ -62,10 +62,11 @@ void SymbolOrderManager::on_order_unfilled(order_p order, OrderEvent order_event
 		update_accepted_order(order);
 	else
 		add_accepted_order(order);
-	mainApp.event_hub()->process_order_event(order, order_event);
+	//mainApp.event_hub()->process_order_event(order, order_event);
 }
 void SymbolOrderManager::on_order_filled(order_p order, OrderEvent order_event)
 {
+	update_accepted_order(order);
 	order->order_state = SmOrderState::Filled;
 	total_position_manager_p total_position_manager = mainApp.total_position_manager();
 	total_position_manager->update_position(order);
@@ -77,6 +78,8 @@ void SymbolOrderManager::add_accepted_order(order_p order)
 	auto it = accepted_order_map_.find(order->order_no);
 	if (it != accepted_order_map_.end()) return;
 	accepted_order_map_[order->order_no] = order;
+
+	mainApp.event_hub()->process_order_event(order, OrderEvent::OE_Accepted);
 }
 
 void SymbolOrderManager::update_accepted_order(order_p order)
@@ -96,6 +99,7 @@ void SymbolOrderManager::update_accepted_order(order_p order)
 	}
 	else
 		remove_accepted_order(order);
+	mainApp.event_hub()->process_order_event(order, OrderEvent::OE_Unfilled);
 }
 
 void SymbolOrderManager::remove_accepted_order(order_p order)
