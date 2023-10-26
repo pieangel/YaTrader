@@ -185,6 +185,20 @@ namespace DarkHorse {
 		else
 			order_req->future_or_option = 1;
 
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 시그널이름[%s]"), order_req->order_context.signal_name.c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 해외/국내[%s]"), std::to_string((int)order_req->request_type).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 계좌번호[%s]"), order_req->account_no.c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 비밀번호[%s]"), order_req->password.c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 계좌타입[%s]"), account->Type().c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 종목코드[%s]"), order_req->symbol_code.c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 매수/매도[%s]"), std::to_string((int)order_req->position_type).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 주문가격[%s]"), std::to_string((int)order_req->order_price).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 주문수량[%s]"), std::to_string((int)order_req->order_amount).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 주문타입[%s]"), std::to_string((int)order_req->order_type).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 가격타입[%s]"), std::to_string((int)order_req->price_type).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 선물/옵션[%s]"), std::to_string((int)order_req->future_or_option).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 주문조건[%s]"), std::to_string((int)order_req->fill_condition).c_str());
+
 		mainApp.order_request_manager()->add_order_request(order_req);
 	}
 

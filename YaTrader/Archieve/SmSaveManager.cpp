@@ -1243,6 +1243,38 @@ namespace DarkHorse {
 		appPath.append(_T("\\user\\"));
 		appPath.append(id);
 
+		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
+		const fs::path directoryPath = appPath;
+
+		// Check if directory exists
+		if (fs::exists(directoryPath)) {
+			std::cout << "Directory already exists." << std::endl;
+		}
+		else {
+			// Create the directory
+			try {
+				fs::create_directory(directoryPath);
+				std::cout << "Directory created successfully." << std::endl;
+			}
+			catch (const fs::filesystem_error& e) {
+				std::cerr << "Failed to create directory: " << e.what() << std::endl;
+			}
+		}
+
+		if (std::filesystem::is_directory(appPath)) {
+			if (std::filesystem::is_empty(appPath)) {
+				std::cout << "The directory is empty." << std::endl;
+				return;
+			}
+			else {
+				std::cout << "The directory is not empty." << std::endl;
+			}
+		}
+		else {
+			std::cout << "The path is not a directory." << std::endl;
+			return;
+		}
+
 		std::string full_file_name = filename;
 		full_file_name.append("_");
 		std::string latest_file = find_latestfile_with_prefix(appPath, full_file_name);
