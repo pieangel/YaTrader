@@ -247,7 +247,9 @@ namespace DarkHorse {
 
 	void SmOutSystemManager::ProcessSignal(nlohmann::json&& signal)
 	{
-		try {			
+		try {	
+			if (!signal.contains("file_name")) return;
+
 			const std::string file_name = signal["file_name"];
 			LOGINFO(CMyLogger::getInstance(), _T("ProcessSignal : 파일이름 : %s"), file_name.c_str());
 

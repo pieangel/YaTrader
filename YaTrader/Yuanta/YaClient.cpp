@@ -65,6 +65,7 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	if (found == ya_request_map_.end()) return 1;
 	const std::string& trade_code = found->second.dso_name.substr(3);
 	const std::string& desc = found->second.desc;
+	long error_code = 0;
 	CString strMsg;
 	switch (lParam)
 	{
@@ -76,9 +77,9 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	case ERROR_REQUEST_FAIL:			// 서버에서 조회TR(DSO) 처리중 오류가 있는 경우 발생합니다.
 	{
 		TCHAR msg[2048] = { 0, };
-		long error_code = g_iYuantaAPI.YOA_GetLastError();
+		error_code = g_iYuantaAPI.YOA_GetLastError();
 		g_iYuantaAPI.YOA_GetErrorMessage(error_code, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
-		strMsg.Format(_T("Trade code[%s] [%s] Request id[%d] %s"), trade_code.c_str(), desc.c_str(), request_id, msg);
+		strMsg.Format(_T("Trade code[%s], desc[%s], error code[%d], Request id[%d], msg [%s]"), trade_code.c_str(), desc.c_str(), error_code, request_id, msg);
 		strMsg.TrimRight();
 		
 		auto found = request_map_.find(request_id);
@@ -89,6 +90,10 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	}
+
+	mainApp.TotalOrderMgr()->ServerMsg = strMsg;
+	mainApp.CallbackMgr()->OnServerMsg(error_code);
+
 	LOGINFO(CMyLogger::getInstance(), strMsg.GetBuffer(0));
 	return 0;
 }
@@ -687,7 +692,7 @@ int YaClient::dm_daily_profit_loss(DhTaskArg arg)
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
 	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// 계좌 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// 업무구분 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// 비밀번호 값을 설정합니다.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
@@ -2679,7 +2684,7 @@ void YaClient::get_account_list()
 			}
 			
 
-			LOGINFO(CMyLogger::getInstance(), _T("get_account_list:: account_no[%s], account_name[%s], account_type[%s]"), account, acctInfo, acct_gubun);
+			LOGINFO(CMyLogger::getInstance(), _T("get_account_list:: account_no[%s], account_name[%s], account_type[%s]"), account_t->No().c_str(), account_t->Name().c_str(), account_t->Type().c_str());
 			account_t->is_server_side(true);
 			mainApp.AcntMgr()->AddAccount(account_t);
 		}
@@ -2737,10 +2742,12 @@ void YaClient::on_realtime_order()
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 원주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunno"), data, sizeof(data), 0);		// 내부주문번호 값을 가져옵니다.
-	order_info["order_no"] = data;
+	//order_info["order_no"] = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 내부주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("bpjumunno"), data, sizeof(data), 0);		// 지점별 주문번호 값을 가져옵니다.
+	// 이번호가 내부 처리용 주문 번호가 됩니다. 그리고 정정, 취소 주문시 이 주문 번호를 사용해야 합니다. 
+	order_info["order_no"] = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 지점별 주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunuv"), data, sizeof(data), 0);		// 주문단가(jumun_su) 값을 가져옵니다.
@@ -2800,7 +2807,22 @@ void YaClient::on_realtime_order()
 	BYTE buy_or_sell;
 	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// 매수(4) 매도(8) 값을 가져옵니다.
 	
-	order_info["position_type"] = ((buy_or_sell == '4') || (buy_or_sell == '1')) ? "1" : "2";
+	switch (buy_or_sell)
+	{
+		case '1':
+		case '4':
+			order_info["position_type"] = "1";
+			break;
+		case '2':
+		case '8':
+			order_info["position_type"] = "2";
+			break;
+		case 'c':
+			order_info["position_type"] = "1";
+			order_info["order_type"] = "3";
+			break;
+	}
+	//order_info["position_type"] = ((buy_or_sell == '4') || (buy_or_sell == '1')) ? "1" : "2";
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 매수/매도gubun48[%c]"), buy_or_sell);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("stkcode"), data, sizeof(data), 0);		// 종목코드(c.jongcode) 값을 가져옵니다.
@@ -3059,10 +3081,15 @@ void YaClient::on_realtime_quote()
 void YaClient::on_realtime_hoga()
 {
 	TCHAR data[1024] = { 0, };
-
+	nlohmann::json hoga;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
+	std::string symbol_code = data;
+	if (symbol_code.substr(0, 1).at(0) == '1' && symbol_code.length() > 5)
+		symbol_code = symbol_code.substr(0, 5);
+
+	hoga["symbol_code"] = symbol_code;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// 시간 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
@@ -3196,7 +3223,8 @@ int YaClient::register_symbol(const std::string& symbol_code)
 
 	if (ERROR_MAX_CODE < nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[41]국내 선물 옵션 실시간체결이 등록 되었습니다."));
+		//LOGINFO(CMyLogger::getInstance(), _T("[41]국내 선물 옵션 실시간체결이 등록 되었습니다."));
+		return 1;
 	}
 	else
 	{
@@ -3235,7 +3263,8 @@ int YaClient::register_account(const std::string& account_no)
 
 	if (ERROR_MAX_CODE < nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[71]국내 선물옵션 주문확인_체결 실시간체결이 등록 되었습니다."));
+		//LOGINFO(CMyLogger::getInstance(), _T("[71]국내 선물옵션 주문확인_체결 실시간체결이 등록 되었습니다."));
+		return 1;
 	}
 	else
 	{
@@ -3270,7 +3299,7 @@ int YaClient::unregister_account(const std::string& account_no)
 void YaClient::OnTimer(UINT_PTR nIDEvent)
 {
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("OnTimer:: "));
+		//LOGINFO(CMyLogger::getInstance(), _T("OnTimer:: "));
 
 		std::random_device rd;
 		std::mt19937 mt(rd());

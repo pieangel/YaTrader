@@ -714,7 +714,7 @@ void SmSymbolManager::read_dm_masterfile_ya()
 			symbol->Currency("\\");
 			set_product_info(symbol);
 			AddSymbol(symbol);
-			LOGINFO(CMyLogger::getInstance(), "read symbol [%s] gubun_code = [%s] complete!", symbol->SymbolCode().c_str(), gubun.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "read symbol [%s] gubun_code = [%s] complete!", symbol->SymbolCode().c_str(), gubun.c_str());
 			add_to_yearmonth_dm_ya(symbol);
 		}
 
