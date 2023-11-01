@@ -62,9 +62,9 @@ BOOL SmUSDSystemDialog::OnInitDialog()
 
 	// TODO:  Add extra initialization here
 	_TotalSigGrid.AttachGrid(this, IDC_STATIC_TOTAL_SIGNAL);
-	_ConnectGrid.AttachGrid(this, IDC_STATIC_SIGNAL_CONNECTION);
-	_ConnectGrid.TotalGrid(&_TotalSigGrid);
-	_TotalSigGrid.UsdGrid(&_ConnectGrid);
+	_UsdSystemDefGrid.AttachGrid(this, IDC_STATIC_SIGNAL_CONNECTION);
+	_UsdSystemDefGrid.TotalGrid(&_TotalSigGrid);
+	_TotalSigGrid.UsdGrid(&_UsdSystemDefGrid);
 	SetTimer(RefTimer, 100, NULL);
 	Resize();
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -75,7 +75,7 @@ BOOL SmUSDSystemDialog::OnInitDialog()
 void SmUSDSystemDialog::RefreshOrder()
 {
 	_TotalSigGrid.RefreshOrders();
-	_ConnectGrid.RefreshOrders();
+	_UsdSystemDefGrid.RefreshOrders();
 }
 
 void SmUSDSystemDialog::Resize()
@@ -215,20 +215,20 @@ void SmUSDSystemDialog::Resize()
 	pWnd->MoveWindow(rcCtrl, TRUE);
 
 	_TotalSigGrid.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
-	_ConnectGrid.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
+	_UsdSystemDefGrid.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
 
 	Invalidate(TRUE);
 }
 
-void SmUSDSystemDialog::add_out_system(std::shared_ptr<DarkHorse::SmOutSystem> out_system)
+void SmUSDSystemDialog::add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system)
 {
-	_ConnectGrid.AddSystem(out_system);
+	_UsdSystemDefGrid.AddSystem(out_system);
 }
 
 void SmUSDSystemDialog::OnBnClickedBtnAddConnect()
 {
 	SmAddUsdSystemDlg dlg;
-	//dlg.auto_connect_dialog(this);
+	dlg.auto_connect_dialog(this);
 	dlg.DoModal();
 }
 
@@ -243,8 +243,8 @@ void SmUSDSystemDialog::OnBnClickedBtnAddSignal()
 
 void SmUSDSystemDialog::OnBnClickedBtnDelConnect()
 {
-	_ConnectGrid.RemoveSystem();
-	_ConnectGrid.Refresh();
+	_UsdSystemDefGrid.RemoveSystem();
+	_UsdSystemDefGrid.Refresh();
 }
 
 
@@ -285,10 +285,10 @@ void SmUSDSystemDialog::OnBnClickedBtnOrderConfig()
 void SmUSDSystemDialog::OnBnClickedCheckAll()
 {
 	if (_CheckAll.GetCheck() == BST_CHECKED) {
-		_ConnectGrid.SetCheck(true);
+		_UsdSystemDefGrid.SetCheck(true);
 	}
 	else {
-		_ConnectGrid.SetCheck(false);
+		_UsdSystemDefGrid.SetCheck(false);
 	}
 }
 

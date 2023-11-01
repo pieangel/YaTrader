@@ -16,6 +16,7 @@ namespace DarkHorse {
 	class SmFund;
 	class SmOutSystem;
 	class SmSymbol;
+	class SmUsdSystem;
 }
 class VtOrderLogDlg;
 class VtTotalSignalGrid;
@@ -34,7 +35,7 @@ public:
 	int OnCellTypeNotify(long ID, int col, long row, long msg, long param);
 	virtual void OnMouseLeaveFromMainGrid();
 	void SetColTitle();
-	int _ColCount = 13;
+	int _ColCount = 15;
 	int _RowCount = 100;
 	CFont _defFont;
 	CFont _titleFont;
@@ -55,14 +56,14 @@ public:
 	int					m_nSpinIndex;
 	void SetTargetAcntOrFund(std::tuple<int, std::shared_ptr<DarkHorse::SmAccount>, std::shared_ptr<DarkHorse::SmFund>>& selItem);
 	void SetSymbol(std::shared_ptr<DarkHorse::SmSymbol> sym);
-	void AddSystem(std::shared_ptr<DarkHorse::SmOutSystem> sys);
+	void AddSystem(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
 	void RemoveSystem();
 	VtTotalSignalGrid* TotalGrid() const { return _TotalGrid; }
 	void TotalGrid(VtTotalSignalGrid* val) { _TotalGrid = val; }
 	void Refresh();
 	void SetCheck(bool flag);
 	void RefreshOrders();
-	void ClearCheck(std::shared_ptr<DarkHorse::SmOutSystem> sys);
+	void ClearCheck(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
 private:
 	void set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	void set_account_from_out(const int window_id, std::shared_ptr<DarkHorse::SmAccount> account);
@@ -82,7 +83,7 @@ private:
 	int OnLogButton(int col, long row);
 	int OnButton(long ID, int col, long row, long msg, long param);
 	// 키 : 행인덱스, 값 : 시스템 객체
-	std::map<int, std::shared_ptr<DarkHorse::SmOutSystem>> _SystemMap;
+	std::map<int, std::shared_ptr<DarkHorse::SmUsdSystem>> _SystemMap;
 	// 키 : 시스템 아이디, 값 : 행 인덱스
 	std::map<int, int> _SystemToRowMap;
 	VtTotalSignalGrid* _TotalGrid = nullptr;

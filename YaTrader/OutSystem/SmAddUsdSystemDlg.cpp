@@ -53,7 +53,6 @@ void SmAddUsdSystemDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_SEUNGSU, _EditSeungsu);
 	DDX_Control(pDX, IDC_SPIN_SEUNGSU, _SpinSeungsu);
 
-	DDX_Control(pDX, IDC_COMBO_STRATEGY, _ComboStrategy);
 	DDX_Control(pDX, IDC_DP_ENT_BEGIN, _DpEntBegin);
 	DDX_Control(pDX, IDC_DP_ENT_END, _DpEntEnd);
 	DDX_Control(pDX, IDC_DP_LIQ, _DpLiq);
@@ -132,7 +131,7 @@ void SmAddUsdSystemDlg::OnCbnSelchangeComboSignal()
 	}
 	auto it = combo_to_out_sig_def_map_.find(selIndex);
 	if (it != combo_to_out_sig_def_map_.end()) {
-		out_sig_def_ = it->second;
+		strategy_type_ = it->second;
 	}
 }
 
@@ -215,15 +214,15 @@ void SmAddUsdSystemDlg::InitCombo()
 
 void SmAddUsdSystemDlg::InitOutSigDefCombo()
 {
-	auto signal_def_vector = mainApp.out_system_manager()->get_out_system_signal_map();
+	auto signal_def_vector = mainApp.out_system_manager()->get_usd_strategy_vec();
 	int selIndex = -1;
 	combo_to_out_sig_def_map_.clear();
 	for (auto it = signal_def_vector.begin(); it != signal_def_vector.end(); ++it) {
-		selIndex = _ComboSignal.AddString((*it)->name.c_str());
+		selIndex = _ComboSignal.AddString((*it).c_str());
 		combo_to_out_sig_def_map_[selIndex] = *it;
 	}
 	if (!combo_to_out_sig_def_map_.empty()) {
-		out_sig_def_ = combo_to_out_sig_def_map_.begin()->second;
+		strategy_type_ = combo_to_out_sig_def_map_.begin()->second;
 		_ComboSignal.SetCurSel(0);
 	}
 }
@@ -245,7 +244,7 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	if (_Mode == 0 && !account_) { AfxMessageBox("계좌가 없습니다. 계좌를 선택하세요!"); return; }
 	if (_Mode == 1 && !fund_) { AfxMessageBox("펀드가 없습니다. 펀드를 선택하세요!"); return; }
 	if (!symbol_) { AfxMessageBox("종목이 없습니다. 종목을 선택하세요!"); return; }
-	if (!out_sig_def_) { AfxMessageBox("목표 차트가 없습니다. 목표 차트를 선택하세요!"); return; }
+	if (strategy_type_.empty()) { AfxMessageBox("전략이 없습니다. 전략을 선택하세요!"); return; }
 
 	DarkHorse::OrderType order_type = DarkHorse::OrderType::None;
 	if (_Mode == 0) {
@@ -259,9 +258,9 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	}
 	CString strSeungSu;
 	_EditSeungsu.GetWindowText(strSeungSu);
-	auto out_system = mainApp.out_system_manager()->create_out_system
+	auto usd_system = mainApp.out_system_manager()->create_usd_system
 	(
-		out_sig_def_->name,
+		strategy_type_,
 		_ttoi(strSeungSu),
 		order_type,
 		_Mode == 0 ? account_ : nullptr,
@@ -270,7 +269,7 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	);
 
 	if (auto_connect_dialog_)
-		auto_connect_dialog_->add_out_system(out_system);
+		auto_connect_dialog_->add_usd_system(usd_system);
 
 
  	

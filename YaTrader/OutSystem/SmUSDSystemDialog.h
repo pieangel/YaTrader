@@ -5,6 +5,7 @@
 #include <BCGCBProInc.h>
 namespace DarkHorse {
 	class SmOutSystem;
+	class SmUsdSystem;
 }
 class SmUSDSystemDialog : public CBCGPDialog
 {
@@ -29,11 +30,11 @@ public:
 
 private:
 	VtTotalSignalGrid _TotalSigGrid;
-	UsdSystemDefGrid _ConnectGrid;
+	UsdSystemDefGrid _UsdSystemDefGrid;
 	void RefreshOrder();
 	void Resize();
 public:
-	void add_out_system(std::shared_ptr<DarkHorse::SmOutSystem> out_system);
+	void add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system);
 	afx_msg void OnBnClickedBtnAddConnect();
 	afx_msg void OnBnClickedBtnAddSignal();
 	afx_msg void OnBnClickedBtnDelConnect();

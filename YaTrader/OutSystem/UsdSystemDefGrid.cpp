@@ -26,6 +26,7 @@
 #include "../Global/SmConst.h"
 #include "../Util/IdGenerator.h"
 #include "../Dialog/SmAccountFundSelector.h"
+#include "SmUsdSystem.h"
 
 using namespace DarkHorse;
 UsdSystemDefGrid::UsdSystemDefGrid()
@@ -192,8 +193,8 @@ void UsdSystemDefGrid::OnMouseLeaveFromMainGrid()
 void UsdSystemDefGrid::SetColTitle()
 {
 	CUGCell cell;
-	LPCTSTR title[13] = { "실행", "계좌번호", "종목", "신호차트", "승수", "평가손익", "청산손익", "총손익", "로그", "시작시간", "종료시간", "진입회수", "설정"};
-	int colWidth[13] = { 25, 98, 90, 80, 58, 100, 100, 100, 85, 85, 85, 65, 65 };
+	LPCTSTR title[15] = { "실행", "계좌번호", "종목", "전략", "승수", "평가손익", "청산손익", "총손익", "로그", "시작시간[B]", "시작시간[E]", "종료시간", "진입회수", "이름", "설정"};
+	int colWidth[15] = { 25, 98, 90, 80, 58, 100, 100, 100, 85, 85, 85, 65, 65, 65, 65 };
 
 
 	for (int i = 0; i < _ColCount; i++) {
@@ -228,8 +229,8 @@ void UsdSystemDefGrid::InitGrid()
 	_SystemToRowMap.clear();
 	int yIndex = 0;
 	CUGCell cell;
-	auto out_system_vector = mainApp.out_system_manager()->get_out_system_vector();
-	for (auto it = out_system_vector.begin(); it != out_system_vector.end(); ++it) {
+	auto usd_system_vector = mainApp.out_system_manager()->get_usd_system_vector();
+	for (auto it = usd_system_vector.begin(); it != usd_system_vector.end(); ++it) {
 		auto out_system = *it;
 		const VmPosition& posi = out_system->position_control()->get_position();
 		CString thVal;
@@ -438,12 +439,12 @@ void UsdSystemDefGrid::SetSymbol(std::shared_ptr<SmSymbol> sym)
 	}
 }
 
-void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmOutSystem> sys)
+void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
 {
 	try {
-	auto out_system_vector = mainApp.out_system_manager()->get_out_system_vector();
+	auto usd_system_vector = mainApp.out_system_manager()->get_usd_system_vector();
 	CUGCell cell;
-	size_t yIndex = out_system_vector.size() - 1;
+	size_t yIndex = usd_system_vector.size() - 1;
 	for (size_t xIndex = 0; xIndex < (size_t)_ColCount; ++xIndex) {
 		if (xIndex == 0) {
 			GetCell(xIndex, yIndex, &cell);
@@ -675,7 +676,7 @@ void UsdSystemDefGrid::RefreshOrders()
 	}
 }
 
-void UsdSystemDefGrid::ClearCheck(std::shared_ptr<SmOutSystem> sys)
+void UsdSystemDefGrid::ClearCheck(std::shared_ptr<SmUsdSystem> sys)
 {
 	if (!sys)
 		return;
