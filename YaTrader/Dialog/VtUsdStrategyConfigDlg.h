@@ -1,18 +1,55 @@
 #pragma once
+#include <BCGCBProInc.h>
 #include "VtUsdStrategyConfigGrid.h"
 #include <map>
 #include <string>
 #include "VtSysArgGrid.h"
 #include <tuple>
-#include "System/VtSystem.h"
-#include "ShadeButtonST.h"
+#include "../OutSystem/SmOutSystem.h"
 #include "VtUsdEntConfigGrid.h"
 #include "afxwin.h"
-#include "GradientStatic.h"
-#include "HdWindowEvent.h"
-#include "Poco/BasicEvent.h"
 
-using Poco::BasicEvent;
+enum class ValueType {
+	Tick,
+	Percent
+};
+
+
+/*
+void VtSystemManager::UpdateRealtimeArgs(VtChartData* chartData)
+{
+	if (!chartData || _BusySystem)
+		return;
+	std::string symCode = chartData->SymbolCode().substr(0, 8);
+	auto it = _ArgMap.find(symCode);
+	if (it == _ArgMap.end())
+		return;
+
+	VtSymbol* sym = it->second;
+	if (!sym)
+		return;
+
+	if (symCode.find(_T("101")) != std::string::npos) {
+		Kbs = sym->Hoga.TotBuyQty;
+		Kas = sym->Hoga.TotSellQty;
+		Kbc = sym->Hoga.TotBuyNo;
+		Kac = sym->Hoga.TotSellNo;
+	}
+	else if (symCode.find(_T("106")) != std::string::npos) {
+		Qbs = sym->Hoga.TotBuyQty;
+		Qas = sym->Hoga.TotSellQty;
+		Qbc = sym->Hoga.TotBuyNo;
+		Qac = sym->Hoga.TotSellNo;
+	}
+	else if (symCode.find(_T("175")) != std::string::npos) {
+		Ubs = sym->Hoga.TotBuyQty;
+		Uas = sym->Hoga.TotSellQty;
+		Ubc = sym->Hoga.TotBuyNo;
+		Uac = sym->Hoga.TotSellNo;
+	}
+}
+
+*/
 
 // VtUsdStrategyConfigDlg dialog
 class VtSystem;
@@ -23,7 +60,7 @@ class VtStrategyGrid;
 struct VtOrder;
 class VtOrderLogDlg;
 const int ArgTimer = 0x00000008;
-class VtUsdStrategyConfigDlg : public CDialogEx
+class VtUsdStrategyConfigDlg : public CBCGPDialog
 {
 	DECLARE_DYNAMIC(VtUsdStrategyConfigDlg)
 
@@ -48,11 +85,11 @@ public:
 	CButton _ChecktLossCut;
 	CButton _CheckTs;
 	CComboBox _ComboLosscutType;
-	CComboBox _ComboStrategy;
-	CDateTimeCtrl _DpEntBegin;
-	CDateTimeCtrl _DpEntEnd;
-	CDateTimeCtrl _DpLiq;
-	CEdit _EditEntMax;
+	CBCGPComboBox _ComboStrategy;
+	CBCGPDateTimeCtrl _DpEntBegin;
+	CBCGPDateTimeCtrl _DpEntEnd;
+	CBCGPDateTimeCtrl _DpLiq;
+	CBCGPEdit _EditEntMax;
 	CEdit _EditLosscut;
 	CEdit _EditTsPercent;
 	CEdit _EditTsPl;
@@ -87,11 +124,6 @@ private:
 	bool _ShowingGrid = false;
 	VtStrategyGrid* _StGrid = nullptr;
 	int _WndHeight = 0;
-	BasicEvent<HdWindowEventArgs> _WindowEvent;
-	void FireWindowEvent(HdWindowEventArgs&& arg)
-	{
-		_WindowEvent(this, arg);
-	}
 	VtSymbol* _SelSymbol;
 	VtFund* _Fund = nullptr;
 	VtAccount* _Account = nullptr;
@@ -119,10 +151,10 @@ public:
 	afx_msg void OnBnClickedCheckProfitTarget();
 	afx_msg void OnBnClickedCkLiqAll();
 	CButton _CheckLiqByStop;
-	CShadeButtonST _BtnAcnt;
-	CShadeButtonST _BtnApply;
-	CShadeButtonST _BtnExtraVar;
-	CShadeButtonST _BtnSymbol;
+	CBCGPButton _BtnAcnt;
+	CBCGPButton _BtnApply;
+	CBCGPButton _BtnExtraVar;
+	CBCGPButton _BtnSymbol;
 	CEdit _EditOrderAmt;
 	CSpinButtonCtrl _SpinOrderAmt;
 	CStatic _EntCntToday;
@@ -140,12 +172,12 @@ public:
 	afx_msg void OnEnChangeEditOrderAmt();
 	void UpdateRunCheck(VtSystem* sys);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	CGradientStatic _StaticPosition;
+	CBCGPStatic _StaticPosition;
 	afx_msg void OnBnClickedBtnSysOrder();
-	CShadeButtonST _BtnSysOrder;
+	CBCGPButton _BtnSysOrder;
 	afx_msg void OnBnClickedBtnOrderHistory();
 
 	VtOrderLogDlg* _LogDlg = nullptr;
-	CShadeButtonST _OrderHistoryBtn;
+	CBCGPButton _OrderHistoryBtn;
 	afx_msg void OnStnClickedStaticEntCntToday();
 };

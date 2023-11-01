@@ -11,6 +11,7 @@ namespace DarkHorse {
 	class SmOutSystem;
 }
 class VtSignalConnectionGrid;
+class UsdSystemDefGrid;
 class VtTotalSignalGrid : public VtGrid
 {
 public:
@@ -40,6 +41,8 @@ public:
 	void ClearCells();
 	VtSignalConnectionGrid* ConnectGrid() const { return _ConnectGrid; }
 	void ConnectGrid(VtSignalConnectionGrid* val) { _ConnectGrid = val; }
+	UsdSystemDefGrid* UsdGrid() const { return _UsdGrid; }
+	void UsdGrid(UsdSystemDefGrid* val) { _UsdGrid = val; }
 private:
 	void on_update_quote();
 	std::shared_ptr<DarkHorse::QuoteControl> quote_control_;
@@ -56,6 +59,7 @@ private:
 	// key : row index, value : out system object.
 	std::map<int, std::shared_ptr<DarkHorse::SmOutSystem>> out_system_map_;
 	VtSignalConnectionGrid* _ConnectGrid = nullptr;
+	UsdSystemDefGrid* _UsdGrid = nullptr;
 };
 
 

@@ -234,4 +234,5 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnSimulStartsimul();
 	afx_msg void OnSimulStopsimul();
+	afx_msg void OnUsdSystem();
 };

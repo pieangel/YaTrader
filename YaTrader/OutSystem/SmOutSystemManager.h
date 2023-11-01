@@ -7,9 +7,10 @@
 #include "../Json/json.hpp"
 #include "../Common/BlockingCollection.h"
 #include "../Common/common.h"
+#include "SmUsdStrategy.h"
 #include <set>
-
 #include <sstream>
+#include <map>
 using namespace code_machina;
 namespace DarkHorse {
 	const int BulkOutSystemSize2 = 100;
@@ -71,6 +72,125 @@ namespace DarkHorse {
 		bool ProcessSignal(const std::array<nlohmann::json, BulkOutSystemSize2>& arr, const int& taken);
 
 		void execute_order(std::string&& order_signal);
+		// key : strategy type, value : strategy object.
+		std::map<std::string, SmUsdStrategy> usd_strategy_map_;
+		void init_usd_strategy();
 	};
 }
 
+/*
+arg.Name = _T("Ubc>Uac");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("0.6");
+	arg.Enable = true;
+	arg.Desc = _T("Ubc>Uac 값을 설정 합니다.");
+	AddSystemArg(_T("매수진입"), arg);
+
+	arg.Name = _T("Ubs>Uas");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("0.7");
+	arg.Enable = true;
+	arg.Desc = _T("Ubs>Uas 값을 설정 합니다.");
+	AddSystemArg(_T("매수진입"), arg);
+
+
+	arg.Name = _T("Kac>Kbc");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kac>Kbc 값을 설정 합니다.");
+	AddSystemArg(_T("매수진입"), arg);
+
+	arg.Name = _T("Kas>Kbs");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kas>Kbs 값을 설정 합니다.");
+	AddSystemArg(_T("매수진입"), arg);
+
+	arg.Name = _T("Uac>Ubc");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("0.6");
+	arg.Enable = true;
+	arg.Desc = _T("Uac-Ubc 값을 설정 합니다.");
+	AddSystemArg(_T("매도진입"), arg);
+
+	arg.Name = _T("Uas>Ubs");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("0.7");
+	arg.Enable = true;
+	arg.Desc = _T("Uas-Ubs 값을 설정 합니다.");
+	AddSystemArg(_T("매도진입"), arg);
+
+	arg.Name = _T("Kbc>Kac");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbc>Kac 값을 설정 합니다.");
+	AddSystemArg(_T("매도진입"), arg);
+
+	arg.Name = _T("Kbs>Kas");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbs>Kas 값을 설정 합니다.");
+	AddSystemArg(_T("매도진입"), arg);
+
+	arg.Name = _T("Uac>Ubc");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = true;
+	arg.Desc = _T("Uac-Ubc 값을 설정 합니다.");
+	AddSystemArg(_T("매수청산"), arg);
+
+	arg.Name = _T("Uas>Ubs");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Uas-Ubs 값을 설정 합니다.");
+	AddSystemArg(_T("매수청산"), arg);
+
+
+	arg.Name = _T("Kbc>Kac");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbc>Kac 값을 설정 합니다.");
+	AddSystemArg(_T("매수청산"), arg);
+
+	arg.Name = _T("Kbs>Kas");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbs>Kas 값을 설정 합니다.");
+	AddSystemArg(_T("매수청산"), arg);
+
+
+	arg.Name = _T("Ubc>Uac");	
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = true;
+	arg.Desc = _T("Ubc>Uac 값을 설정 합니다.");
+	AddSystemArg(_T("매도청산"), arg);
+
+	arg.Name = _T("Ubs>Uas");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Ubs>Uas 값을 설정 합니다.");
+	AddSystemArg(_T("매도청산"), arg);
+
+	arg.Name = _T("Kac>Kbc");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbc>Kac 값을 설정 합니다.");
+	AddSystemArg(_T("매도청산"), arg);
+
+	arg.Name = _T("Kas>Kbs");
+	arg.Type = VtParamType::STRING;
+	arg.sValue = _T("1");
+	arg.Enable = false;
+	arg.Desc = _T("Kbs>Kas 값을 설정 합니다.");
+	AddSystemArg(_T("매도청산"), arg);
+*/

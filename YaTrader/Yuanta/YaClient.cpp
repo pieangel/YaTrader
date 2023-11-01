@@ -78,7 +78,7 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	{
 		TCHAR msg[2048] = { 0, };
 		error_code = g_iYuantaAPI.YOA_GetLastError();
-		g_iYuantaAPI.YOA_GetErrorMessage(error_code, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
+		g_iYuantaAPI.YOA_GetErrorMessage(request_id, msg, sizeof(msg));	// 처리 중 오류에 대한 메시지를 얻을 수 있습니다.
 		strMsg.Format(_T("Trade code[%s], desc[%s], error code[%d], Request id[%d], msg [%s]"), trade_code.c_str(), desc.c_str(), error_code, request_id, msg);
 		strMsg.TrimRight();
 		
@@ -326,12 +326,24 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 주문수량 값을 설정합니다.
 
 	CString format_price;
-	format_price.Format("%.2f", static_cast<double>(order_req->order_price / 100.0));
-	std::string order_price = std::string(CT2CA(format_price));
+	format_price.Format("%.2f", static_cast<double>(static_cast<double>(order_req->order_price) / 100.0));
+	std::string order_price = std::string(static_cast<const char*>(format_price));
 
 	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
+
+
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 시그널이름[%s]"), order_req->order_context.signal_name.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 계좌번호[%s]"), order_req->account_no.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 비밀번호[%s]"), order_req->password.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 종목코드[%s]"), order_req->symbol_code.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 매수/매도[%s]"), std::to_string((int)order_req->position_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 주문가격[%s]"), order_price.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 주문수량[%s]"), std::to_string((int)order_req->order_amount).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 주문타입[%s]"), std::to_string((int)order_req->order_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 가격타입[%s]"), std::to_string((int)order_req->price_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 선물/옵션[%s]"), std::to_string((int)order_req->future_or_option).c_str());
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;

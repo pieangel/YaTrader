@@ -88,6 +88,7 @@ using namespace hmdf;
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "OutSystem/SmUSDSystemDialog.h"
 //using namespace hmdf;
 
 using namespace DarkHorse;
@@ -332,6 +333,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPMDIFrameWnd)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_SIMUL_STARTSIMUL, &CMainFrame::OnSimulStartsimul)
 	ON_COMMAND(ID_SIMUL_STOPSIMUL, &CMainFrame::OnSimulStopsimul)
+	ON_COMMAND(ID_USD_SYSTEM, &CMainFrame::OnUsdSystem)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1543,4 +1545,11 @@ void CMainFrame::OnSimulStartsimul()
 void CMainFrame::OnSimulStopsimul()
 {
 	mainApp.Client()->stop_timer();
+}
+
+
+void CMainFrame::OnUsdSystem()
+{
+	SmUSDSystemDialog dlg;
+	dlg.DoModal();
 }

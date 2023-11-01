@@ -108,6 +108,10 @@
 #define IDD_SYS_AUTO_CONNECT1           203
 #define IDD_DIALOG8                     237
 #define IDD_YA_CLIENT                   237
+#define IDD_SYS_AUTO_CONNECT2           238
+#define IDD_ADD_SIG_CONNECT1            239
+#define IDD_ADD_USD_SYSTEM              239
+#define IDB_BITMAP_SET                  403
 #define IDC_STATIC_ID                   1003
 #define IDC_STATIC_PWD                  1004
 #define IDC_BTN_ORDER_HISTORY           1005
@@ -648,13 +652,15 @@
 #define ID_AB_FUND_REMAIN               32898
 #define ID_SIMUL_STARTSIMUL             32951
 #define ID_SIMUL_STOPSIMUL              32952
+#define ID_32953                        32953
+#define ID_USD_SYSTEM                   32954
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
-#define _APS_NEXT_COMMAND_VALUE         32953
+#define _APS_NEXT_COMMAND_VALUE         32955
 #define _APS_NEXT_CONTROL_VALUE         1172
 #define _APS_NEXT_SYMED_VALUE           119
 #endif

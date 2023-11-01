@@ -40,7 +40,7 @@ namespace DarkHorse {
 		bool enable() const { return enable_; }
 		void enable(bool val) { enable_ = val; }
 		void liq_all();
-	private:
+	protected:
 		std::shared_ptr<QuoteControl> quote_control_;
 		std::shared_ptr<SymbolPositionControl> position_control_;
 		void put_order_each(std::shared_ptr<SmAccount> account, const std::string& signal_name, int order_kind, int order_amount);

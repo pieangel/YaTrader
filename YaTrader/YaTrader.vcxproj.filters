@@ -976,6 +976,39 @@
     <ClCompile Include="Yuanta\YaStockClient.cpp">
       <Filter>Yuanta</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog\VtUsdStrategyConfigDlg.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\VtSysArgGrid.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\VtUsdEntConfigGrid.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\VtUsdStrategyConfigGrid.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\VtSystemArgGroup.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmUSDSystemDialog.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\UsdSystemDefGrid.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmAddUsdSystemDlg.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmUsdStrategy.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmUsdSystem.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OutSystem\SmUsdSystemData.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h">
@@ -2241,6 +2274,42 @@
     <ClInclude Include="Yuanta\YaStockClient.h">
       <Filter>Yuanta</Filter>
     </ClInclude>
+    <ClInclude Include="Dialog\VtUsdStrategyConfigDlg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\VtSysArgGrid.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\VtUsdEntConfigGrid.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\VtUsdStrategyConfigGrid.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\VtSystemArgGroup.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\VtSystemArg.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmUSDSystemDialog.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\UsdSystemDefGrid.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmAddUsdSystemDlg.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmUsdStrategy.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmUsdSystem.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmUsdSystemData.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DarkHorse.ico">
@@ -2298,6 +2367,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\set.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
