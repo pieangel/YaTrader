@@ -2325,6 +2325,7 @@ BEGIN
     BEGIN
         MENUITEM "StartSimul",                  ID_SIMUL_STARTSIMUL
         MENUITEM "StopSimul",                   ID_SIMUL_STOPSIMUL
+        MENUITEM "YesTest",                     ID_SIMUL_YESTEST
     END
     POPUP "도움말"
     BEGIN
@@ -2391,6 +2392,7 @@ BEGIN
     BEGIN
         MENUITEM "StartSimul",                  ID_SIMUL_STARTSIMUL
         MENUITEM "StopSimul",                   ID_SIMUL_STOPSIMUL
+        MENUITEM "YesTest",                     ID_SIMUL_YESTEST
     END
     POPUP "도움말"
     BEGIN

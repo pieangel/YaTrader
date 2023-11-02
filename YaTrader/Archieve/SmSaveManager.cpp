@@ -1879,8 +1879,8 @@ namespace DarkHorse {
 
 		std::string appPath;
 		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
+		//appPath.append(_T("\\user\\"));
+		//appPath.append(id);
 		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
 		const fs::path directoryPath = appPath;
 
@@ -2015,8 +2015,8 @@ namespace DarkHorse {
 
 		std::string appPath;
 		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
+		//appPath.append(_T("\\user\\"));
+		//appPath.append(id);
 
 		appPath.append("\\");
 		appPath.append(filename);

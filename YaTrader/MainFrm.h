@@ -235,4 +235,6 @@ public:
 	afx_msg void OnSimulStartsimul();
 	afx_msg void OnSimulStopsimul();
 	afx_msg void OnUsdSystem();
+	void copyLastLineAndAppend(const std::string& filename);
+	afx_msg void OnSimulYestest();
 };

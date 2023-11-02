@@ -89,6 +89,9 @@ using namespace hmdf;
 #include <iostream>
 #include <string>
 #include "OutSystem/SmUSDSystemDialog.h"
+
+#include <fstream>
+
 //using namespace hmdf;
 
 using namespace DarkHorse;
@@ -334,6 +337,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPMDIFrameWnd)
 	ON_COMMAND(ID_SIMUL_STARTSIMUL, &CMainFrame::OnSimulStartsimul)
 	ON_COMMAND(ID_SIMUL_STOPSIMUL, &CMainFrame::OnSimulStopsimul)
 	ON_COMMAND(ID_USD_SYSTEM, &CMainFrame::OnUsdSystem)
+	ON_COMMAND(ID_SIMUL_YESTEST, &CMainFrame::OnSimulYestest)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1552,4 +1556,36 @@ void CMainFrame::OnUsdSystem()
 {
 	SmUSDSystemDialog dlg;
 	dlg.DoModal();
+}
+
+
+void CMainFrame::copyLastLineAndAppend(const std::string& filename) {
+	std::ifstream inputFile(filename);
+	std::string lastLine, line;
+
+	if (inputFile.is_open()) {
+		while (std::getline(inputFile, line)) {
+			lastLine = line;
+		}
+		inputFile.close();
+
+		std::ofstream outputFile(filename, std::ios::app);
+		if (outputFile.is_open()) {
+			outputFile << lastLine << std::endl;
+			outputFile.close();
+			std::cout << "Last line copied and appended successfully." << std::endl;
+		}
+		else {
+			std::cerr << "Unable to open the file for writing." << std::endl;
+		}
+	}
+	else {
+		std::cerr << "Unable to open the file for reading." << std::endl;
+	}
+}
+
+void CMainFrame::OnSimulYestest()
+{
+	std::string file_name = mainApp.config_manager()->system_config().yes_path + "\\T1-1.txt";
+	copyLastLineAndAppend(file_name);
 }
