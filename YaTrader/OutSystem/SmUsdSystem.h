@@ -8,6 +8,8 @@ namespace DarkHorse {
 	class SmUsdSystem : public SmOutSystem
 	{
 	private:
+		bool was_liq{ false };
+		int entrance_count_{ 0 };
 		/// <summary>
 		/// 진입 시작 시간
 		/// </summary>
@@ -24,7 +26,20 @@ namespace DarkHorse {
 		std::string strategy_type_;
 		int order_limit_count_{ 0 };
 		SmUsdStrategy strategy_;
+		bool check_condition(const SysArg& arg);
+		void check_group_condition(const GroupArg& group_arg, std::vector<bool>& arg_cond);
+		bool check_entrance(const int index);
 	public:
+		bool CheckEntranceBar();
+		bool CheckEntranceForBuy();
+		bool CheckEntranceForSell();
+		bool CheckLiqForSell();
+		bool CheckLiqForBuy();
+		bool CheckOrderLimit();
+		bool CheckEnterableByTime();
+		bool CheckLigByTime();
+		void on_timer();
+
 		SmUsdSystem(std::string strategy_type);
 		int order_limit_count() const { return order_limit_count_; }
 		void order_limit_count(int val) { order_limit_count_ = val; }

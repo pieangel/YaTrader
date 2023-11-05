@@ -8,6 +8,7 @@
 #include "../Hoga/SmHoga.h"
 #include "../Hoga/SmHogaManager.h"
 #include "../Event/EventHub.h"
+#include "../OutSystem/SmOutSystemManager.h"
 
 using namespace DarkHorse;
 
@@ -88,6 +89,8 @@ void SmHogaProcessor::ProcessHoga(nlohmann::json&& hoga)
 		hoga_p->TotSellCnt = hoga["tot_sell_cnt"];
 
 		symbol->hoga_requested(true);
+
+		mainApp.out_system_manager()->usd_system_data().update_data(symbol_code, hoga_p->TotBuyQty, hoga_p->TotSellQty, hoga_p->TotBuyCnt, hoga_p->TotSellCnt);
 
 		mainApp.event_hub()->process_hoga_event(hoga_p);
 

@@ -1015,6 +1015,10 @@
     <ClCompile Include="OutSystem\SmUsdSystemModDialog.cpp">
       <Filter>OutSystem</Filter>
     </ClCompile>
+    <ClCompile Include="VtGlobal.cpp" />
+    <ClCompile Include="Util\VtTime.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h">
@@ -2322,6 +2326,7 @@
     <ClInclude Include="OutSystem\SmUsdSystemModDialog.h">
       <Filter>OutSystem</Filter>
     </ClInclude>
+    <ClInclude Include="VtGlobal.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DarkHorse.ico">

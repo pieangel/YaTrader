@@ -9,6 +9,10 @@
 #include <filesystem>
 #include "magic_enum/magic_enum.hpp"
 #include "SmUsdSystem.h"
+#include "../Util/SmUtil.h"
+#include <chrono>
+
+using namespace std::chrono;
 
 namespace DarkHorse {
 	int SmOutSystemManager::order_tick = 10;
@@ -143,6 +147,21 @@ namespace DarkHorse {
 		{
 			usd_system_map_.insert(std::make_pair(usd_system->name(), usd_system));
 		}
+	}
+
+	void SmOutSystemManager::OnTimer()
+	{
+
+	}
+
+	void SmOutSystemManager::create_timer_for_usd_system()
+	{
+		std::vector<int> date_time = SmUtil::GetLocalDateTime();
+		int waitTime = 60 - date_time[5];
+		// Add to the timer.
+		auto id = _Timer.add(seconds(waitTime), std::bind(&SmOutSystemManager::OnTimer, this), seconds(60));
+		// Add to the request map.
+		_TimerMap["usd_system"] = id;
 	}
 
 	void SmOutSystemManager::put_order(const std::string& signal_name, int order_kind, int order_amount)

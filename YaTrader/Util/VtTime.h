@@ -2,7 +2,7 @@
 
 #include <ctime>
 #include <string>
-
+#include <time.h>
 
 struct VtDate
 {
@@ -57,5 +57,12 @@ public:
 		date.append("¿œ");
 		return date;
 	}
+
+	static VtTime GetTime(int time);
+	static VtDate GetDate(int date);
+	static VtTime GetLocalTime();
+	static VtDate GetLocalDate();
+	static int GetDate(VtDate date);
+	static int GetTime(VtTime time);
 };
 

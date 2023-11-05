@@ -649,6 +649,7 @@
     <ClInclude Include="View\SymbolProfitLossView.h" />
     <ClInclude Include="View\SymbolTickView.h" />
     <ClInclude Include="View\TotalAssetProfitLossView.h" />
+    <ClInclude Include="VtGlobal.h" />
     <ClInclude Include="WorkSpaceBar.h" />
     <ClInclude Include="WorkSpaceBar2.h" />
     <ClInclude Include="Xml\pugiconfig.hpp" />
@@ -996,6 +997,7 @@
     <ClCompile Include="Util\SmWndManager.cpp" />
     <ClCompile Include="Util\SmWndRefreshManager.cpp" />
     <ClCompile Include="Util\VtStringUtil.cpp" />
+    <ClCompile Include="Util\VtTime.cpp" />
     <ClCompile Include="View\AccountOrderView.cpp" />
     <ClCompile Include="View\AccountPositionView.cpp" />
     <ClCompile Include="View\AccountProfitLossView.cpp" />
@@ -1010,6 +1012,7 @@
     <ClCompile Include="View\SymbolProfitLossView.cpp" />
     <ClCompile Include="View\SymbolTickView.cpp" />
     <ClCompile Include="View\TotalAssetProfitLossView.cpp" />
+    <ClCompile Include="VtGlobal.cpp" />
     <ClCompile Include="WorkSpaceBar.cpp" />
     <ClCompile Include="WorkSpaceBar2.cpp" />
     <ClCompile Include="Xml\pugixml.cpp">

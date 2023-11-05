@@ -8,6 +8,8 @@
 #include "../Common/BlockingCollection.h"
 #include "../Common/common.h"
 #include "SmUsdStrategy.h"
+#include "SmUsdSystemData.h"
+#include "../Time/cpptime.h"
 #include <set>
 #include <sstream>
 #include <map>
@@ -73,7 +75,10 @@ namespace DarkHorse {
 		const std::vector<std::string>& get_usd_strategy_vec() const { return usd_strategy_vec_; }
 		SmUsdStrategy get_usd_strategy(const std::string& strategy_type) const;
 		std::string get_usd_strategy_name();
+		SmUsdSystemData& usd_system_data() { return usd_system_data_; }
 	private:
+		void OnTimer();
+		void create_timer_for_usd_system();
 		void put_order(const std::string& signal_name, int order_kind, int order_amount);
 		void remove_out_system_by_id(const int& system_id);
 		void remove_usd_system_by_id(const int& system_id);
@@ -103,5 +108,12 @@ namespace DarkHorse {
 		void init_usd_strategy();
 		std::vector<std::string> usd_strategy_vec_;
 		void init_usd_strategy_vec();
+
+		// 차트데이터를 주기적으로 받기 위한 타이머 맵
+		std::map<std::string, CppTime::timer_id> _TimerMap;
+		// 타이머 생성을 위한 타이머 객체
+		CppTime::Timer _Timer;
+		// usd system data
+		SmUsdSystemData usd_system_data_;
 	};
 }

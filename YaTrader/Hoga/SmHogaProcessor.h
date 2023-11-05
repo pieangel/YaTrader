@@ -2,6 +2,7 @@
 #include "../Json/json.hpp"
 #include "../Common/BlockingCollection.h"
 #include "../Common/common.h"
+#include "../OutSystem/SmUsdSystemData.h"
 namespace DarkHorse {
 	using namespace code_machina;
 	const int BulkHogaSize = 100;
@@ -24,6 +25,7 @@ namespace DarkHorse {
 		void ProcessHoga(nlohmann::json&& hoga);
 		// arr : 데이터가 들어 있는 배열, taken : 실제 데이터가 들어 있는 갯수
 		bool ProcessHoga(const std::array<nlohmann::json, BulkHogaSize>& arr, const int& taken);
+		//SmUsdSystemData usd_system_data_;
 	};
 }
 
