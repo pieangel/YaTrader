@@ -86,6 +86,9 @@ private:
 	std::map<int, std::shared_ptr<DarkHorse::SmSymbol>> combo_to_symbol_map_;
 	// key: combo index, value: strategy type
 	std::map<int, std::string> combo_usd_strategy_map_;
+
+	DarkHorse::SmUsdStrategy strategy_;
+
 public:
 	afx_msg void OnBnClickedBtnAdd();
 };

@@ -35,7 +35,7 @@ public:
 	int OnCellTypeNotify(long ID, int col, long row, long msg, long param);
 	virtual void OnMouseLeaveFromMainGrid();
 	void SetColTitle();
-	int _ColCount = 15;
+	int _ColCount = 14;
 	int _RowCount = 100;
 	CFont _defFont;
 	CFont _titleFont;

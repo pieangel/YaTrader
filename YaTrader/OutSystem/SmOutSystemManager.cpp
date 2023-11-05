@@ -19,6 +19,14 @@ namespace DarkHorse {
 		return usd_strategy_map_.at(strategy_type);
 	}
 
+	std::string SmOutSystemManager::get_usd_strategy_name()
+	{
+		std::string usd_strategy_name;
+		usd_strategy_name = "usd_system_";
+		usd_strategy_name.append(std::to_string(IdGenerator::get_id()));
+		return usd_strategy_name;
+	}
+
 	SmOutSystemManager::SmOutSystemManager()
 	{
 		make_out_system_signal_map();
@@ -67,7 +75,7 @@ namespace DarkHorse {
 		usd_system->account(account);
 		usd_system->fund(fund);
 		usd_system->symbol(symbol);
-		out_system_vec_.push_back(usd_system);
+		usd_system_vec_.push_back(usd_system);
 		return usd_system;
 	}
 

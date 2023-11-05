@@ -21,6 +21,8 @@
 #include <functional>
 #include "../OutSystem/VtAutoSignalManagerDialog.h"
 #include "../Util/IdGenerator.h"
+#include "../Util/VtTime.h"
+#include "../OutSystem/SmUsdSystem.h"
 // SmAddUsdSystemDlg dialog
 using namespace DarkHorse;
 
@@ -247,6 +249,7 @@ void SmAddUsdSystemDlg::set_strategy_type()
 
 	DarkHorse::SmUsdStrategy usd_strategy = mainApp.out_system_manager()->get_usd_strategy(static_cast<const char *>(str_usd_strategy));
 
+	strategy_ = usd_strategy;
 
 	_EntGrid.ClearArgMap();
 	_LiqGrid.ClearArgMap();
@@ -265,6 +268,7 @@ void SmAddUsdSystemDlg::set_strategy_type()
 			_LiqGrid.SetArg(argGrp);
 		}
 	}
+
 }
 
 void SmAddUsdSystemDlg::set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol)
@@ -298,15 +302,89 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	}
 	CString strSeungSu;
 	_EditSeungsu.GetWindowText(strSeungSu);
-	auto usd_system = mainApp.out_system_manager()->create_usd_system
+	const std::string usd_system_name = mainApp.out_system_manager()->get_usd_strategy_name();
+	std::shared_ptr<DarkHorse::SmUsdSystem> usd_system = mainApp.out_system_manager()->create_usd_system
 	(
-		strategy_type_,
+		usd_system_name,
 		_ttoi(strSeungSu),
 		order_type,
 		_Mode == 0 ? account_ : nullptr,
 		_Mode == 1 ? fund_ : nullptr,
 		symbol_
 	);
+
+
+	CTime esTime;
+	_DpEntBegin.GetTime(esTime);
+	VtTime startTime;
+	startTime.hour = esTime.GetHour();
+	startTime.min = esTime.GetMinute();
+	startTime.sec = esTime.GetSecond();
+
+	usd_system->start_time_begin(startTime);
+
+	_DpEntEnd.GetTime(esTime);
+	VtTime endTime;//
+	endTime.hour = esTime.GetHour();
+	endTime.min = esTime.GetMinute();
+	endTime.sec = esTime.GetSecond();
+
+	usd_system->start_time_end(endTime);
+
+	_DpLiq.GetTime(esTime);
+	VtTime ligTime; //
+	ligTime.hour = esTime.GetHour();
+	ligTime.min = esTime.GetMinute();
+	ligTime.sec = esTime.GetSecond();
+
+	usd_system->end_time(ligTime);
+
+	CString value;
+	_EditEntMax.GetWindowText(value);
+	usd_system->order_limit_count(_ttoi(value));
+
+
+	CUGCell cell;
+	// 매수 진입
+	for (size_t i = 0; i < 4; ++i) {
+		CString strValue;
+		_EntGrid.QuickGetText(2, i, &strValue);
+		strategy_.group_args[0].sys_args[i].param = (LPCTSTR)strValue;
+		_EntGrid.GetCell(1, i, &cell);
+		double num = cell.GetNumber();
+		num == 1.0 ? strategy_.group_args[0].sys_args[i].enable = true : strategy_.group_args[0].sys_args[i].enable = false;
+	}
+	// 매도 진입
+	for (size_t i = 0; i < 4; ++i) {
+		CString strValue;
+		_EntGrid.QuickGetText(7, i, &strValue);
+		strategy_.group_args[1].sys_args[i].param = (LPCTSTR)strValue;
+		_EntGrid.GetCell(6, i, &cell);
+		double num = cell.GetNumber();
+		num == 1.0 ? strategy_.group_args[1].sys_args[i].enable = true : strategy_.group_args[1].sys_args[i].enable = false;
+	}
+	// 매수 청산
+	for (size_t i = 0; i < 4; ++i) {
+		CString strValue;
+		_EntGrid.QuickGetText(2, i, &strValue);
+		strategy_.group_args[2].sys_args[i].param = (LPCTSTR)strValue;
+		_EntGrid.GetCell(1, i, &cell);
+		double num = cell.GetNumber();
+		num == 1.0 ? strategy_.group_args[2].sys_args[i].enable = true : strategy_.group_args[2].sys_args[i].enable = false;
+	}
+	// 매도 청산
+	for (size_t i = 0; i < 4; ++i) {
+		CString strValue;
+		_EntGrid.QuickGetText(7, i, &strValue);
+		strategy_.group_args[3].sys_args[i].param = (LPCTSTR)strValue;
+		_EntGrid.GetCell(6, i, &cell);
+		double num = cell.GetNumber();
+		num == 1.0 ? strategy_.group_args[3].sys_args[i].enable = true : strategy_.group_args[3].sys_args[i].enable = false;
+	}
+
+	
+
+	usd_system->strategy(strategy_);
 
 	if (auto_connect_dialog_)
 		auto_connect_dialog_->add_usd_system(usd_system);

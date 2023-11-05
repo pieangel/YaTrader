@@ -3,6 +3,7 @@
 #include "../Util/VtTime.h"
 #include <string>
 #include <vector>
+#include "SmUsdStrategy.h"
 namespace DarkHorse {
 	class SmUsdSystem : public SmOutSystem
 	{
@@ -22,10 +23,7 @@ namespace DarkHorse {
 
 		std::string strategy_type_;
 		int order_limit_count_{ 0 };
-		std::vector<double> buy_in_param_;
-		std::vector<double> sell_in_param_;
-		std::vector<double> buy_out_param_;
-		std::vector<double> sell_out_param_;
+		SmUsdStrategy strategy_;
 	public:
 		SmUsdSystem(std::string strategy_type);
 		int order_limit_count() const { return order_limit_count_; }
@@ -38,14 +36,8 @@ namespace DarkHorse {
 		void start_time_end(VtTime val) { start_time_end_ = val; }
 		VtTime end_time() const { return end_time_; }
 		void end_time(VtTime val) { end_time_ = val; }
-		const std::vector<double>& buy_in_param() const { return buy_in_param_; }
-		void buy_in_param(std::vector<double> val) { buy_in_param_ = val; }
-		const std::vector<double>& sell_in_param() const { return sell_in_param_; }
-		void sell_in_param(std::vector<double> val) { sell_in_param_ = val; }
-		const std::vector<double>& buy_out_param() const { return buy_out_param_; }
-		void buy_out_param(std::vector<double> val) { buy_out_param_ = val; }
-		const std::vector<double>& sell_out_param() const { return sell_out_param_; }
-		void sell_out_param(std::vector<double> val) { sell_out_param_ = val; }
+		DarkHorse::SmUsdStrategy strategy() const { return strategy_; }
+		void strategy(DarkHorse::SmUsdStrategy val) { strategy_ = val; }
 	};
 }
 

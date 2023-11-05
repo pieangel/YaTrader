@@ -193,8 +193,8 @@ void UsdSystemDefGrid::OnMouseLeaveFromMainGrid()
 void UsdSystemDefGrid::SetColTitle()
 {
 	CUGCell cell;
-	LPCTSTR title[15] = { "실행", "계좌번호", "종목", "전략", "승수", "평가손익", "청산손익", "총손익", "로그", "시작시간[B]", "시작시간[E]", "종료시간", "진입회수", "이름", "설정"};
-	int colWidth[15] = { 25, 98, 90, 80, 58, 100, 100, 100, 85, 85, 85, 65, 65, 65, 65 };
+	LPCTSTR title[14] = { "실행", "계좌번호", "종목", "이름", "승수", "평가손익", "청산손익", "총손익", "로그", "시작시간[B]", "시작시간[E]", "종료시간", "진입회수", "전략설정"};
+	int colWidth[14] = { 25, 98, 90, 80, 58, 100, 100, 100, 85, 85, 85, 65, 65, 65};
 
 
 	for (int i = 0; i < _ColCount; i++) {
@@ -344,6 +344,56 @@ void UsdSystemDefGrid::InitGrid()
 				cell.SetText("로그보기");
 				SetCell(xIndex, yIndex, &cell);
 			}
+			else if (xIndex == 9) {
+				GetCell(xIndex, yIndex, &cell);
+				cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+				cell.SetFont(&_titleFont);
+				cell.SetTextColor(RGB(0, 0, 0));
+				VtTime time = out_system->start_time_begin();
+				CString str_date_time;
+				str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+				cell.SetText(str_date_time);
+				SetCell(xIndex, yIndex, &cell);
+			}
+			else if (xIndex == 10) {
+				GetCell(xIndex, yIndex, &cell);
+				cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+				cell.SetFont(&_titleFont);
+				cell.SetTextColor(RGB(0, 0, 0));
+				VtTime time = out_system->start_time_end();
+				CString str_date_time;
+				str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+				cell.SetText(str_date_time);
+				SetCell(xIndex, yIndex, &cell);
+			}
+			else if (xIndex == 11) {
+				GetCell(xIndex, yIndex, &cell);
+				cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+				cell.SetFont(&_titleFont);
+				cell.SetTextColor(RGB(0, 0, 0));
+				VtTime time = out_system->end_time();
+				CString str_date_time;
+				str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+				cell.SetText(str_date_time);
+				SetCell(xIndex, yIndex, &cell);
+			}
+			else if (xIndex == 12) {
+				GetCell(xIndex, yIndex, &cell);
+				cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+				cell.SetFont(&_titleFont);
+				cell.SetTextColor(RGB(0, 0, 0));
+				CString order_limit_count;
+				order_limit_count.Format("%02d", out_system->order_limit_count());
+				cell.SetText(order_limit_count);
+				SetCell(xIndex, yIndex, &cell);
+			}
+			else if (xIndex == 13) {
+				GetCell(xIndex, yIndex, &cell);
+				cell.SetCellType(m_nEllipsisIndex);
+				cell.SetCellTypeEx(UGCT_NORMALELLIPSIS);
+				cell.SetParam(ELLIPSISBUTTON_CLICK_PRDT);
+				SetCell(xIndex, yIndex, &cell);
+			}
 			QuickRedrawCell(xIndex, yIndex);			
 		}
 		_SystemMap[yIndex] = out_system;
@@ -439,16 +489,16 @@ void UsdSystemDefGrid::SetSymbol(std::shared_ptr<SmSymbol> sym)
 	}
 }
 
-void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
+void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> usd_system)
 {
 	try {
 	auto usd_system_vector = mainApp.out_system_manager()->get_usd_system_vector();
 	CUGCell cell;
-	size_t yIndex = usd_system_vector.size() - 1;
+	size_t yIndex = usd_system_vector.size() == 0 ? 0 : usd_system_vector.size() - 1;
 	for (size_t xIndex = 0; xIndex < (size_t)_ColCount; ++xIndex) {
 		if (xIndex == 0) {
 			GetCell(xIndex, yIndex, &cell);
-			sys->enable() ? cell.SetNumber(1.0) : cell.SetNumber(0.0);
+			usd_system->enable() ? cell.SetNumber(1.0) : cell.SetNumber(0.0);
 			cell.SetLabelText(_T(""));
 			cell.SetCellType(UGCT_CHECKBOX);
 			cell.SetCellTypeEx(UGCT_CHECKBOXFLAT | UGCT_CHECKBOXCHECKMARK);
@@ -456,11 +506,11 @@ void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
 		}
 		else if (xIndex == 1) {
 			GetCell(xIndex, yIndex, &cell);
-			if (sys->order_type() == OrderType::MainAccount || sys->order_type() == OrderType::SubAccount) {
-				if (sys->account()) cell.SetText(sys->account()->No().c_str());
+			if (usd_system->order_type() == OrderType::MainAccount || usd_system->order_type() == OrderType::SubAccount) {
+				if (usd_system->account()) cell.SetText(usd_system->account()->No().c_str());
 			}
 			else {
-				if (sys->fund()) cell.SetText(sys->fund()->Name().c_str());
+				if (usd_system->fund()) cell.SetText(usd_system->fund()->Name().c_str());
 			}
 			cell.SetCellType(m_nEllipsisIndex);
 			cell.SetCellTypeEx(UGCT_NORMALELLIPSIS);
@@ -469,7 +519,7 @@ void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
 		}
 		else if (xIndex == 2) {
 			GetCell(xIndex, yIndex, &cell);
-			if (sys->symbol()) cell.SetText(sys->symbol()->SymbolCode().c_str());
+			if (usd_system->symbol()) cell.SetText(usd_system->symbol()->SymbolCode().c_str());
 			cell.SetCellType(m_nEllipsisIndex);
 			cell.SetCellTypeEx(UGCT_NORMALELLIPSIS);
 			cell.SetParam(ELLIPSISBUTTON_CLICK_PRDT);
@@ -477,23 +527,23 @@ void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
 		}
 		else if (xIndex == 3) {
 			GetCell(xIndex, yIndex, &cell);
-			cell.SetText(sys->name().c_str());
+			cell.SetText(usd_system->name().c_str());
 			cell.SetCellType(UGCT_DROPLIST);
 			cell.SetCellTypeEx(UGCT_DROPLISTHIDEBUTTON);
 			cell.SetReadOnly(FALSE);
-			cell.SetLabelText(sys->desc().c_str());
+			cell.SetLabelText(usd_system->desc().c_str());
 			SetCell(xIndex, yIndex, &cell);
 		}
 		else if (xIndex == 4) {
 			GetCell(xIndex, yIndex, &cell);
-			cell.SetNumber(sys->seung_su());
+			cell.SetNumber(usd_system->seung_su());
 			cell.SetCellType(m_nSpinIndex);
 			cell.SetParam(SPIN_TYPE_SEUNGSU);
 			SetCell(xIndex, yIndex, &cell);
 		}
 		else if (xIndex == 8) {
 			GetCell(xIndex, yIndex, &cell);
-			cell.SetNumber(sys->seung_su());
+			cell.SetNumber(usd_system->seung_su());
 			cell.SetCellType(m_nButtonIndex);
 			cell.SetCellTypeEx(UGCT_BUTTONNOFOCUS);
 			cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
@@ -503,9 +553,59 @@ void UsdSystemDefGrid::AddSystem(std::shared_ptr<SmUsdSystem> sys)
 			cell.SetText("로그보기");
 			SetCell(xIndex, yIndex, &cell);
 		}
+		else if (xIndex == 9) {
+			GetCell(xIndex, yIndex, &cell);
+			cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+			cell.SetFont(&_titleFont);
+			cell.SetTextColor(RGB(0, 0, 0));
+			VtTime time = usd_system->start_time_begin();
+			CString str_date_time;
+			str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+			cell.SetText(str_date_time);
+			SetCell(xIndex, yIndex, &cell);
+		}
+		else if (xIndex == 10) {
+			GetCell(xIndex, yIndex, &cell);
+			cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+			cell.SetFont(&_titleFont);
+			cell.SetTextColor(RGB(0, 0, 0));
+			VtTime time = usd_system->start_time_end();
+			CString str_date_time;
+			str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+			cell.SetText(str_date_time);
+			SetCell(xIndex, yIndex, &cell);
+		}
+		else if (xIndex == 11) {
+			GetCell(xIndex, yIndex, &cell);
+			cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+			cell.SetFont(&_titleFont);
+			cell.SetTextColor(RGB(0, 0, 0));
+			VtTime time = usd_system->end_time();
+			CString str_date_time;
+			str_date_time.Format("%02d::%02d::%02d", time.hour, time.min, time.sec);
+			cell.SetText(str_date_time);
+			SetCell(xIndex, yIndex, &cell);
+		}
+		else if (xIndex == 12) {
+			GetCell(xIndex, yIndex, &cell);
+			cell.SetAlignment(UG_ALIGNCENTER | UG_ALIGNVCENTER);
+			cell.SetFont(&_titleFont);
+			cell.SetTextColor(RGB(0, 0, 0));
+			CString order_limit_count;
+			order_limit_count.Format("%02d", usd_system->order_limit_count());
+			cell.SetText(order_limit_count);
+			SetCell(xIndex, yIndex, &cell);
+		}
+		else if (xIndex == 13) {
+			GetCell(xIndex, yIndex, &cell);
+			cell.SetCellType(m_nEllipsisIndex);
+			cell.SetCellTypeEx(UGCT_NORMALELLIPSIS);
+			cell.SetParam(ELLIPSISBUTTON_CLICK_PRDT);
+			SetCell(xIndex, yIndex, &cell);
+		}
 		QuickRedrawCell(xIndex, yIndex);
 	}
-	_SystemMap[yIndex] = sys;
+	_SystemMap[yIndex] = usd_system;
 	//mainApp.out_system_manager()->add_out_system(sys);
 	_OccupiedRowCount = yIndex;
 

@@ -443,7 +443,7 @@ void VtSignalConnectionGrid::AddSystem(std::shared_ptr<SmOutSystem> sys)
 	try {
 	auto out_system_vector = mainApp.out_system_manager()->get_out_system_vector();
 	CUGCell cell;
-	size_t yIndex = out_system_vector.size() - 1;
+	size_t yIndex = out_system_vector.size() == 0 ? 0 : out_system_vector.size() - 1;
 	for (size_t xIndex = 0; xIndex < (size_t)_ColCount; ++xIndex) {
 		if (xIndex == 0) {
 			GetCell(xIndex, yIndex, &cell);

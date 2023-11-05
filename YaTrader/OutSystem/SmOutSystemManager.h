@@ -70,6 +70,7 @@ namespace DarkHorse {
 		static SmPriceType price_type;
 		const std::vector<std::string>& get_usd_strategy_vec() const { return usd_strategy_vec_; }
 		SmUsdStrategy get_usd_strategy(const std::string& strategy_type) const;
+		std::string get_usd_strategy_name();
 	private:
 		void put_order(const std::string& signal_name, int order_kind, int order_amount);
 		void remove_out_system_by_id(const int& system_id);

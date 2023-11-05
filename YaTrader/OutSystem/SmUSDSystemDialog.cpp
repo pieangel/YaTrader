@@ -7,11 +7,13 @@
 #include "SmUSDSystemDialog.h"
 #include "afxdialogex.h"
 #include "../Global/SmConst.h"
+#include "../Global/SmTotalManager.h"
 #include "../Dialog/SmAddConnectSignalDlg.h"
 #include "../Dialog/SmAddOutSigDefDlg.h"
 #include "../OutSystem/SmOutSystemManager.h"
 #include "../Dialog/SmSystemOrderConfig.h"
 #include "SmAddUsdSystemDlg.h"
+#include "../OutSystem/SmUsdSystem.h"
 
 // SmUSDSystemDialog dialog
 
@@ -220,9 +222,17 @@ void SmUSDSystemDialog::Resize()
 	Invalidate(TRUE);
 }
 
-void SmUSDSystemDialog::add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system)
+void SmUSDSystemDialog::add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> usd_system)
 {
-	_UsdSystemDefGrid.AddSystem(out_system);
+	if (!usd_system) return;
+	if (!usd_system->symbol()) return;
+	if (usd_system->order_type() == DarkHorse::OrderType::MainAccount && !usd_system->account()) return;
+	if (usd_system->order_type() == DarkHorse::OrderType::SubAccount && !usd_system->account()) return;
+	if (usd_system->order_type() == DarkHorse::OrderType::Fund && !usd_system->fund()) return;
+	size_t out_system_count = mainApp.out_system_manager()->get_usd_system_vector().size();
+	if (out_system_count == 0) return;
+
+	_UsdSystemDefGrid.AddSystem(usd_system);
 }
 
 void SmUSDSystemDialog::OnBnClickedBtnAddConnect()
