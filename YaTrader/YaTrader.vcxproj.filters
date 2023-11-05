@@ -1009,6 +1009,9 @@
     <ClCompile Include="OutSystem\SmUsdSystemData.cpp">
       <Filter>OutSystem</Filter>
     </ClCompile>
+    <ClCompile Include="OutSystem\SmActiveUsdSystemGrid.cpp">
+      <Filter>OutSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h">
@@ -2308,6 +2311,9 @@
       <Filter>OutSystem</Filter>
     </ClInclude>
     <ClInclude Include="OutSystem\SmUsdSystemData.h">
+      <Filter>OutSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OutSystem\SmActiveUsdSystemGrid.h">
       <Filter>OutSystem</Filter>
     </ClInclude>
   </ItemGroup>

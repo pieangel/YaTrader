@@ -19,7 +19,7 @@ namespace DarkHorse {
 	class SmUsdSystem;
 }
 class VtOrderLogDlg;
-class VtTotalSignalGrid;
+class SmActiveUsdSystemGrid;
 class UsdSystemDefGrid : public VtGrid
 {
 public:
@@ -58,12 +58,14 @@ public:
 	void SetSymbol(std::shared_ptr<DarkHorse::SmSymbol> sym);
 	void AddSystem(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
 	void RemoveSystem();
-	VtTotalSignalGrid* TotalGrid() const { return _TotalGrid; }
-	void TotalGrid(VtTotalSignalGrid* val) { _TotalGrid = val; }
+	//SmActiveUsdSystemGrid* TotalGrid() const { return active_usd_system_grid_; }
+	//void TotalGrid(SmActiveUsdSystemGrid* val) { active_usd_system_grid_ = val; }
 	void Refresh();
 	void SetCheck(bool flag);
 	void RefreshOrders();
 	void ClearCheck(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
+	SmActiveUsdSystemGrid* Active_usd_system_grid() const { return active_usd_system_grid_; }
+	void Active_usd_system_grid(SmActiveUsdSystemGrid* val) { active_usd_system_grid_ = val; }
 private:
 	void set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	void set_account_from_out(const int window_id, std::shared_ptr<DarkHorse::SmAccount> account);
@@ -86,7 +88,7 @@ private:
 	std::map<int, std::shared_ptr<DarkHorse::SmUsdSystem>> _SystemMap;
 	// 키 : 시스템 아이디, 값 : 행 인덱스
 	std::map<int, int> _SystemToRowMap;
-	VtTotalSignalGrid* _TotalGrid = nullptr;
+	SmActiveUsdSystemGrid* active_usd_system_grid_ = nullptr;
 	VtOrderLogDlg* _LogDlg = nullptr;
 	int _ButtonCol = -2;
 	int _ButtonRow = -2;

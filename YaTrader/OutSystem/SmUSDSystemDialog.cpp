@@ -63,10 +63,10 @@ BOOL SmUSDSystemDialog::OnInitDialog()
 	CBCGPDialog::OnInitDialog();
 
 	// TODO:  Add extra initialization here
-	_TotalSigGrid.AttachGrid(this, IDC_STATIC_TOTAL_SIGNAL);
+	active_usd_system_grid_.AttachGrid(this, IDC_STATIC_TOTAL_SIGNAL);
 	_UsdSystemDefGrid.AttachGrid(this, IDC_STATIC_SIGNAL_CONNECTION);
-	_UsdSystemDefGrid.TotalGrid(&_TotalSigGrid);
-	_TotalSigGrid.UsdGrid(&_UsdSystemDefGrid);
+	_UsdSystemDefGrid.Active_usd_system_grid(&active_usd_system_grid_);
+	active_usd_system_grid_.UsdGrid(&_UsdSystemDefGrid);
 	SetTimer(RefTimer, 100, NULL);
 	Resize();
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -76,7 +76,7 @@ BOOL SmUSDSystemDialog::OnInitDialog()
 
 void SmUSDSystemDialog::RefreshOrder()
 {
-	_TotalSigGrid.RefreshOrders();
+	active_usd_system_grid_.RefreshOrders();
 	_UsdSystemDefGrid.RefreshOrders();
 }
 
@@ -216,7 +216,7 @@ void SmUSDSystemDialog::Resize()
 	rcCtrl.bottom = rcDlg.bottom - STD_GAP;
 	pWnd->MoveWindow(rcCtrl, TRUE);
 
-	_TotalSigGrid.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
+	active_usd_system_grid_.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
 	_UsdSystemDefGrid.GetScrollBarCtrl(SB_VERT)->Invalidate(TRUE);
 
 	Invalidate(TRUE);

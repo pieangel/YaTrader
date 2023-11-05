@@ -27,6 +27,7 @@
 #include "../Util/IdGenerator.h"
 #include "../Dialog/SmAccountFundSelector.h"
 #include "SmUsdSystem.h"
+#include "SmActiveUsdSystemGrid.h"
 
 using namespace DarkHorse;
 UsdSystemDefGrid::UsdSystemDefGrid()
@@ -194,7 +195,7 @@ void UsdSystemDefGrid::SetColTitle()
 {
 	CUGCell cell;
 	LPCTSTR title[14] = { "실행", "계좌번호", "종목", "이름", "승수", "평가손익", "청산손익", "총손익", "로그", "시작시간[B]", "시작시간[E]", "종료시간", "진입회수", "전략설정"};
-	int colWidth[14] = { 25, 98, 90, 80, 58, 100, 100, 100, 85, 85, 85, 65, 65, 65};
+	int colWidth[14] = { 25, 98, 90, 100, 58, 100, 100, 100, 85, 85, 85, 65, 65, 65};
 
 
 	for (int i = 0; i < _ColCount; i++) {
@@ -630,12 +631,12 @@ void UsdSystemDefGrid::RemoveSystem()
 		sys->enable(false);
 		auto outSysOrderMgr = mainApp.out_system_manager();
 		// 주문관리자에서 삭제한다.
-		outSysOrderMgr->remove_active_out_system(sys);
+		outSysOrderMgr->remove_active_usd_system(sys);
 		// 주문상태 목록을 리프레쉬 한다.
-		if (_TotalGrid) _TotalGrid->Refresh();
+		if (active_usd_system_grid_) active_usd_system_grid_->Refresh();
 
 		// 시스템 목록에서 삭제한다.
-		outSysOrderMgr->remove_out_system(sys);
+		outSysOrderMgr->remove_usd_system(sys);
 
 		// 모든 셀 정보를 초기화 시킨다.
 		CUGCell cell;
@@ -666,7 +667,7 @@ void UsdSystemDefGrid::Refresh()
 void UsdSystemDefGrid::SetCheck(bool flag)
 {
 	try {
-	_TotalGrid->ClearCells();
+	active_usd_system_grid_->ClearCells();
 	int row = 0;
 	CUGCell cell;
 	auto outSysOrderMgr = mainApp.out_system_manager();
@@ -676,18 +677,18 @@ void UsdSystemDefGrid::SetCheck(bool flag)
 		if (flag) {
 			cell.SetNumber(1);
 			sys->enable(true);
-			outSysOrderMgr->add_active_out_system(sys);
+			outSysOrderMgr->add_active_usd_system(sys);
 		}
 		else {
 			cell.SetNumber(0);
 			sys->enable(false);
-			outSysOrderMgr->remove_active_out_system(sys);
+			outSysOrderMgr->remove_active_usd_system(sys);
 		}
 		SetCell(0, row, &cell);
 		QuickRedrawCell(0, row);
 		row++;
 	}
-	if (_TotalGrid) _TotalGrid->Refresh();
+	if (active_usd_system_grid_) active_usd_system_grid_->Refresh();
 
 	}
 	catch (std::exception& e) {
@@ -960,13 +961,13 @@ int UsdSystemDefGrid::OnCheckbox(long ID, int col, long row, long msg, long para
 			double num = cell.GetNumber();
 			if (num == 1.0) {
 				sys->enable(true);
-				outSysOrderMgr->add_active_out_system(sys);
+				outSysOrderMgr->add_active_usd_system(sys);
 			}
 			else {
 				sys->enable(false);
-				outSysOrderMgr->remove_active_out_system(sys);
+				outSysOrderMgr->remove_active_usd_system(sys);
 			}
-			if (_TotalGrid) _TotalGrid->Refresh();
+			if (active_usd_system_grid_) active_usd_system_grid_->Refresh();
 		}
 
 	}

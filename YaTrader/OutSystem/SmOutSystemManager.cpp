@@ -91,7 +91,6 @@ namespace DarkHorse {
 	{
 		if (!out_system) return;
 
-		//remove_out_system_from_map(out_system);
 		remove_usd_system_by_id(out_system->id());
 	}
 
@@ -106,6 +105,15 @@ namespace DarkHorse {
 		if (it != system_map.end()) {
 			system_map.erase(it);
 		}
+	}
+
+	void SmOutSystemManager::remove_usd_system_from_map(std::shared_ptr<SmUsdSystem> usd_system)
+	{
+		if (!usd_system) return;
+
+		auto found = usd_system_map_.find(usd_system->name());
+		if (found == usd_system_map_.end()) return;
+		usd_system_map_.erase(found);
 	}
 
 	void SmOutSystemManager::add_out_system_to_map(std::shared_ptr<SmOutSystem> out_system)
@@ -123,6 +131,17 @@ namespace DarkHorse {
 			system_map.insert(std::make_pair(out_system->id(), out_system));
 			out_system_map_.insert(std::make_pair(out_system->name(), system_map));
 
+		}
+	}
+
+	void SmOutSystemManager::add_usd_system_to_map(std::shared_ptr<SmUsdSystem> usd_system)
+	{
+		if (!usd_system) return;
+
+		auto it = usd_system_map_.find(usd_system->name());
+		if (it != usd_system_map_.end())
+		{
+			usd_system_map_.insert(std::make_pair(usd_system->name(), usd_system));
 		}
 	}
 
@@ -307,7 +326,7 @@ namespace DarkHorse {
 	void SmOutSystemManager::remove_active_usd_system(std::shared_ptr<SmUsdSystem> usd_system)
 	{
 		if (!usd_system) return;
-		remove_out_system_from_map(usd_system);
+		remove_usd_system_from_map(usd_system);
 		auto found = active_usd_system_map_.find(usd_system->id());
 		if (found == active_usd_system_map_.end())return;
 		active_usd_system_map_.erase(found);

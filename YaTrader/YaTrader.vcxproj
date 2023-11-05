@@ -453,6 +453,7 @@
     <ClInclude Include="Order\SmSymbolOrderManager.h" />
     <ClInclude Include="Order\SmTotalOrderManager.h" />
     <ClInclude Include="OutputBar.h" />
+    <ClInclude Include="OutSystem\SmActiveUsdSystemGrid.h" />
     <ClInclude Include="OutSystem\SmAddUsdSystemDlg.h" />
     <ClInclude Include="OutSystem\SmOutSignalDef.h" />
     <ClInclude Include="OutSystem\SmOutSystem.h" />
@@ -850,6 +851,7 @@
     <ClCompile Include="Order\SmSymbolOrderManager.cpp" />
     <ClCompile Include="Order\SmTotalOrderManager.cpp" />
     <ClCompile Include="OutputBar.cpp" />
+    <ClCompile Include="OutSystem\SmActiveUsdSystemGrid.cpp" />
     <ClCompile Include="OutSystem\SmAddUsdSystemDlg.cpp" />
     <ClCompile Include="OutSystem\SmOutSignalDef.cpp" />
     <ClCompile Include="OutSystem\SmOutSystem.cpp" />

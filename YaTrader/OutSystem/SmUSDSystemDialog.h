@@ -1,5 +1,5 @@
 #pragma once
-#include "VtTotalSignalGrid.h"
+#include "SmActiveUsdSystemGrid.h"
 #include "UsdSystemDefGrid.h"
 #include "afxwin.h"
 #include <BCGCBProInc.h>
@@ -29,7 +29,7 @@ public:
 	virtual BOOL OnInitDialog();
 
 private:
-	VtTotalSignalGrid _TotalSigGrid;
+	SmActiveUsdSystemGrid active_usd_system_grid_;
 	UsdSystemDefGrid _UsdSystemDefGrid;
 	void RefreshOrder();
 	void Resize();

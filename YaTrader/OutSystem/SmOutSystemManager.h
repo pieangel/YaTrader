@@ -43,7 +43,9 @@ namespace DarkHorse {
 		void remove_out_system(std::shared_ptr<SmOutSystem> out_system);
 		void remove_usd_system(std::shared_ptr<SmUsdSystem> out_system);
 		void remove_out_system_from_map(std::shared_ptr<SmOutSystem> out_system);
+		void remove_usd_system_from_map(std::shared_ptr<SmUsdSystem> usd_system);
 		void add_out_system_to_map(std::shared_ptr<SmOutSystem> out_system);
+		void add_usd_system_to_map(std::shared_ptr<SmUsdSystem> usd_system);
 		void make_out_system_signal_map();
 		const std::vector<std::shared_ptr<SmOutSignalDef>>& get_out_system_signal_map() const { return out_system_signal_vec_; }
 		size_t get_out_system_count() const { return out_system_vec_.size(); }
@@ -95,6 +97,8 @@ namespace DarkHorse {
 		// key : system name, value : strategy object.
 		std::map<std::string, SmUsdStrategy> usd_strategy_map_;
 		std::vector<std::shared_ptr<SmUsdSystem>> usd_system_vec_;
+		// key : usd system name, object : usd system object.
+		std::map<std::string, std::shared_ptr<SmUsdSystem>> usd_system_map_;
 		std::map<int, std::shared_ptr<SmUsdSystem>> active_usd_system_map_;
 		void init_usd_strategy();
 		std::vector<std::string> usd_strategy_vec_;
