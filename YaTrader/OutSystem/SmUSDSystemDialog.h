@@ -35,6 +35,7 @@ private:
 	void Resize();
 public:
 	void add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system);
+	void update_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system);
 	afx_msg void OnBnClickedBtnAddConnect();
 	afx_msg void OnBnClickedBtnAddSignal();
 	afx_msg void OnBnClickedBtnDelConnect();

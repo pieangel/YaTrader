@@ -253,8 +253,6 @@ void SmAddUsdSystemDlg::set_strategy_type()
 
 	_EntGrid.ClearArgMap();
 	_LiqGrid.ClearArgMap();
-	//_EntGrid.System(_System);
-	//_LiqGrid.System(_System);
 	const std::vector<DarkHorse::GroupArg>& argGrpVec = usd_strategy.group_args;
 	for (auto it = argGrpVec.begin(); it != argGrpVec.end(); ++it) {
 		const GroupArg& argGrp = *it;
@@ -366,18 +364,18 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	// 매수 청산
 	for (size_t i = 0; i < 4; ++i) {
 		CString strValue;
-		_EntGrid.QuickGetText(2, i, &strValue);
+		_LiqGrid.QuickGetText(2, i, &strValue);
 		strategy_.group_args[2].sys_args[i].param = (LPCTSTR)strValue;
-		_EntGrid.GetCell(1, i, &cell);
+		_LiqGrid.GetCell(1, i, &cell);
 		double num = cell.GetNumber();
 		num == 1.0 ? strategy_.group_args[2].sys_args[i].enable = true : strategy_.group_args[2].sys_args[i].enable = false;
 	}
 	// 매도 청산
 	for (size_t i = 0; i < 4; ++i) {
 		CString strValue;
-		_EntGrid.QuickGetText(7, i, &strValue);
+		_LiqGrid.QuickGetText(7, i, &strValue);
 		strategy_.group_args[3].sys_args[i].param = (LPCTSTR)strValue;
-		_EntGrid.GetCell(6, i, &cell);
+		_LiqGrid.GetCell(6, i, &cell);
 		double num = cell.GetNumber();
 		num == 1.0 ? strategy_.group_args[3].sys_args[i].enable = true : strategy_.group_args[3].sys_args[i].enable = false;
 	}

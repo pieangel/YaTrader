@@ -462,6 +462,7 @@
     <ClInclude Include="OutSystem\SmUsdSystem.h" />
     <ClInclude Include="OutSystem\SmUsdSystemData.h" />
     <ClInclude Include="OutSystem\SmUSDSystemDialog.h" />
+    <ClInclude Include="OutSystem\SmUsdSystemModDialog.h" />
     <ClInclude Include="OutSystem\UsdSystemDefGrid.h" />
     <ClInclude Include="OutSystem\VtAutoSignalManagerDialog.h" />
     <ClInclude Include="OutSystem\VtSignalConnectionGrid.h" />
@@ -860,6 +861,7 @@
     <ClCompile Include="OutSystem\SmUsdSystem.cpp" />
     <ClCompile Include="OutSystem\SmUsdSystemData.cpp" />
     <ClCompile Include="OutSystem\SmUSDSystemDialog.cpp" />
+    <ClCompile Include="OutSystem\SmUsdSystemModDialog.cpp" />
     <ClCompile Include="OutSystem\UsdSystemDefGrid.cpp" />
     <ClCompile Include="OutSystem\VtAutoSignalManagerDialog.cpp" />
     <ClCompile Include="OutSystem\VtSignalConnectionGrid.cpp" />

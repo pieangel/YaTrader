@@ -11,6 +11,7 @@
 #define ELLIPSISBUTTON_CLICK_ACNT		150
 #define ELLIPSISBUTTON_CLICK_PRDT		151
 #define SPIN_TYPE_SEUNGSU               152
+#define ELLIPSISBUTTON_CLICK_ALGO_SET		153
 namespace DarkHorse {
 	class SmAccount;
 	class SmFund;
@@ -20,6 +21,7 @@ namespace DarkHorse {
 }
 class VtOrderLogDlg;
 class SmActiveUsdSystemGrid;
+class SmUSDSystemDialog;
 class UsdSystemDefGrid : public VtGrid
 {
 public:
@@ -66,7 +68,12 @@ public:
 	void ClearCheck(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
 	SmActiveUsdSystemGrid* Active_usd_system_grid() const { return active_usd_system_grid_; }
 	void Active_usd_system_grid(SmActiveUsdSystemGrid* val) { active_usd_system_grid_ = val; }
+	void update_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> sys);
+	SmUSDSystemDialog* Source_dialog() const { return source_dialog_; }
+	void Source_dialog(SmUSDSystemDialog* val) { source_dialog_ = val; }
 private:
+	SmUSDSystemDialog* source_dialog_ = nullptr;
+	void refresh_row(const int row, std::shared_ptr<DarkHorse::SmUsdSystem> sys);
 	void set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	void set_account_from_out(const int window_id, std::shared_ptr<DarkHorse::SmAccount> account);
 	void set_fund_from_out(const int window_id, std::shared_ptr<DarkHorse::SmFund> fund);

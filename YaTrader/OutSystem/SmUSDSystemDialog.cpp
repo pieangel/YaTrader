@@ -66,6 +66,7 @@ BOOL SmUSDSystemDialog::OnInitDialog()
 	active_usd_system_grid_.AttachGrid(this, IDC_STATIC_TOTAL_SIGNAL);
 	_UsdSystemDefGrid.AttachGrid(this, IDC_STATIC_SIGNAL_CONNECTION);
 	_UsdSystemDefGrid.Active_usd_system_grid(&active_usd_system_grid_);
+	_UsdSystemDefGrid.Source_dialog(this);
 	active_usd_system_grid_.UsdGrid(&_UsdSystemDefGrid);
 	SetTimer(RefTimer, 100, NULL);
 	Resize();
@@ -233,6 +234,12 @@ void SmUSDSystemDialog::add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> u
 	if (out_system_count == 0) return;
 
 	_UsdSystemDefGrid.AddSystem(usd_system);
+}
+
+void SmUSDSystemDialog::update_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system)
+{
+	if (!out_system) return;
+	_UsdSystemDefGrid.update_usd_system(out_system);
 }
 
 void SmUSDSystemDialog::OnBnClickedBtnAddConnect()

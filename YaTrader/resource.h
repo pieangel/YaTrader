@@ -111,6 +111,7 @@
 #define IDD_SYS_AUTO_CONNECT2           238
 #define IDD_ADD_SIG_CONNECT1            239
 #define IDD_ADD_USD_SYSTEM              239
+#define IDD_MOD_USD_SYSTEM              240
 #define IDB_BITMAP_SET                  403
 #define IDC_STATIC_ID                   1003
 #define IDC_STATIC_PWD                  1004
@@ -283,6 +284,7 @@
 #define IDC_STATIC_GRID_ORDER           1170
 #define IDC_CHECK_SHOW_REAL_QUOTE       1171
 #define IDC_STATIC_LINE1                1172
+#define IDC_BTN_MOD                     1172
 #define IDC_STATIC_LINE2                1173
 #define IDC_COMBO_STRATEGY              1174
 #define IDC_EDIT1                       1175
@@ -662,7 +664,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         32956
-#define _APS_NEXT_CONTROL_VALUE         1172
+#define _APS_NEXT_CONTROL_VALUE         1173
 #define _APS_NEXT_SYMED_VALUE           119
 #endif
 #endif
