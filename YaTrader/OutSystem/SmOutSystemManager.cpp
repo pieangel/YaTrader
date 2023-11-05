@@ -13,6 +13,12 @@
 namespace DarkHorse {
 	int SmOutSystemManager::order_tick = 10;
 	SmPriceType SmOutSystemManager::price_type = SmPriceType::Price;
+
+	DarkHorse::SmUsdStrategy SmOutSystemManager::get_usd_strategy(const std::string& strategy_type) const
+	{
+		return usd_strategy_map_.at(strategy_type);
+	}
+
 	SmOutSystemManager::SmOutSystemManager()
 	{
 		make_out_system_signal_map();
@@ -365,6 +371,7 @@ namespace DarkHorse {
 		strategy.type(strategy_name);
 		GroupArg grp_arg;
 		SysArg arg;
+		grp_arg.sys_args.clear();
 		// 매수 진입 조건 
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
@@ -405,6 +412,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -444,6 +452,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -484,6 +493,7 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -530,6 +540,7 @@ namespace DarkHorse {
 
 
 		// 매수 진입 조건 
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -569,6 +580,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -608,6 +620,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -648,6 +661,7 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -693,6 +707,7 @@ namespace DarkHorse {
 		strategy.type(strategy_name);
 
 		// 매수 진입 조건 
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -732,6 +747,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -771,6 +787,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -811,6 +828,7 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -856,6 +874,7 @@ namespace DarkHorse {
 		strategy.type(strategy_name);
 
 		// 매수 진입 조건 
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -895,6 +914,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -934,6 +954,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -974,6 +995,7 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -1019,6 +1041,7 @@ namespace DarkHorse {
 		strategy.type(strategy_name);
 
 		// 매수 진입 조건 
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -1042,7 +1065,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kbc";
 		arg.desc = "kac>kbc 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "0.66";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1058,6 +1081,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -1081,7 +1105,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kac";
 		arg.desc = "kbc>kac 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "0.66";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1097,6 +1121,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -1137,12 +1162,13 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
 		arg.desc = "ubc>uac 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.6";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1151,7 +1177,7 @@ namespace DarkHorse {
 		arg.data_source2 = "uas";
 		arg.desc = "ubs>uas 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1181,6 +1207,7 @@ namespace DarkHorse {
 		strategy.type(strategy_name);
 
 		// 매수 진입 조건 
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
@@ -1204,7 +1231,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kbc";
 		arg.desc = "kac>kbc 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "0.6";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1220,6 +1247,7 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매도 진입 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
@@ -1243,7 +1271,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kac";
 		arg.desc = "kbc>kac 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "0.6";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1259,12 +1287,13 @@ namespace DarkHorse {
 		strategy.group_args.push_back(grp_arg);
 		//////////////////////////////////////////////////////////////////////////
 		// 매수 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "uac>ubc";
 		arg.data_source1 = "uac";
 		arg.data_source2 = "ubc";
 		arg.desc = "uac>ubc 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.6";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1273,7 +1302,7 @@ namespace DarkHorse {
 		arg.data_source2 = "ubs";
 		arg.desc = "uas>ubs 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1282,7 +1311,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kac";
 		arg.desc = "kbc>kac 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.9";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1299,12 +1328,13 @@ namespace DarkHorse {
 		//////////////////////////////////////////////////////////////////////////
 
 		// 매도 청산 조건
+		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
 		arg.data_source1 = "ubc";
 		arg.data_source2 = "uac";
 		arg.desc = "ubc>uac 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.6";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1313,7 +1343,7 @@ namespace DarkHorse {
 		arg.data_source2 = "uas";
 		arg.desc = "ubs>uas 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.7";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 
@@ -1322,7 +1352,7 @@ namespace DarkHorse {
 		arg.data_source2 = "kbc";
 		arg.desc = "kac>kbc 값을 설정 합니다.";
 		arg.enable = false;
-		arg.param = "0.9";
+		arg.param = "1.0";
 		arg.result = false;
 		grp_arg.sys_args.push_back(arg);
 

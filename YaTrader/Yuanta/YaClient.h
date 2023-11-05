@@ -36,6 +36,8 @@ enum class SERVER_REQ : int {
 	DM_ORDER_NEW,
 	DM_ORDER_MOD,
 	DM_ORDER_CANCEL,
+	DM_FUT_MINI_SISE,
+	DM_FUT_MINI_HOGA,
 };
 
 // enum class InfoType {
@@ -140,6 +142,8 @@ namespace DarkHorse {
 		int dm_trade_profit_loss(DhTaskArg arg);
 		int dm_outstanding_order(DhTaskArg arg);
 		int dm_fut_sise(DhTaskArg arg);
+		int dm_fut_mini_sise(DhTaskArg arg);
+		int dm_fut_mini_hoga(DhTaskArg arg);
 		int dm_fut_hoga(DhTaskArg arg);
 		int dm_opt_sise(DhTaskArg arg);
 		int dm_opt_hoga(DhTaskArg arg);
@@ -163,6 +167,8 @@ namespace DarkHorse {
 		void on_dm_outstanding_order(const YA_REQ_INFO& req_info);
 		void on_dm_fut_sise(const YA_REQ_INFO& req_info);
 		void on_dm_fut_hoga(const YA_REQ_INFO& req_info);
+		void on_dm_fut_mini_sise(const YA_REQ_INFO& req_info);
+		void on_dm_fut_mini_hoga(const YA_REQ_INFO& req_info);
 		void on_dm_opt_sise(const YA_REQ_INFO& req_info);
 		void on_dm_opt_hoga(const YA_REQ_INFO& req_info);
 		void on_dm_commodity_sise(const YA_REQ_INFO& req_info);

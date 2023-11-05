@@ -5,6 +5,7 @@
 #include "../UGrid/CellTypes/UGCTbutn.h"
 #include "../UGrid/UGEdit.h"
 #include "VtSystemArgGroup.h"
+#include "../OutSystem/SmUsdStrategy.h"
 
 const int USD_CONFIG_EDIT = 0x0010;
 class VtSystem;
@@ -52,6 +53,7 @@ public:
 	void Type(int val) { _Type = val; }
 
 	void SetArg(VtSystemArgGroup& argGrp);
+	void SetArg(const DarkHorse::GroupArg& argGrp);
 
 	void SetHogaCountEntRatio(double uac, double ubc);
 	void SetHogaQtyEntRatio(double uas, double ubs);

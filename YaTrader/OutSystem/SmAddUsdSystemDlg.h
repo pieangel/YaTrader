@@ -5,6 +5,9 @@
 #include <map>
 #include <memory>
 #include <string>
+
+#include "../Dialog/VtUsdStrategyConfigGrid.h"
+#include "../Dialog/VtUsdEntConfigGrid.h"
 //#include "VtOutSignalDefManager.h"
 
 // VtAddConnectSignalDlg dialog
@@ -46,7 +49,7 @@ public:
 	CBCGPEdit _EditEntMax;
 
 	CBCGPComboBox _ComboAcnt;
-	CBCGPComboBox _ComboSignal;
+	CBCGPComboBox combo_usd_strategy_;
 	CBCGPComboBox _ComboSymbol;
 	CBCGPComboBox _ComboType;
 	CBCGPEdit _EditSeungsu;
@@ -61,9 +64,11 @@ public:
 	virtual BOOL OnInitDialog();
 	int _Mode = 0;
 	void InitCombo();
-	void InitOutSigDefCombo();
-
+	void InitUsdStrategyCombo();
 private:
+	VtUsdEntConfigGrid _EntGrid;
+	VtUsdStrategyConfigGrid _LiqGrid;
+	void set_strategy_type();
 	SmUSDSystemDialog* auto_connect_dialog_ = nullptr;
 	std::shared_ptr<HdSymbolSelecter> _SymbolSelecter;
 	void set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol);
@@ -80,7 +85,7 @@ private:
 	// key: combo index, value: symbol
 	std::map<int, std::shared_ptr<DarkHorse::SmSymbol>> combo_to_symbol_map_;
 	// key: combo index, value: strategy type
-	std::map<int, std::string> combo_to_out_sig_def_map_;
+	std::map<int, std::string> combo_usd_strategy_map_;
 public:
 	afx_msg void OnBnClickedBtnAdd();
 };

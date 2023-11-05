@@ -47,7 +47,7 @@ void SmAddUsdSystemDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CBCGPDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO_ACNT, _ComboAcnt);
-	DDX_Control(pDX, IDC_COMBO_SIGNAL, _ComboSignal);
+	DDX_Control(pDX, IDC_COMBO_SIGNAL, combo_usd_strategy_);
 	DDX_Control(pDX, IDC_COMBO_SYMBOL, _ComboSymbol);
 	DDX_Control(pDX, IDC_COMBO_TYPE, _ComboType);
 	DDX_Control(pDX, IDC_EDIT_SEUNGSU, _EditSeungsu);
@@ -125,13 +125,15 @@ void SmAddUsdSystemDlg::OnBnClickedBtnFindSymbol()
 
 void SmAddUsdSystemDlg::OnCbnSelchangeComboSignal()
 {
-	int selIndex = _ComboSignal.GetCurSel();
+	int selIndex = combo_usd_strategy_.GetCurSel();
 	if (selIndex == -1) {
 		return;
 	}
-	auto it = combo_to_out_sig_def_map_.find(selIndex);
-	if (it != combo_to_out_sig_def_map_.end()) {
+	auto it = combo_usd_strategy_map_.find(selIndex);
+	if (it != combo_usd_strategy_map_.end()) {
 		strategy_type_ = it->second;
+
+		set_strategy_type();
 	}
 }
 
@@ -158,8 +160,16 @@ BOOL SmAddUsdSystemDlg::OnInitDialog()
 	_EditSeungsu.SetWindowText(_T("1"));
 	_SpinSeungsu.SetRange(0, 100);
 	_ComboAcnt.SetDroppedWidth(200);
+
+	_EntGrid.Type(0);
+	_EntGrid.AttachGrid(this, IDC_STATIC_ENT_GRID);
+	_LiqGrid.Type(1);
+	_LiqGrid.AttachGrid(this, IDC_STATIC_LIQ_GRID);
+
+	_EditEntMax.SetWindowText("0");
+
 	InitCombo();
-	InitOutSigDefCombo();
+	InitUsdStrategyCombo();
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -212,18 +222,48 @@ void SmAddUsdSystemDlg::InitCombo()
 	}
 }
 
-void SmAddUsdSystemDlg::InitOutSigDefCombo()
+void SmAddUsdSystemDlg::InitUsdStrategyCombo()
 {
-	auto signal_def_vector = mainApp.out_system_manager()->get_usd_strategy_vec();
+	auto usd_strategy_vector = mainApp.out_system_manager()->get_usd_strategy_vec();
 	int selIndex = -1;
-	combo_to_out_sig_def_map_.clear();
-	for (auto it = signal_def_vector.begin(); it != signal_def_vector.end(); ++it) {
-		selIndex = _ComboSignal.AddString((*it).c_str());
-		combo_to_out_sig_def_map_[selIndex] = *it;
+	combo_usd_strategy_map_.clear();
+	for (auto it = usd_strategy_vector.begin(); it != usd_strategy_vector.end(); ++it) {
+		selIndex = combo_usd_strategy_.AddString((*it).c_str());
+		combo_usd_strategy_map_[selIndex] = *it;
 	}
-	if (!combo_to_out_sig_def_map_.empty()) {
-		strategy_type_ = combo_to_out_sig_def_map_.begin()->second;
-		_ComboSignal.SetCurSel(0);
+	if (!combo_usd_strategy_map_.empty()) {
+		strategy_type_ = combo_usd_strategy_map_.begin()->second;
+		combo_usd_strategy_.SetCurSel(0);
+		set_strategy_type();
+	}
+}
+
+void SmAddUsdSystemDlg::set_strategy_type()
+{
+	const int cur_sel = combo_usd_strategy_.GetCurSel();
+	if (cur_sel < 0) return;
+	CString str_usd_strategy;
+	combo_usd_strategy_.GetLBText(cur_sel, str_usd_strategy);
+
+	DarkHorse::SmUsdStrategy usd_strategy = mainApp.out_system_manager()->get_usd_strategy(static_cast<const char *>(str_usd_strategy));
+
+
+	_EntGrid.ClearArgMap();
+	_LiqGrid.ClearArgMap();
+	//_EntGrid.System(_System);
+	//_LiqGrid.System(_System);
+	const std::vector<DarkHorse::GroupArg>& argGrpVec = usd_strategy.group_args;
+	for (auto it = argGrpVec.begin(); it != argGrpVec.end(); ++it) {
+		const GroupArg& argGrp = *it;
+		if (argGrp.name.compare(_T("매수진입")) == 0 ||
+			argGrp.name.compare(_T("매도진입")) == 0) {
+			_EntGrid.SetArg(argGrp);
+		}
+
+		if (argGrp.name.compare(_T("매수청산")) == 0 ||
+			argGrp.name.compare(_T("매도청산")) == 0) {
+			_LiqGrid.SetArg(argGrp);
+		}
 	}
 }
 

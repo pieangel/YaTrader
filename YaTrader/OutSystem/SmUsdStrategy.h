@@ -32,6 +32,7 @@ namespace DarkHorse {
 		std::string desc;
 		std::string param;
 		std::string name;
+		std::string current_value;
 		bool result = false;
 	};
 	struct GroupArg {

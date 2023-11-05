@@ -5,6 +5,7 @@
 #include "../UGrid/CellTypes/UGCTbutn.h"
 #include "../UGrid/UGEdit.h"
 #include "VtSystemArgGroup.h"
+#include "../OutSystem/SmUsdStrategy.h"
 
 const int CONFIG_EDIT = 0x0001;
 class VtSystem;
@@ -52,6 +53,7 @@ public:
 	void Type(int val) { _Type = val; }
 
 	void SetArg(VtSystemArgGroup& argGrp);
+	void SetArg(const DarkHorse::GroupArg& argGrp);
 	void RefreshRealTimeValue(std::string argName, CString value);
 	void ClearArgMap();
 	VtSystem* System() const { return _System; }

@@ -252,6 +252,52 @@ void VtUsdEntConfigGrid::SetArg(VtSystemArgGroup& argGrp)
 	}
 }
 
+void VtUsdEntConfigGrid::SetArg(const DarkHorse::GroupArg& argGrp)
+{
+	if (argGrp.name.compare(_T("매수진입")) == 0) {
+		const std::vector<DarkHorse::SysArg>& argVec = argGrp.sys_args;
+		for (size_t i = 0; i < argVec.size(); ++i) {
+			const DarkHorse::SysArg& arg = argVec[i];
+			CUGCell cell;
+			GetCell(1, i, &cell);
+			if (arg.enable) {
+				cell.SetNumber(1);
+			}
+			else {
+				cell.SetNumber(0);
+			}
+			SetCell(1, i, &cell);
+			QuickRedrawCell(1, i);
+			QuickSetText(2, i, arg.param.c_str());
+			QuickRedrawCell(2, i);
+			QuickSetText(3, i, arg.name.c_str());
+			QuickRedrawCell(3, i);
+			_ArgMap[arg.name] = std::make_pair(4, i);
+		}
+	}
+	else if (argGrp.name.compare(_T("매도진입")) == 0) {
+		const std::vector<DarkHorse::SysArg>& argVec = argGrp.sys_args;
+		for (size_t i = 0; i < argVec.size(); ++i) {
+			const DarkHorse::SysArg& arg = argVec[i];
+			CUGCell cell;
+			GetCell(6, i, &cell);
+			if (arg.enable) {
+				cell.SetNumber(1);
+			}
+			else {
+				cell.SetNumber(0);
+			}
+			SetCell(6, i, &cell);
+			QuickRedrawCell(6, i);
+			QuickSetText(7, i, arg.param.c_str());
+			QuickRedrawCell(7, i);
+			QuickSetText(8, i, arg.name.c_str());
+			QuickRedrawCell(8, i);
+			_ArgMap[arg.name] = std::make_pair(9, i);
+		}
+	}
+}
+
 void VtUsdEntConfigGrid::SetHogaCountBuyEntRatio(CString value)
 {
 	CUGCell cell;
