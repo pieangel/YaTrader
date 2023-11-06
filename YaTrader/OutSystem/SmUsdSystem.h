@@ -26,8 +26,8 @@ namespace DarkHorse {
 		std::string strategy_type_;
 		int order_limit_count_{ 0 };
 		SmUsdStrategy strategy_;
-		bool check_condition(const SysArg& arg);
-		void check_group_condition(const GroupArg& group_arg, std::vector<bool>& arg_cond);
+		bool check_condition(std::string& group_arg_name, SysArg& arg);
+		void check_group_condition(GroupArg& group_arg, std::vector<bool>& arg_cond);
 		bool check_entrance(const int index);
 	public:
 		bool CheckEntranceBar();

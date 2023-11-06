@@ -321,6 +321,7 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	ya_request_map_.clear();
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_NEW)];
 	const std::string trade_code = req_info.dso_name.substr(3);
+	/*
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
@@ -328,15 +329,27 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("jong_code"), order_req->symbol_code.c_str(), 0);		// 종목코드 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 주문수량 값을 설정합니다.
-
+	*/
 	CString format_price;
 	format_price.Format("%.2f", static_cast<double>(static_cast<double>(order_req->order_price) / 100.0));
 	std::string order_price = std::string(static_cast<const char*>(format_price));
-
+	/*
 	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
+	*/
 
+
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jumun_gubun"), order_req->position_type == SmPositionType::Sell ? "1" : "2", 0);		// 주문구분1매도2매수 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jong_code"), order_req->symbol_code.c_str(), 0);		// 종목코드 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160001"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// 주문수량 값을 설정합니다.
+
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
 
 	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 시그널이름[%s]"), order_req->order_context.signal_name.c_str());
 	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: 계좌번호[%s]"), order_req->account_no.c_str());
@@ -383,20 +396,20 @@ void YaClient::dm_change_order(const std::shared_ptr<OrderRequest>& order_req)
 	ya_request_map_.clear();
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_MOD)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 정정주문수량 값을 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// 매매구분L지정M시장C조건부B최유 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160003"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// 정정주문수량 값을 설정합니다.
 
 	CString format_price;
 	format_price.Format("%.2f", static_cast<double>(order_req->order_price / 100.0));
 	std::string order_price = std::string(CT2CA(format_price));
 
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// 주문가격 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// 선물옵션구분0선물1옵션2개별3코 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// 주문조건S일반I일부충족F전량충족 값을 설정합니다.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
@@ -446,11 +459,11 @@ void YaClient::dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_CANCEL)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// 취소주문수량 값을 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// 비밀번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// 원주문번호 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160004"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// 취소주문수량 값을 설정합니다.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;

@@ -9,7 +9,7 @@
 #include "../ViewModel/VmAccountProfitLoss.h"
 namespace DarkHorse {
 	class TotalPositionManager;
-	struct GroupPosition;
+	//struct GroupPosition;
 	struct Position;
 	using position_p = std::shared_ptr<Position>;
 	struct AccountProfitLoss;

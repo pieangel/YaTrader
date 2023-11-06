@@ -74,24 +74,30 @@ namespace DarkHorse {
 		std::map<std::string, std::shared_ptr<Position>> active_position_vector_;
 		if (position_type == OrderType::SubAccount) {
 			if (!account_) return;
+			if (!account_->was_liq()) return;
 			auto position_manager = mainApp.total_position_manager()->find_position_manager(account_->No());
 			if (!position_manager) return;
 			active_position_vector_.clear();
 			position_manager->get_active_positions(active_position_vector_);
+			account_->was_liq(true);
 		}
 		else if (position_type == OrderType::Fund) {
 			if (!fund_) return;
+			if (fund_->was_liq()) return;
 			auto position_manager = mainApp.total_position_manager()->find_fund_group_position_manager(fund_->Name());
 			if (!position_manager) return;
 			active_position_vector_.clear();
 			position_manager->get_active_positions(active_position_vector_);
+			fund_->was_liq(true);
 		}
 		else {
 			if (!account_) return;
+			if (!account_->was_liq()) return;
 			auto position_manager = mainApp.total_position_manager()->find_account_group_position_manager(account_->No());
 			if (!position_manager) return;
 			active_position_vector_.clear();
 			position_manager->get_active_positions(active_position_vector_);
+			account_->was_liq(true);
 		}
 
 		for (auto it = active_position_vector_.begin(); it != active_position_vector_.end(); it++) {

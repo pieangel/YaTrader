@@ -4,22 +4,24 @@
 #include "../Global/SmTotalManager.h"
 #include "../OutSystem/SmOutSystemManager.h"
 #include "../Util/VtTime.h"
+#include "../Log/MyLogger.h"
 namespace DarkHorse {
 
-	bool SmUsdSystem::check_condition(const SysArg& arg)
+	bool SmUsdSystem::check_condition(std::string& group_arg_name, SysArg& arg)
 	{
 		int data_source1 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source1);
 		int data_source2 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source2);
 		if (data_source1 <= 0 || data_source2 <= 0) return false;
 		double param = std::stod(arg.param);
+		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], data_source1[%s],value1[%d], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.data_source1.c_str(), data_source1, arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
 		if (data_source1 * param > data_source2) return true;
 		return false;
 	}
 
-	void SmUsdSystem::check_group_condition(const GroupArg& group_arg, std::vector<bool>& arg_cond)
+	void SmUsdSystem::check_group_condition(GroupArg& group_arg, std::vector<bool>& arg_cond)
 	{
 		for (int i = 0; i < 4; i++) {
-			bool result = check_condition(group_arg.sys_args[i]);
+			bool result = check_condition(group_arg.name, group_arg.sys_args[i]);
 			arg_cond.push_back(result);
 		}
 	}
@@ -27,7 +29,7 @@ namespace DarkHorse {
 	bool SmUsdSystem::check_entrance(const int index)
 	{
 		std::vector<bool> arg_cond;
-		const GroupArg& group_arg = strategy_.group_args[index];
+		GroupArg& group_arg = strategy_.group_args[index];
 		check_group_condition(group_arg, arg_cond);
 		if (arg_cond.size() == 0)
 			return false;
@@ -102,13 +104,23 @@ namespace DarkHorse {
 	{
 		if (!enable_) return;
 
-		if (was_liq) return;
-
 		if (CheckLigByTime())
 			liq_all();
 
-
 		if (!CheckEntranceBar()) return;
+
+		if (CheckEntranceForBuy()) {
+			put_order(name_, 1, 1);
+		}
+		else if (CheckEntranceForSell()) {
+			put_order(name_, 3, 1);
+		}
+		else if (CheckLiqForBuy()) {
+			put_order(name_, 2, 1);
+		}
+		else if (CheckLiqForSell()) {
+			put_order(name_, 4, 1);
+		}
 	}
 
 	SmUsdSystem::SmUsdSystem(std::string strategy_type)

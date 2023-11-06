@@ -36,6 +36,7 @@ namespace DarkHorse {
 		make_out_system_signal_map();
 		init_usd_strategy();
 		init_usd_strategy_vec();
+		create_timer_for_usd_system();
 	}
 
 
@@ -151,7 +152,9 @@ namespace DarkHorse {
 
 	void SmOutSystemManager::OnTimer()
 	{
-
+		for (auto& usd_system : usd_system_vec_) {
+			usd_system->on_timer();
+		}
 	}
 
 	void SmOutSystemManager::create_timer_for_usd_system()
@@ -377,7 +380,7 @@ namespace DarkHorse {
 			msg.append(_T(","));
 			msg.append(lastline);
 
-			execute_order(std::move(msg));
+			execute_order(msg);
 		}
 		catch (const std::exception& e) {
 			const std::string error = e.what();
@@ -390,8 +393,9 @@ namespace DarkHorse {
 		return true;
 	}
 
-	void SmOutSystemManager::execute_order(std::string&& order_signal)
+	void SmOutSystemManager::execute_order(std::string order_signal)
 	{
+		try {
 		std::vector<std::string> tokens = split(order_signal, ',');
 		if (tokens.size() > 7 && tokens[0].length() > 0) {
 			std::filesystem::path full_path(tokens[0]);
@@ -405,9 +409,13 @@ namespace DarkHorse {
 			put_order(signame, order_kind, order_amount);
 		}
 		else {
-			LOGINFO(CMyLogger::getInstance(), _T("OnOutSignal : 신호 파싱 오류 신호 : %s"), order_signal);
+			LOGINFO(CMyLogger::getInstance(), _T("execute_order :: 주문 실행 오류 [%s]"), order_signal);
 		}
-		
+		}
+		catch (const std::exception& e) {
+			const std::string error = e.what();
+			LOGINFO(CMyLogger::getInstance(), "error = %s", error.c_str());
+		}
 	}
 
 	void SmOutSystemManager::init_usd_strategy()

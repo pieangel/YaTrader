@@ -18,7 +18,7 @@ namespace DarkHorse {
 	using order_p = std::shared_ptr<Order>;
 	using order_request_p = std::shared_ptr<OrderRequest>;
 	class TotalPositionManager;
-	struct GroupPosition;
+	//struct GroupPosition;
 class AccountPositionManager
 {
 public:

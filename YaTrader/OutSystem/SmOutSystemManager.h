@@ -98,7 +98,7 @@ namespace DarkHorse {
 		// arr : 데이터가 들어 있는 배열, taken : 실제 데이터가 들어 있는 갯수
 		bool ProcessSignal(const std::array<nlohmann::json, BulkOutSystemSize2>& arr, const int& taken);
 
-		void execute_order(std::string&& order_signal);
+		void execute_order(std::string order_signal);
 		// key : system name, value : strategy object.
 		std::map<std::string, SmUsdStrategy> usd_strategy_map_;
 		std::vector<std::shared_ptr<SmUsdSystem>> usd_system_vec_;

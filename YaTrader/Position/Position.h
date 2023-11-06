@@ -28,10 +28,11 @@ struct Position
 	double trade_fee{ 0.0f }; // 청산 수수료
 	std::string parent_account_no;
 	bool is_group{ false };
+	bool was_liq{ false };
 	// key : account_no, value : position
 	std::map<std::string, std::shared_ptr<Position>> sub_positions;
 };
-
+/*
 struct GroupPosition
 {
 	int id{ 0 };
@@ -47,13 +48,14 @@ struct GroupPosition
 	int pre_day_open_quantity{ 0 };
 	double trade_profit_loss{ 0.0f }; //	매매손익
 	// 소수점 반영 안한 값임. 
-	double average_price{ 0.0f };	// 평균가*/
-	double open_profit_loss{ 0.0f };		/*평가손익*/
+	double average_price{ 0.0f };	// 평균가
+	double open_profit_loss{ 0.0f };		//평가손익
 	double pure_trade_profit_loss{ 0.0f }; // 청산 순손익
 	double trade_fee{ 0.0f }; // 청산 수수료
 	// key : account_no, value : position
 	std::map<std::string, std::shared_ptr<Position>> sub_positions;
 };
+*/
 
 struct AccountProfitLoss {
 	double trade_profit_loss{ 0.0f };       //매매(청산)손익

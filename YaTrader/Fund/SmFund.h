@@ -42,7 +42,10 @@ namespace DarkHorse {
 		bool is_account_exist(const int& account_id);
 		std::shared_ptr<Position> position() const { return position_; }
 		std::shared_ptr<SmAccount> get_first_account();
+		bool was_liq() const { return was_liq_; }
+		void was_liq(bool val) { was_liq_ = val; }
 	private:
+		bool was_liq_{ false };
 		std::shared_ptr<Position> position_{ nullptr };
 		// key : account no, value : account object
 		std::vector<std::shared_ptr<SmAccount>> _AccountVector;
