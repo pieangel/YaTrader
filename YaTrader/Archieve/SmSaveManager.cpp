@@ -41,6 +41,7 @@
 #include "../Fund/SmFund.h"
 #include "../OutSystem/SmOutSystemManager.h"
 #include "../OutSystem/SmOutSystem.h"
+#include "../OutSystem/SmUsdSystem.h"
 #include "../Util/SmUtil.h"
 #include "../Symbol/SmSymbol.h"
 #include "../Symbol/SmSymbolManager.h"
@@ -2028,6 +2029,203 @@ namespace DarkHorse {
 		file.close();
 
 		mainApp.config_manager()->loadConfig(appPath);
+	}
+
+	void SmSaveManager::save_usd_system(const std::string& filename)
+	{
+		std::string id = mainApp.LoginMgr()->id();
+		// 아이디가 없으면 그냥 반환한다.
+		if (id.length() == 0)
+			return;
+
+		std::string appPath;
+		appPath = SmConfigManager::GetApplicationPath();
+		appPath.append(_T("\\user\\"));
+		appPath.append(id);
+		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
+		const fs::path directoryPath = appPath;
+
+		// Check if directory exists
+		if (fs::exists(directoryPath)) {
+			std::cout << "Directory already exists." << std::endl;
+		}
+		else {
+			// Create the directory
+			try {
+				fs::create_directory(directoryPath);
+				std::cout << "Directory created successfully." << std::endl;
+			}
+			catch (const fs::filesystem_error& e) {
+				std::cerr << "Failed to create directory: " << e.what() << std::endl;
+			}
+		}
+
+		appPath.append(_T("\\"));
+
+		appPath.append(filename);
+
+		nlohmann::json jsonData;
+		auto out_system_vec = mainApp.out_system_manager()->get_usd_system_vector();
+		for (auto it = out_system_vec.begin(); it != out_system_vec.end(); ++it) {
+			auto out_system = *it;
+			nlohmann::json out_system_json;
+
+			out_system_json["name"] = SmUtil::MultiByteToUtf8(out_system->name());
+			out_system_json["order_type"] = (int)out_system->order_type();
+			out_system_json["seung_su"] = out_system->seung_su();
+			out_system_json["account_no"] = out_system->account() ? out_system->account()->No() : "";
+			out_system_json["symbol_code"] = out_system->symbol() ? out_system->symbol()->SymbolCode() : "";
+			out_system_json["fund_name"] = out_system->fund() ? SmUtil::MultiByteToUtf8(out_system->fund()->Name()) : "";
+
+
+			json jsonStrategy;
+			jsonStrategy["type"] = out_system->strategy().type();
+
+			// Serialize group_args vector
+			for (const auto& group : out_system->strategy().group_args) {
+				json jsonGroup;
+				jsonGroup["name"] = group.name;
+
+				// Serialize sys_args vector within the group
+				for (const auto& sysArg : group.sys_args) {
+					json jsonSysArg;
+					jsonSysArg["enable"] = sysArg.enable;
+					jsonSysArg["data_source1"] = sysArg.data_source1;
+					jsonSysArg["data_source2"] = sysArg.data_source2;
+					jsonSysArg["desc"] = sysArg.desc;
+					jsonSysArg["param"] = sysArg.param;
+					jsonSysArg["name"] = sysArg.name;
+					jsonSysArg["current_value"] = sysArg.current_value;
+					jsonSysArg["result"] = sysArg.result;
+
+					jsonGroup["sys_args"].push_back(jsonSysArg);
+				}
+
+				jsonStrategy["group_args"].push_back(jsonGroup);
+			}
+
+			out_system_json["strategy"] = jsonStrategy;
+			jsonData[std::to_string(out_system->id())] = out_system_json;
+		}
+		std::ofstream file(appPath);
+		file << jsonData.dump(4);
+		file.close();
+	}
+
+	void SmSaveManager::restore_usd_system(const std::string& filename)
+	{
+		std::string id = mainApp.LoginMgr()->id();
+		// 아이디가 없으면 그냥 반환한다.
+		if (id.length() == 0)
+			return;
+
+		std::string appPath;
+		appPath = SmConfigManager::GetApplicationPath();
+		appPath.append(_T("\\user\\"));
+		appPath.append(id);
+
+		appPath.append("\\");
+		appPath.append(filename);
+		std::ifstream file(appPath);
+		if (!file.is_open()) {
+			std::cerr << "Failed to open file for restore: " << filename << std::endl;
+			return;
+		}
+
+		nlohmann::json jsonData;
+		try {
+			// Parse the JSON data from the file
+			file >> jsonData;
+		}
+		catch (const nlohmann::json::parse_error& e) {
+			std::cerr << "Failed to parse JSON file: " << e.what() << std::endl;
+			file.close();
+			return;
+		}
+		file.close();
+
+		try {
+			// Process the JSON data and reconstruct account information
+			for (json::iterator it = jsonData.begin(); it != jsonData.end(); ++it) {
+				std::string out_system_id = it.key();
+				json out_system_data = it.value();
+
+				// Extract and process account-related information
+				const std::string name = SmUtil::Utf8ToMultiByte(out_system_data["name"]);
+				const int t_order_type = out_system_data["order_type"];
+				const int seung_su = out_system_data["seung_su"];
+				DarkHorse::OrderType order_type = (DarkHorse::OrderType)t_order_type;
+				const std::string account_no = out_system_data["account_no"];
+				const std::string symbol_code = out_system_data["symbol_code"];
+				const std::string fund_name = SmUtil::Utf8ToMultiByte(out_system_data["fund_name"]);
+				auto symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
+				auto account = mainApp.AcntMgr()->FindAccount(account_no);
+				auto fund = mainApp.FundMgr()->FindFund(fund_name);
+				int mode = 0;
+				//if (!account || !symbol || !fund) continue;
+				if (order_type == OrderType::MainAccount || order_type == OrderType::SubAccount) {
+					if (!account) continue;
+					mode = 0;
+				}
+				else if (order_type == OrderType::Fund) {
+					if (!fund) continue;
+					mode = 1;
+				}
+				if (!symbol) {
+					continue;
+				}
+
+				json jsonStrategy = out_system_data["strategy"];
+				std::string type_ = jsonStrategy["type"];
+				SmUsdStrategy stratege;
+				stratege.type(type_);
+				std::vector<GroupArg> group_args;
+				group_args.clear();
+
+				if (jsonStrategy.contains("group_args") && jsonStrategy["group_args"].is_array()) {
+					for (const auto& groupData : jsonStrategy["group_args"]) {
+						GroupArg group;
+						group.name = groupData["name"];
+
+						if (groupData.contains("sys_args") && groupData["sys_args"].is_array()) {
+							for (const auto& sysArgData : groupData["sys_args"]) {
+								SysArg sysArg;
+								sysArg.enable = sysArgData["enable"];
+								sysArg.data_source1 = sysArgData["data_source1"];
+								sysArg.data_source2 = sysArgData["data_source2"];
+								sysArg.desc = sysArgData["desc"];
+								sysArg.param = sysArgData["param"];
+								sysArg.name = sysArgData["name"];
+								sysArg.current_value = sysArgData["current_value"];
+								sysArg.result = sysArgData["result"];
+
+								group.sys_args.push_back(sysArg);
+							}
+						}
+
+						group_args.push_back(group);
+					}
+					stratege.group_args = group_args;
+				}
+
+				auto out_system = mainApp.out_system_manager()->create_out_system(
+					name,
+					seung_su,
+					order_type,
+					mode == 0 ? account : nullptr,
+					mode == 1 ? fund : nullptr,
+					symbol
+				);
+
+				// Now you have the account information, you can use it as needed.
+				// You can create objects or data structures to store this information.
+				// For simplicity, we'll just print it here.
+				std::cout << "out system id: " << out_system->id() << std::endl;
+			}
+		}
+		catch (const json::parse_error& e) {
+			std::cerr << "Failed to parse JSON data: " << e.what() << std::endl;
+		}
 	}
 
 }

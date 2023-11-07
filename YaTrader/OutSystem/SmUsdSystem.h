@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include "SmUsdStrategy.h"
+#include "../Json/json.hpp"
+
+using namespace nlohmann;
 namespace DarkHorse {
 	class SmUsdSystem : public SmOutSystem
 	{
@@ -41,6 +44,8 @@ namespace DarkHorse {
 		void on_timer();
 
 		SmUsdSystem(std::string strategy_type);
+		//json toJson() const;
+		//void fromJson(const json& jsonData);
 		int order_limit_count() const { return order_limit_count_; }
 		void order_limit_count(int val) { order_limit_count_ = val; }
 		std::string strategy_type() const { return strategy_type_; }

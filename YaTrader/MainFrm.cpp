@@ -1554,8 +1554,17 @@ void CMainFrame::OnSimulStopsimul()
 
 void CMainFrame::OnUsdSystem()
 {
-	SmUSDSystemDialog dlg;
-	dlg.DoModal();
+	//SmUSDSystemDialog dlg;
+	//dlg.DoModal();
+
+	if (usd_system_dlg_) {
+		usd_system_dlg_->DestroyWindow();
+		delete usd_system_dlg_;
+		usd_system_dlg_ = nullptr;
+	}
+	usd_system_dlg_ = new SmUSDSystemDialog();
+	usd_system_dlg_->Create(IDD_SYS_AUTO_CONNECT2, this);
+	usd_system_dlg_->ShowWindow(SW_SHOW);
 }
 
 

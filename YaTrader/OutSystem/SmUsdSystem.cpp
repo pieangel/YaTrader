@@ -5,6 +5,7 @@
 #include "../OutSystem/SmOutSystemManager.h"
 #include "../Util/VtTime.h"
 #include "../Log/MyLogger.h"
+
 namespace DarkHorse {
 
 	bool SmUsdSystem::check_condition(std::string& group_arg_name, SysArg& arg)
@@ -131,5 +132,70 @@ namespace DarkHorse {
 		name_ = static_cast<const char*>(name);
 		strategy_type_ = strategy_type;
 	}
+
+	/*
+	// Function to save SmUsdStrategy to JSON
+	json SmUsdSystem::toJson() const {
+		json jsonStrategy;
+		jsonStrategy["type"] = type_;
+
+		// Serialize group_args vector
+		for (const auto& group : group_args) {
+			json jsonGroup;
+			jsonGroup["name"] = group.name;
+
+			// Serialize sys_args vector within the group
+			for (const auto& sysArg : group.sys_args) {
+				json jsonSysArg;
+				jsonSysArg["enable"] = sysArg.enable;
+				jsonSysArg["data_source1"] = sysArg.data_source1;
+				jsonSysArg["data_source2"] = sysArg.data_source2;
+				jsonSysArg["desc"] = sysArg.desc;
+				jsonSysArg["param"] = sysArg.param;
+				jsonSysArg["name"] = sysArg.name;
+				jsonSysArg["current_value"] = sysArg.current_value;
+				jsonSysArg["result"] = sysArg.result;
+
+				jsonGroup["sys_args"].push_back(jsonSysArg);
+			}
+
+			jsonStrategy["group_args"].push_back(jsonGroup);
+		}
+
+		return jsonStrategy;
+	}
+
+	// Function to restore SmUsdStrategy from JSON
+	void SmUsdSystem::fromJson(const json& jsonData) {
+		type_ = jsonData["type"];
+
+		group_args.clear();
+
+		if (jsonData.contains("group_args") && jsonData["group_args"].is_array()) {
+			for (const auto& groupData : jsonData["group_args"]) {
+				GroupArg group;
+				group.name = groupData["name"];
+
+				if (groupData.contains("sys_args") && groupData["sys_args"].is_array()) {
+					for (const auto& sysArgData : groupData["sys_args"]) {
+						SysArg sysArg;
+						sysArg.enable = sysArgData["enable"];
+						sysArg.data_source1 = sysArgData["data_source1"];
+						sysArg.data_source2 = sysArgData["data_source2"];
+						sysArg.desc = sysArgData["desc"];
+						sysArg.param = sysArgData["param"];
+						sysArg.name = sysArgData["name"];
+						sysArg.current_value = sysArgData["current_value"];
+						sysArg.result = sysArgData["result"];
+
+						group.sys_args.push_back(sysArg);
+					}
+				}
+
+				group_args.push_back(group);
+			}
+		}
+	}
+	*/
 
 } // namespace DarkHorse
