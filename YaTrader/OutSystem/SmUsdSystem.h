@@ -27,7 +27,7 @@ namespace DarkHorse {
 		VtTime end_time_;
 
 		std::string strategy_type_;
-		int order_limit_count_{ 0 };
+		int order_limit_count_{ 1 };
 		SmUsdStrategy strategy_;
 		bool check_condition(std::string& group_arg_name, SysArg& arg);
 		void check_group_condition(GroupArg& group_arg, std::vector<bool>& arg_cond);

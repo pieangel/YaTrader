@@ -102,6 +102,10 @@ void SmUsdSystemModDialog::set_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem
 {
 	if (!usd_system) return;
 
+	CString orderLimitCount;
+	orderLimitCount.Format("%d", usd_system->order_limit_count());
+	_EditEntMax.SetWindowText(orderLimitCount);
+
 	COleDateTime NewDate;
 	CTime curTime = CTime::GetCurrentTime();
 	VtTime esTime = usd_system->start_time_begin();

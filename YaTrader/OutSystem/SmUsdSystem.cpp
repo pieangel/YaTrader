@@ -12,9 +12,10 @@ namespace DarkHorse {
 	{
 		int data_source1 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source1);
 		int data_source2 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source2);
-		if (data_source1 <= 0 || data_source2 <= 0) return false;
 		double param = std::stod(arg.param);
-		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], data_source1[%s],value1[%d], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.data_source1.c_str(), data_source1, arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
+		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], enable[%s],  data_source1[%s],value1[%d], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.enable ? "true" : "false", arg.data_source1.c_str(), data_source1, arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
+		if (arg.enable == false) return true;
+		if (data_source1 <= 0 || data_source2 <= 0) return false;
 		if (data_source1 * param > data_source2) return true;
 		return false;
 	}
@@ -34,6 +35,15 @@ namespace DarkHorse {
 		check_group_condition(group_arg, arg_cond);
 		if (arg_cond.size() == 0)
 			return false;
+
+		bool enable = false;
+		for (int i = 0; i < 4; i++) {
+			if (group_arg.sys_args[i].enable) {
+				enable = true;
+				break;
+			}
+		}
+		if (!enable) return false;
 
 		// 하나의 조건이라도 거짓이면 신호 없음. 모두가 참이면 매수 반환
 		auto it = std::find(arg_cond.begin(), arg_cond.end(), false);
@@ -74,7 +84,7 @@ namespace DarkHorse {
 
 	bool SmUsdSystem::CheckOrderLimit()
 	{
-		if (entrance_count_ > order_limit_count_)
+		if (entrance_count_ >= order_limit_count_)
 			return false;
 		else
 			return true;
@@ -103,23 +113,43 @@ namespace DarkHorse {
 
 	void SmUsdSystem::on_timer()
 	{
-		if (!enable_) return;
-
-		if (CheckLigByTime())
+		LOGINFO(CMyLogger::getInstance(), _T("on_timer::%s"), __FUNCTION__);
+		if (!enable_) {
+			LOGINFO(CMyLogger::getInstance(), _T("enable_::%s"), __FUNCTION__);
+			return;
+		}
+		if (CheckLigByTime()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckLigByTime::%s"), __FUNCTION__);
 			liq_all();
+		}
+		if (!CheckEntranceBar()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceBar::%s"), __FUNCTION__);
+			return;
+		}
 
-		if (!CheckEntranceBar()) return;
+		if (!CheckOrderLimit()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s"), __FUNCTION__);
+			return;
+		}
 
 		if (CheckEntranceForBuy()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s"), __FUNCTION__);
+			entrance_count_++;
 			put_order(name_, 1, 1);
 		}
 		else if (CheckEntranceForSell()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s"), __FUNCTION__);
+			entrance_count_++;
 			put_order(name_, 3, 1);
 		}
 		else if (CheckLiqForBuy()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForBuy::%s"), __FUNCTION__);
+			entrance_count_++;
 			put_order(name_, 2, 1);
 		}
 		else if (CheckLiqForSell()) {
+			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForSell::%s"), __FUNCTION__);
+			entrance_count_++;
 			put_order(name_, 4, 1);
 		}
 	}
@@ -131,71 +161,17 @@ namespace DarkHorse {
 		name.Format("%s_%d", "usd_system", id_);
 		name_ = static_cast<const char*>(name);
 		strategy_type_ = strategy_type;
+
+		start_time_begin_.hour = 8;
+		start_time_begin_.min = 45;
+		start_time_begin_.sec = 0;
+		start_time_end_.hour = 15;
+		start_time_end_.min = 45;
+		start_time_end_.sec = 0;
+
+		end_time_.hour = 15;
+		end_time_.min = 45;
+		end_time_.sec = 0;
 	}
-
-	/*
-	// Function to save SmUsdStrategy to JSON
-	json SmUsdSystem::toJson() const {
-		json jsonStrategy;
-		jsonStrategy["type"] = type_;
-
-		// Serialize group_args vector
-		for (const auto& group : group_args) {
-			json jsonGroup;
-			jsonGroup["name"] = group.name;
-
-			// Serialize sys_args vector within the group
-			for (const auto& sysArg : group.sys_args) {
-				json jsonSysArg;
-				jsonSysArg["enable"] = sysArg.enable;
-				jsonSysArg["data_source1"] = sysArg.data_source1;
-				jsonSysArg["data_source2"] = sysArg.data_source2;
-				jsonSysArg["desc"] = sysArg.desc;
-				jsonSysArg["param"] = sysArg.param;
-				jsonSysArg["name"] = sysArg.name;
-				jsonSysArg["current_value"] = sysArg.current_value;
-				jsonSysArg["result"] = sysArg.result;
-
-				jsonGroup["sys_args"].push_back(jsonSysArg);
-			}
-
-			jsonStrategy["group_args"].push_back(jsonGroup);
-		}
-
-		return jsonStrategy;
-	}
-
-	// Function to restore SmUsdStrategy from JSON
-	void SmUsdSystem::fromJson(const json& jsonData) {
-		type_ = jsonData["type"];
-
-		group_args.clear();
-
-		if (jsonData.contains("group_args") && jsonData["group_args"].is_array()) {
-			for (const auto& groupData : jsonData["group_args"]) {
-				GroupArg group;
-				group.name = groupData["name"];
-
-				if (groupData.contains("sys_args") && groupData["sys_args"].is_array()) {
-					for (const auto& sysArgData : groupData["sys_args"]) {
-						SysArg sysArg;
-						sysArg.enable = sysArgData["enable"];
-						sysArg.data_source1 = sysArgData["data_source1"];
-						sysArg.data_source2 = sysArgData["data_source2"];
-						sysArg.desc = sysArgData["desc"];
-						sysArg.param = sysArgData["param"];
-						sysArg.name = sysArgData["name"];
-						sysArg.current_value = sysArgData["current_value"];
-						sysArg.result = sysArgData["result"];
-
-						group.sys_args.push_back(sysArg);
-					}
-				}
-
-				group_args.push_back(group);
-			}
-		}
-	}
-	*/
 
 } // namespace DarkHorse

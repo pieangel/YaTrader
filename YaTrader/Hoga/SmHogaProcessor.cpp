@@ -90,7 +90,7 @@ void SmHogaProcessor::ProcessHoga(nlohmann::json&& hoga)
 
 		symbol->hoga_requested(true);
 
-		mainApp.out_system_manager()->usd_system_data().update_data(symbol_code, hoga_p->TotBuyQty, hoga_p->TotSellQty, hoga_p->TotBuyCnt, hoga_p->TotSellCnt);
+		mainApp.out_system_manager()->update_data(symbol_code, hoga_p->TotBuyQty, hoga_p->TotSellQty, hoga_p->TotBuyCnt, hoga_p->TotSellCnt);
 
 		mainApp.event_hub()->process_hoga_event(hoga_p);
 

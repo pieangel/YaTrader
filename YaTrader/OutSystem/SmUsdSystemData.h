@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <map>
+#include "../Log/MyLogger.h"
+
 namespace DarkHorse {
 	class SmUsdSystemData
 	{
@@ -27,20 +29,25 @@ namespace DarkHorse {
 			return -1;
 		}
 		void update_data(const std::string& symbol_code, int bs, int as, int bc, int ac) {
+			
+			//LOGINFO(CMyLogger::getInstance(), "update_data symbol_code[%s], bs[%d], as[%d], bc[%d], ac[%d]", symbol_code.c_str(), bs, as, bc, ac);
 			std::string prefix = symbol_code.substr(0, 3);
-			if (symbol_code == "101") {
+			if (prefix == "101") {
+				//LOGINFO(CMyLogger::getInstance(), "update_data symbol_code[%s], bs[%d], as[%d], bc[%d], ac[%d]", symbol_code.c_str(), bs, as, bc, ac);
 				data_map["kbs"] = bs;
 				data_map["kas"] = as;
 				data_map["kbc"] = bc;
 				data_map["kac"] = ac;
 			}
-			else if (symbol_code == "106") {
+			else if (prefix == "106") {
+				//LOGINFO(CMyLogger::getInstance(), "update_data symbol_code[%s], bs[%d], as[%d], bc[%d], ac[%d]", symbol_code.c_str(), bs, as, bc, ac);
 				data_map["qbs"] = bs;
 				data_map["qas"] = as;
 				data_map["qbc"] = bc;
 				data_map["qac"] = ac;
 			}
-			else if (symbol_code == "175") {
+			else if (prefix == "175") {
+				//LOGINFO(CMyLogger::getInstance(), "update_data symbol_code[%s], bs[%d], as[%d], bc[%d], ac[%d]", symbol_code.c_str(), bs, as, bc, ac);
 				data_map["ubs"] = bs;
 				data_map["uas"] = as;
 				data_map["ubc"] = bc;

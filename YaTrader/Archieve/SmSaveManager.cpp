@@ -2076,6 +2076,7 @@ namespace DarkHorse {
 			out_system_json["account_no"] = out_system->account() ? out_system->account()->No() : "";
 			out_system_json["symbol_code"] = out_system->symbol() ? out_system->symbol()->SymbolCode() : "";
 			out_system_json["fund_name"] = out_system->fund() ? SmUtil::MultiByteToUtf8(out_system->fund()->Name()) : "";
+			out_system_json["order_limit_count"] = out_system->order_limit_count();
 
 
 			json jsonStrategy;
@@ -2158,6 +2159,7 @@ namespace DarkHorse {
 				const std::string account_no = out_system_data["account_no"];
 				const std::string symbol_code = out_system_data["symbol_code"];
 				const std::string fund_name = SmUtil::Utf8ToMultiByte(out_system_data["fund_name"]);
+				const int order_limit_count = out_system_data["order_limit_count"];
 				auto symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
 				auto account = mainApp.AcntMgr()->FindAccount(account_no);
 				auto fund = mainApp.FundMgr()->FindFund(fund_name);

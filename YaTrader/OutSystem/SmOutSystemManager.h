@@ -42,6 +42,7 @@ namespace DarkHorse {
 			std::shared_ptr<SmSymbol> symbol
 		);
 
+		void update_data(const std::string& symbol_code, int bs, int as, int bc, int ac);
 		void remove_out_system(std::shared_ptr<SmOutSystem> out_system);
 		void remove_usd_system(std::shared_ptr<SmUsdSystem> out_system);
 		void remove_out_system_from_map(std::shared_ptr<SmOutSystem> out_system);

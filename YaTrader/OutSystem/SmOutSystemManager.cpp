@@ -84,6 +84,11 @@ namespace DarkHorse {
 		return usd_system;
 	}
 
+	void SmOutSystemManager::update_data(const std::string& symbol_code, int bs, int as, int bc, int ac)
+	{
+		usd_system_data_.update_data(symbol_code, bs, as, bc, ac);
+	}
+
 	void SmOutSystemManager::remove_out_system(std::shared_ptr<SmOutSystem> out_system)
 	{
 		if (!out_system) return;
@@ -152,6 +157,7 @@ namespace DarkHorse {
 
 	void SmOutSystemManager::OnTimer()
 	{
+		LOGINFO(CMyLogger::getInstance(), _T("OnTimer::%s"), __FUNCTION__);
 		for (auto& usd_system : usd_system_vec_) {
 			usd_system->on_timer();
 		}
