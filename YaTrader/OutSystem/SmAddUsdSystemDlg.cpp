@@ -170,6 +170,27 @@ BOOL SmAddUsdSystemDlg::OnInitDialog()
 
 	_EditEntMax.SetWindowText("0");
 
+	COleDateTime NewDate;
+	CTime curTime = CTime::GetCurrentTime();
+	VtTime esTime;
+	esTime.hour = 8;
+	esTime.min = 45;
+	esTime.sec = 0;
+	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
+	_DpEntBegin.SetTime(NewDate);
+
+	esTime.hour = 14;
+	esTime.min = 45;
+	esTime.sec = 0;
+	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
+	_DpEntEnd.SetTime(NewDate);
+
+	esTime.hour = 15;
+	esTime.min = 30;
+	esTime.sec = 0;
+	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
+	_DpLiq.SetTime(NewDate);
+
 	InitCombo();
 	InitUsdStrategyCombo();
 	return TRUE;  // return TRUE unless you set the focus to a control

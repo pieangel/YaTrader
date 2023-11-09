@@ -64,22 +64,38 @@ namespace DarkHorse {
 
 	bool SmUsdSystem::CheckEntranceForBuy()
 	{
-		return check_entrance(0);
+		bool result = check_entrance(0);
+
+		LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy :: result = [%s]"), result ? "true" : "false");
+
+		return result;
 	}
 
 	bool SmUsdSystem::CheckEntranceForSell()
 	{
-		return check_entrance(1);
+		bool result = check_entrance(1);
+
+		LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell :: result = [%s]"), result ? "true" : "false");
+
+		return result;
 	}
 
 	bool SmUsdSystem::CheckLiqForBuy()
 	{
-		return check_entrance(2);
+		bool result = check_entrance(2);
+
+		LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForBuy :: result = [%s]"), result ? "true" : "false");
+
+		return result;
 	}
 
 	bool SmUsdSystem::CheckLiqForSell()
 	{
-		return check_entrance(3);
+		bool result = check_entrance(3);
+
+		LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForSell :: result = [%s]"), result ? "true" : "false");
+
+		return result;
 	}
 
 	bool SmUsdSystem::CheckOrderLimit()
@@ -127,27 +143,38 @@ namespace DarkHorse {
 			return;
 		}
 
-		if (!CheckOrderLimit()) {
-			LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s"), __FUNCTION__);
-			return;
-		}
-
 		if (CheckEntranceForBuy()) {
+			if (!CheckOrderLimit()) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s"), __FUNCTION__);
 			entrance_count_++;
 			put_order(name_, 1, 1);
 		}
 		else if (CheckEntranceForSell()) {
+			if (!CheckOrderLimit()) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s"), __FUNCTION__);
 			entrance_count_++;
 			put_order(name_, 3, 1);
 		}
 		else if (CheckLiqForBuy()) {
+			if (!CheckOrderLimit()) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForBuy::%s"), __FUNCTION__);
 			entrance_count_++;
 			put_order(name_, 2, 1);
 		}
 		else if (CheckLiqForSell()) {
+			if (!CheckOrderLimit()) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForSell::%s"), __FUNCTION__);
 			entrance_count_++;
 			put_order(name_, 4, 1);
