@@ -11,6 +11,8 @@ namespace DarkHorse {
 	class SmUsdSystem : public SmOutSystem
 	{
 	private:
+		int buy_position_count_{ 0 };
+		int sell_position_count_{ 0 };
 		bool was_liq{ false };
 		int entrance_count_{ 0 };
 		/// <summary>
