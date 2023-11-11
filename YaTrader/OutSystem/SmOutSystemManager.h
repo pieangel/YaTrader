@@ -75,7 +75,7 @@ namespace DarkHorse {
 		static SmPriceType price_type;
 		const std::vector<std::string>& get_usd_strategy_vec() const { return usd_strategy_vec_; }
 		SmUsdStrategy get_usd_strategy(const std::string& strategy_type) const;
-		std::string get_usd_strategy_name();
+		std::string get_usd_system_name();
 		SmUsdSystemData& usd_system_data() { return usd_system_data_; }
 	private:
 		void OnTimer();

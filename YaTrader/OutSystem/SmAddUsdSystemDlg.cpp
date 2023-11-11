@@ -321,7 +321,7 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	}
 	CString strSeungSu;
 	_EditSeungsu.GetWindowText(strSeungSu);
-	const std::string usd_system_name = mainApp.out_system_manager()->get_usd_strategy_name();
+	const std::string usd_system_name = mainApp.out_system_manager()->get_usd_system_name();
 	std::shared_ptr<DarkHorse::SmUsdSystem> usd_system = mainApp.out_system_manager()->create_usd_system
 	(
 		usd_system_name,

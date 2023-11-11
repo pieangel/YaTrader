@@ -882,6 +882,7 @@ void CMainFrame::OnClose()
 		mainApp.QuoteMgr()->StopAllQuoteProcess();
 		mainApp.QuoteMgr()->StopProcess();
 		mainApp.order_request_manager()->stop_handle_order_request();
+		mainApp.out_system_manager()->StopProcess();
 		//SystemConfig config;
 		//config.app_name = "DarkHorse";
 		//config.version = 1.0;
@@ -893,6 +894,7 @@ void CMainFrame::OnClose()
 		mainApp.SaveMgr()->save_account("account_list.json");
 		mainApp.SaveMgr()->save_fund("fund_list.json");
 		mainApp.SaveMgr()->save_out_system("out_system_list.json");
+		mainApp.SaveMgr()->save_usd_system("usd_system_list.json");
 
 		mainApp.SaveMgr()->save_dm_account_order_windows("dm_account_order_windows", dm_account_order_wnd_map_);
 		mainApp.SaveMgr()->save_dm_fund_order_windows("dm_fund_order_windows", dm_fund_order_wnd_map_);
@@ -908,7 +910,6 @@ void CMainFrame::OnClose()
 
 		mainApp.TaskReqMgr()->StopProcess();
 		mainApp.file_watch_monitor()->Stop();
-		mainApp.out_system_manager()->StopProcess();
 
 		std::vector<int> date_time = SmUtil::GetLocalDateTime();
 
@@ -939,6 +940,7 @@ void CMainFrame::StartLoad()
 	mainApp.SaveMgr()->restore_account("account_list.json");
 	mainApp.SaveMgr()->restore_fund("fund_list.json");
 	mainApp.SaveMgr()->restore_out_system("out_system_list.json");
+	mainApp.SaveMgr()->restore_usd_system("usd_system_list.json");
 	mainApp.SaveMgr()->restore_dm_account_order_windows(this, "dm_account_order_windows", dm_account_order_wnd_map_);
 	mainApp.SaveMgr()->restore_dm_fund_order_windows(this, "dm_fund_order_windows", dm_fund_order_wnd_map_);
 	mainApp.SaveMgr()->restore_dm_mini_jango_windows_from_json(this, "dm_mini_jango_windows.json", mini_jango_wnd_map_);

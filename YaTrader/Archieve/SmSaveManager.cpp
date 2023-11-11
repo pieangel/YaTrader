@@ -2077,6 +2077,13 @@ namespace DarkHorse {
 			out_system_json["symbol_code"] = out_system->symbol() ? out_system->symbol()->SymbolCode() : "";
 			out_system_json["fund_name"] = out_system->fund() ? SmUtil::MultiByteToUtf8(out_system->fund()->Name()) : "";
 			out_system_json["order_limit_count"] = out_system->order_limit_count();
+			CString time;
+			time.Format("%02d%02d%02d", out_system->start_time_begin().hour, out_system->start_time_begin().min, out_system->start_time_begin().sec);
+			out_system_json["start_time_begin"] = static_cast<const char*>(time);
+			time.Format("%02d%02d%02d", out_system->start_time_end().hour, out_system->start_time_end().min, out_system->start_time_end().sec);
+			out_system_json["start_time_end"] = static_cast<const char*>(time);
+			time.Format("%02d%02d%02d", out_system->end_time().hour, out_system->end_time().min, out_system->end_time().sec);
+			out_system_json["end_time"] = static_cast<const char*>(time);
 
 
 			json jsonStrategy;
@@ -2085,7 +2092,7 @@ namespace DarkHorse {
 			// Serialize group_args vector
 			for (const auto& group : out_system->strategy().group_args) {
 				json jsonGroup;
-				jsonGroup["name"] = group.name;
+				jsonGroup["name"] = SmUtil::MultiByteToUtf8(group.name);
 
 				// Serialize sys_args vector within the group
 				for (const auto& sysArg : group.sys_args) {
@@ -2093,9 +2100,9 @@ namespace DarkHorse {
 					jsonSysArg["enable"] = sysArg.enable;
 					jsonSysArg["data_source1"] = sysArg.data_source1;
 					jsonSysArg["data_source2"] = sysArg.data_source2;
-					jsonSysArg["desc"] = sysArg.desc;
+					jsonSysArg["desc"] = SmUtil::MultiByteToUtf8(sysArg.desc);
 					jsonSysArg["param"] = sysArg.param;
-					jsonSysArg["name"] = sysArg.name;
+					jsonSysArg["name"] = SmUtil::MultiByteToUtf8(sysArg.name);
 					jsonSysArg["current_value"] = sysArg.current_value;
 					jsonSysArg["result"] = sysArg.result;
 
@@ -2152,7 +2159,7 @@ namespace DarkHorse {
 				json out_system_data = it.value();
 
 				// Extract and process account-related information
-				const std::string name = SmUtil::Utf8ToMultiByte(out_system_data["name"]);
+				const std::string name = mainApp.out_system_manager()->get_usd_system_name(); // SmUtil::Utf8ToMultiByte(out_system_data["name"]);
 				const int t_order_type = out_system_data["order_type"];
 				const int seung_su = out_system_data["seung_su"];
 				DarkHorse::OrderType order_type = (DarkHorse::OrderType)t_order_type;
@@ -2177,6 +2184,55 @@ namespace DarkHorse {
 					continue;
 				}
 
+				std::string start_time_begin = out_system_data["start_time_begin"];
+
+				std::string hours_str = start_time_begin.substr(0, 2);
+				std::string minutes_str = start_time_begin.substr(2, 2);
+				std::string seconds_str = start_time_begin.substr(4, 2);
+
+				// Converting string to integers
+				int hours = std::stoi(hours_str);
+				int minutes = std::stoi(minutes_str);
+				int seconds = std::stoi(seconds_str);
+
+				VtTime start_time_begin_t;
+				start_time_begin_t.hour = hours;
+				start_time_begin_t.min = minutes;
+				start_time_begin_t.sec = seconds;
+
+				std::string start_time_end = out_system_data["start_time_end"];
+
+
+				hours_str = start_time_end.substr(0, 2);
+				minutes_str = start_time_end.substr(2, 2);
+				seconds_str = start_time_end.substr(4, 2);
+
+				// Converting string to integers
+				hours = std::stoi(hours_str);
+				minutes = std::stoi(minutes_str);
+				seconds = std::stoi(seconds_str);
+
+				VtTime start_time_end_t;
+				start_time_end_t.hour = hours;
+				start_time_end_t.min = minutes;
+				start_time_end_t.sec = seconds;
+
+				std::string end_time = out_system_data["end_time"];
+				hours_str = start_time_end.substr(0, 2);
+				minutes_str = start_time_end.substr(2, 2);
+				seconds_str = start_time_end.substr(4, 2);
+
+				// Converting string to integers
+				hours = std::stoi(hours_str);
+				minutes = std::stoi(minutes_str);
+				seconds = std::stoi(seconds_str);
+
+				VtTime end_time_t;
+				end_time_t.hour = hours;
+				end_time_t.min = minutes;
+				end_time_t.sec = seconds;
+
+
 				json jsonStrategy = out_system_data["strategy"];
 				std::string type_ = jsonStrategy["type"];
 				SmUsdStrategy stratege;
@@ -2187,7 +2243,7 @@ namespace DarkHorse {
 				if (jsonStrategy.contains("group_args") && jsonStrategy["group_args"].is_array()) {
 					for (const auto& groupData : jsonStrategy["group_args"]) {
 						GroupArg group;
-						group.name = groupData["name"];
+						group.name = SmUtil::Utf8ToMultiByte(groupData["name"]);
 
 						if (groupData.contains("sys_args") && groupData["sys_args"].is_array()) {
 							for (const auto& sysArgData : groupData["sys_args"]) {
@@ -2195,9 +2251,9 @@ namespace DarkHorse {
 								sysArg.enable = sysArgData["enable"];
 								sysArg.data_source1 = sysArgData["data_source1"];
 								sysArg.data_source2 = sysArgData["data_source2"];
-								sysArg.desc = sysArgData["desc"];
+								sysArg.desc = SmUtil::Utf8ToMultiByte(sysArgData["desc"]);
 								sysArg.param = sysArgData["param"];
-								sysArg.name = sysArgData["name"];
+								sysArg.name = SmUtil::Utf8ToMultiByte(sysArgData["name"]);
 								sysArg.current_value = sysArgData["current_value"];
 								sysArg.result = sysArgData["result"];
 
@@ -2210,7 +2266,7 @@ namespace DarkHorse {
 					stratege.group_args = group_args;
 				}
 
-				auto out_system = mainApp.out_system_manager()->create_out_system(
+				auto out_system = mainApp.out_system_manager()->create_usd_system(
 					name,
 					seung_su,
 					order_type,
@@ -2218,6 +2274,13 @@ namespace DarkHorse {
 					mode == 1 ? fund : nullptr,
 					symbol
 				);
+
+				out_system->order_limit_count(order_limit_count);
+				out_system->start_time_begin(start_time_begin_t);
+				out_system->start_time_end(start_time_end_t);
+				out_system->end_time(end_time_t);
+				out_system->strategy(stratege);
+				
 
 				// Now you have the account information, you can use it as needed.
 				// You can create objects or data structures to store this information.

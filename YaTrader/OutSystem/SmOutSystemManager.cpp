@@ -23,7 +23,7 @@ namespace DarkHorse {
 		return usd_strategy_map_.at(strategy_type);
 	}
 
-	std::string SmOutSystemManager::get_usd_strategy_name()
+	std::string SmOutSystemManager::get_usd_system_name()
 	{
 		std::string usd_strategy_name;
 		usd_strategy_name = "usd_system_";

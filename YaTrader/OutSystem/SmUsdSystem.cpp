@@ -53,6 +53,17 @@ namespace DarkHorse {
 			return true;
 	}
 
+	bool SmUsdSystem::check_entrance_by_time()
+	{
+		int curTime = VtTimeUtil::GetTime(VtTimeUtil::GetLocalTime());
+		int startTime = VtTimeUtil::GetTime(start_time_begin_);
+		int endTime = VtTimeUtil::GetTime(start_time_end_);
+		if (curTime < startTime || curTime > endTime)
+			return false;
+		else
+			return true;
+	}
+
 	bool SmUsdSystem::CheckEntranceBar()
 	{
 		VtTime time = VtTimeUtil::GetLocalTime();
@@ -129,14 +140,23 @@ namespace DarkHorse {
 
 	void SmUsdSystem::on_timer()
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("on_timer::%s"), __FUNCTION__);
+		//LOGINFO(CMyLogger::getInstance(), _T("on_timer::%s"), __FUNCTION__);
+		if (was_liq) {
+			LOGINFO(CMyLogger::getInstance(), _T("%s was_liq[%s]"), __FUNCTION__, was_liq ? "true" : "false");
+			return;
+		}
 		if (!enable_) {
-			LOGINFO(CMyLogger::getInstance(), _T("enable_::%s"), __FUNCTION__);
+			//LOGINFO(CMyLogger::getInstance(), _T("%s enable_[%s]"), __FUNCTION__, enable_ ? "true" : "false");
 			return;
 		}
 		if (CheckLigByTime()) {
-			LOGINFO(CMyLogger::getInstance(), _T("CheckLigByTime::%s"), __FUNCTION__);
+			LOGINFO(CMyLogger::getInstance(), _T("CheckLigByTime::%s time[%02d:%02d:%02d"), __FUNCTION__, end_time_.hour, end_time_.min, end_time_.sec);
 			liq_all();
+			was_liq = true;
+		}
+		if (check_entrance_by_time()) {
+			LOGINFO(CMyLogger::getInstance(), _T("check_entrance_by_time::%s"), __FUNCTION__);
+			return;
 		}
 		if (!CheckEntranceBar()) {
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceBar::%s"), __FUNCTION__);
