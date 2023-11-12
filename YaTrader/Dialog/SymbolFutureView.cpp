@@ -11,6 +11,7 @@
 #include "../Symbol/SmProduct.h"
 #include "../Util/SmUtil.h"
 #include "../Event/EventHub.h"
+#include "../Task/SmTaskRequestManager.h"
 #include <format>
 
 using namespace DarkHorse;
@@ -51,7 +52,8 @@ void SymbolFutureView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	auto found = row_to_symbol_.find(id.m_nRow);
 	if (found == row_to_symbol_.end()) return;
-
+	request_symbol_quote(found->second);
+	request_symbol_hoga(found->second);
 	mainApp.event_hub()->process_symbol_event(source_window_id_, found->second);
 	Invalidate();
 
@@ -171,6 +173,29 @@ void SymbolFutureView::OnDestroy()
 {
 	SaveState(_T("BasicGrid"));
 	CBCGPGridCtrl::OnDestroy();
+}
+
+void SymbolFutureView::request_symbol_quote(std::shared_ptr<DarkHorse::SmSymbol> symbol)
+{
+	if (!symbol || symbol->quote_requested()) return;
+	DhTaskArg arg;
+	arg.detail_task_description = symbol->SymbolCode();
+	//arg.argument_id = YaServerDataReceiver::get_argument_id();
+	arg.task_type = DhTaskType::DmSymbolQuote;
+	arg.parameter_map["symbol_code"] = symbol->SymbolCode();
+	arg.parameter_map["gubun_code"] = symbol->gubun_code();
+	mainApp.TaskReqMgr()->AddTask(std::move(arg));
+}
+
+void SymbolFutureView::request_symbol_hoga(std::shared_ptr<DarkHorse::SmSymbol> symbol)
+{
+	DhTaskArg arg;
+	arg.detail_task_description = symbol->SymbolCode();
+	//arg.argument_id = YaServerDataReceiver::get_argument_id();
+	arg.task_type = DhTaskType::DmSymbolHoga;
+	arg.parameter_map["symbol_code"] = symbol->SymbolCode();
+	arg.parameter_map["gubun_code"] = symbol->gubun_code();
+	mainApp.TaskReqMgr()->AddTask(std::move(arg));
 }
 
 void SymbolFutureView::ClearGrid()

@@ -1808,14 +1808,16 @@ void YaClient::on_dm_trade_profit_loss(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
 	const std::string account_no = data;
 	trade_profit_loss["account_no"] = account_no;
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: 계좌번호[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: 계좌번호[%s]"), data);
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251009"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("sonik"), data, sizeof(data), 0);		// 실현손익 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: 실현손익[%s]"), data);
 	trade_profit_loss["trade_profit_loss"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// 수수료 값을 가져옵니다.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: 수수료[%s]"), data);
 	trade_profit_loss["trade_fee"] = _ttof(data);
 
 
@@ -2032,6 +2034,7 @@ void YaClient::on_dm_fut_hoga(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// 종목코드 값을 가져옵니다.
 	const std::string symbol_code = data;
 	hoga["symbol_code"] = symbol_code;
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_fut_hoga:: symbol code[%s]"), symbol_code.c_str());
 	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));

@@ -475,6 +475,12 @@ void DarkHorse::YaStockClient::ExecTask(DhTaskArg&& task)
 	case DhTaskType::AbSymbolHoga:
 		//_ViCtrol->ab_symbol_hoga(std::move(task));
 		break;
+	case DhTaskType::DmSymbolQuote:
+		_ViCtrol->dm_symbol_quote(std::move(task));
+		break;
+	case DhTaskType::DmSymbolHoga:
+		_ViCtrol->dm_symbol_hoga(std::move(task));
+		break;
 	}
 }
 

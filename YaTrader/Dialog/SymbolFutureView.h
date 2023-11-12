@@ -24,6 +24,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	std::map<int, std::shared_ptr<DarkHorse::SmSymbol>> row_to_symbol_;
+	void request_symbol_quote(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+	void request_symbol_hoga(std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	COLORREF _DefaultBackColor;
 	void ClearGrid();
 	bool init_ = false;

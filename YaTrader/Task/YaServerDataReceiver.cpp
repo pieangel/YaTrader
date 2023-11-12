@@ -627,7 +627,7 @@ namespace DarkHorse {
 			const auto& year_month = year_month_map.begin()->second;
 			const auto& symbol = year_month->get_first_symbol();
 			register_symbol(symbol);
-			break;
+			//break;
 		}
 		
 		std::vector<DarkHorse::DmOption>& option_vec = mainApp.SymMgr()->get_dm_option_vec();
