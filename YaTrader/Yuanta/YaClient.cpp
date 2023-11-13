@@ -2809,11 +2809,6 @@ void YaClient::on_realtime_order()
 	order_info["cancelled_count"] = modified_count;
 	order_info["modified_count"] = modified_count;
 
-	if (modified_count > 0) 
-		order_info["order_type"] = "2";
-	else
-		order_info["order_type"] = "1";
-
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order::  정정/취소 수량 [%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("cheuv"), data, sizeof(data), 0);		// 체결단가(c.yak_price) 값을 가져옵니다.
@@ -2851,19 +2846,70 @@ void YaClient::on_realtime_order()
 	BYTE buy_or_sell;
 	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// 매수(4) 매도(8) 값을 가져옵니다.
 	
+
+	switch (buy_or_sell)
+	{
+	case '4': // 메수
+	case '8': // 매도
+	case '1': // 매수주문
+	case '2': // 매도주문
+		order_info["order_type"] = '1';
+		break;
+	case 'N': // 정정주문
+	case 'J': // 매수정정주문
+	case 'j': // 매도정정주문
+	case 'M': // 매수정정주문
+	case 'm': // 매도정정주문
+		order_info["order_type"] = "2";
+		break;
+	case 'D': // 취소주문
+	case 'Z': // 매수취소주문
+	case 'z': // 매도최수주문
+	case 'C': // 매수취소주문
+	case 'c': // 매도취소주문
+		order_info["order_type"] = "3";
+		break;
+	case 'R': // 매수주문거부
+	case 'r': // 매도주문거부
+	case 'S': // 매수거부확인
+	case 's': // 매도거부확인
+	case 'T': // 정정거부
+	case 't': // 취소거부
+		order_info["order_type"] = "1";
+		break;
+	case 'U': // 알수없음.
+		order_info["order_type"] = "1";
+		break;
+	default:
+		order_info["order_type"] = '1';
+		break;
+	}
+
+
 	switch (buy_or_sell)
 	{
 		case '1':
 		case '4':
+		case 'J':
+		case 'M':
+		case 'Z':
+		case 'C':
+		case 'R':
+		case 'S':
 			order_info["position_type"] = "1";
 			break;
 		case '2':
 		case '8':
+		case 'j':
+		case 'm':
+		case 'z':
+		case 'c':
+		case 'r':
+		case 's':
 			order_info["position_type"] = "2";
 			break;
-		case 'c':
-			order_info["position_type"] = "1";
-			order_info["order_type"] = "3";
+		default:
+			order_info["position_type"] = "0";
 			break;
 	}
 	//order_info["position_type"] = ((buy_or_sell == '4') || (buy_or_sell == '1')) ? "1" : "2";
