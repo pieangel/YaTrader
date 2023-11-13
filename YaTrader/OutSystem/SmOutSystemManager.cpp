@@ -157,7 +157,7 @@ namespace DarkHorse {
 
 	void SmOutSystemManager::OnTimer()
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("OnTimer::%s"), __FUNCTION__);
+		//LOGINFO(CMyLogger::getInstance(), _T("OnTimer::%s"), __FUNCTION__);
 		for (auto& usd_system : usd_system_vec_) {
 			usd_system->on_timer();
 		}
