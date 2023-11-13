@@ -158,7 +158,7 @@ namespace DarkHorse {
 			liq_all();
 			was_liq = true;
 		}
-		if (check_entrance_by_time()) {
+		if (!check_entrance_by_time()) {
 			LOGINFO(CMyLogger::getInstance(), _T("check_entrance_by_time::%s"), __FUNCTION__);
 			return;
 		}
@@ -172,6 +172,7 @@ namespace DarkHorse {
 				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
 				return;
 			}
+			if (buy_position_count_ > 0) return;
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s"), __FUNCTION__);
 			entrance_count_++;
 			buy_position_count_++;
@@ -182,6 +183,7 @@ namespace DarkHorse {
 				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
 				return;
 			}
+			if (sell_position_count_ > 0) return;
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s"), __FUNCTION__);
 			entrance_count_++;
 			sell_position_count_++;
@@ -197,7 +199,7 @@ namespace DarkHorse {
 				return;
 			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForBuy::%s"), __FUNCTION__);
-			entrance_count_++;
+			//entrance_count_++;
 			buy_position_count_--;
 			put_order(name_, 2, 1);
 		}
@@ -211,7 +213,7 @@ namespace DarkHorse {
 				return;
 			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckLiqForSell::%s"), __FUNCTION__);
-			entrance_count_++;
+			//entrance_count_++;
 			sell_position_count_--;
 			put_order(name_, 4, 1);
 		}
