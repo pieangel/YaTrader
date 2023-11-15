@@ -36,7 +36,7 @@ namespace DarkHorse {
 		make_out_system_signal_map();
 		init_usd_strategy();
 		init_usd_strategy_vec();
-		create_timer_for_usd_system();
+		//create_timer_for_usd_system();
 	}
 
 
@@ -159,6 +159,7 @@ namespace DarkHorse {
 	{
 		//LOGINFO(CMyLogger::getInstance(), _T("OnTimer::%s"), __FUNCTION__);
 		for (auto& usd_system : usd_system_vec_) {
+			if (!usd_system->enable()) continue;
 			usd_system->on_timer();
 		}
 	}

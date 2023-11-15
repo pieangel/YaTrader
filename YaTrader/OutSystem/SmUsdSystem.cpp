@@ -13,7 +13,16 @@ namespace DarkHorse {
 		int data_source1 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source1);
 		int data_source2 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source2);
 		double param = std::stod(arg.param);
-		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], enable[%s],  data_source1[%s],value1[%d], param[%.2f], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.enable ? "true" : "false", arg.data_source1.c_str(), data_source1, arg.param.c_str(),  arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
+		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], enable[%s],  data_source1[%s],value1[%d], param[%s], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), 
+			group_arg_name.c_str(), 
+			arg.enable ? "true" : "false", 
+			arg.data_source1.c_str(), 
+			data_source1, 
+			arg.param.c_str(),  
+			arg.data_source2.c_str(), 
+			data_source2, 
+			data_source1 * param, 
+			data_source2);
 		if (arg.enable == false) return true;
 		if (data_source1 <= 0 || data_source2 <= 0) return false;
 		if (data_source1 * param > data_source2) return true;
@@ -141,14 +150,16 @@ namespace DarkHorse {
 	void SmUsdSystem::on_timer()
 	{
 		//LOGINFO(CMyLogger::getInstance(), _T("on_timer::%s"), __FUNCTION__);
-		if (was_liq) {
-			LOGINFO(CMyLogger::getInstance(), _T("%s was_liq[%s]"), __FUNCTION__, was_liq ? "true" : "false");
-			return;
-		}
 		if (!enable_) {
 			//LOGINFO(CMyLogger::getInstance(), _T("%s enable_[%s]"), __FUNCTION__, enable_ ? "true" : "false");
 			return;
 		}
+
+		if (was_liq) {
+			LOGINFO(CMyLogger::getInstance(), _T("%s was_liq[%s]"), __FUNCTION__, was_liq ? "true" : "false");
+			return;
+		}
+		
 		if (CheckLigByTime()) {
 			if (buy_position_count_ <= 0 && sell_position_count_ <= 0) {
 				//LOGINFO(CMyLogger::getInstance(), _T("%s buy_position_count[%d], sell_position_count[%d]"), __FUNCTION__, buy_position_count_, sell_position_count_);

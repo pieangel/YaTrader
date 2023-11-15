@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(SmUSDSystemDialog, CBCGPDialog)
 	ON_BN_CLICKED(IDC_BTN_ORDER_CONFIG, &SmUSDSystemDialog::OnBnClickedBtnOrderConfig)
 	ON_BN_CLICKED(IDC_CHECK_ALL, &SmUSDSystemDialog::OnBnClickedCheckAll)
 	ON_WM_SIZE()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -61,6 +62,17 @@ END_MESSAGE_MAP()
 BOOL SmUSDSystemDialog::OnInitDialog()
 {
 	CBCGPDialog::OnInitDialog();
+
+	SYSTEMTIME st;
+	GetLocalTime(&st);
+
+	// Calculate the remaining time until the next minute
+	int remainingMilliseconds = (60 - st.wSecond) * 1000;
+
+	// Set up the timer to start at the beginning of the next minute
+	m_nTimerID = SetTimer(1, remainingMilliseconds, nullptr); // Timer ID, time in milliseconds, Timer procedure
+
+
 
 	// TODO:  Add extra initialization here
 	active_usd_system_grid_.AttachGrid(this, IDC_STATIC_TOTAL_SIGNAL);
@@ -276,6 +288,9 @@ void SmUSDSystemDialog::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == RefTimer) {
 		RefreshOrder();
 	}
+	if (m_nTimerID == nIDEvent) {
+		mainApp.out_system_manager()->OnTimer();
+	}
 	CBCGPDialog::OnTimer(nIDEvent);
 }
 
@@ -315,4 +330,16 @@ void SmUSDSystemDialog::OnSize(UINT nType, int cx, int cy)
 	CBCGPDialog::OnSize(nType, cx, cy);
 
 	this->Resize();
+}
+
+
+void SmUSDSystemDialog::OnDestroy()
+{
+	CBCGPDialog::OnDestroy();
+
+	// Stop the timer when the window is being destroyed
+	if (m_nTimerID != 0) {
+		KillTimer(m_nTimerID);
+		m_nTimerID = 0;
+	}
 }

@@ -77,8 +77,8 @@ namespace DarkHorse {
 		SmUsdStrategy get_usd_strategy(const std::string& strategy_type) const;
 		std::string get_usd_system_name();
 		SmUsdSystemData& usd_system_data() { return usd_system_data_; }
-	private:
 		void OnTimer();
+	private:
 		void create_timer_for_usd_system();
 		void put_order(const std::string& signal_name, int order_kind, int order_amount);
 		void remove_out_system_by_id(const int& system_id);

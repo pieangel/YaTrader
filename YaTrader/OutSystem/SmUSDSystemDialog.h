@@ -33,6 +33,7 @@ private:
 	UsdSystemDefGrid _UsdSystemDefGrid;
 	void RefreshOrder();
 	void Resize();
+	int m_nTimerID;
 public:
 	void add_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system);
 	void update_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> out_system);
@@ -46,4 +47,5 @@ public:
 	afx_msg void OnBnClickedCheckAll();
 	CButton _CheckAll;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnDestroy();
 };
