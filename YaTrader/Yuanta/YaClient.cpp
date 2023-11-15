@@ -3484,8 +3484,8 @@ int YaClient::dm_fut_mini_sise(DhTaskArg arg)
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
 	//g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// 선물코드 값을 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// 선물코드 값을 설정합니다.
 
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
@@ -3524,9 +3524,9 @@ int YaClient::dm_fut_mini_hoga(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_FUT_MINI_HOGA)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
+	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// 계좌 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// 계좌 값을 설정합니다.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;

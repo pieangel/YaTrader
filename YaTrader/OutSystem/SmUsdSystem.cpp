@@ -13,7 +13,7 @@ namespace DarkHorse {
 		int data_source1 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source1);
 		int data_source2 = mainApp.out_system_manager()->usd_system_data().get_data(arg.data_source2);
 		double param = std::stod(arg.param);
-		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], enable[%s],  data_source1[%s],value1[%d], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.enable ? "true" : "false", arg.data_source1.c_str(), data_source1, arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
+		LOGINFO(CMyLogger::getInstance(), _T("check_condition ::group_arg_name[%s], enable[%s],  data_source1[%s],value1[%d], param[%.2f], data_source2[%s], value2[%d], data_source1*param[%.2f], value2[%d]"), group_arg_name.c_str(), arg.enable ? "true" : "false", arg.data_source1.c_str(), data_source1, arg.param.c_str(),  arg.data_source2.c_str(), data_source2, data_source1 * param, data_source2);
 		if (arg.enable == false) return true;
 		if (data_source1 <= 0 || data_source2 <= 0) return false;
 		if (data_source1 * param > data_source2) return true;
@@ -58,10 +58,10 @@ namespace DarkHorse {
 		int curTime = VtTimeUtil::GetTime(VtTimeUtil::GetLocalTime());
 		int startTime = VtTimeUtil::GetTime(start_time_begin_);
 		int endTime = VtTimeUtil::GetTime(start_time_end_);
-		if (curTime < startTime || curTime > endTime)
-			return false;
-		else
+		if (startTime <= curTime && curTime <= endTime)
 			return true;
+		else
+			return false;
 	}
 
 	bool SmUsdSystem::CheckEntranceBar()
@@ -172,7 +172,11 @@ namespace DarkHorse {
 				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
 				return;
 			}
-			if (buy_position_count_ > 0) return;
+			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s, buy_position_count_[%d]"), __FUNCTION__, buy_position_count_);
+			if (buy_position_count_ > 0) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s, buy_position_count_[%d]"), __FUNCTION__, buy_position_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForBuy::%s"), __FUNCTION__);
 			entrance_count_++;
 			buy_position_count_++;
@@ -183,7 +187,11 @@ namespace DarkHorse {
 				LOGINFO(CMyLogger::getInstance(), _T("CheckOrderLimit::%s, entrance_count_[%d]"), __FUNCTION__, entrance_count_);
 				return;
 			}
-			if (sell_position_count_ > 0) return;
+			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s, sell_position_count_[%d]"), __FUNCTION__, sell_position_count_);
+			if (sell_position_count_ > 0) {
+				LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s, sell_position_count_[%d]"), __FUNCTION__, sell_position_count_);
+				return;
+			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckEntranceForSell::%s"), __FUNCTION__);
 			entrance_count_++;
 			sell_position_count_++;
