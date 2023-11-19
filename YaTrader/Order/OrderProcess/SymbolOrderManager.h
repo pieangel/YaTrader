@@ -54,6 +54,7 @@ private:
 	void update_accepted_order(order_p order);
 	// 완전히 체결된 주문은 접수확인 목록에서 없애 준다. 
 	void remove_accepted_order(order_p order);
+	void remove_accepted_order(const std::string& order_no);
 	// key : order_no, value : order object.
 	std::map<std::string, order_p> accepted_order_map_;
 	std::string symbol_code_;

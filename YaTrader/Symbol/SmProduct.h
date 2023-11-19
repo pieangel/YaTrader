@@ -28,6 +28,10 @@ namespace DarkHorse {
 		const std::map<std::string, std::shared_ptr<SmProductYearMonth>>& get_yearmonth_map() {
 			return _YearMonthMap;
 		}
+		const std::string get_first_year_month_name() {
+			if (_YearMonthMap.size() == 0) return "";
+			return _YearMonthMap.begin()->first;
+		}
 		void sort_dm_option_symbol_vector();
 
 		int decimal() const { return decimal_; }

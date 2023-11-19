@@ -147,9 +147,23 @@ order_p TotalOrderManager::make_order(const order_event& order_info)
 			if (order_type.compare("1") == 0) order->order_type = SmOrderType::New;
 			else if (order_type.compare("2") == 0) order->order_type = SmOrderType::Modify;
 			else if (order_type.compare("3") == 0) order->order_type = SmOrderType::Cancel;
+
+			order->original_order_no = order_info["original_order_no"];
+			order->first_order_no = order_info["first_order_no"];
+
+			order->remain_count = order_info["remain_count"];
+			order->modified_count = order_info["modified_count"];
+			order->cancelled_count = order_info["cancelled_count"];
+			order->filled_count = order_info["filled_count"];
 		}
 		break;
 		case OrderEvent::OE_Unfilled: { // 미체결
+
+			const std::string order_type = order_info["order_type"];
+			if (order_type.compare("1") == 0) order->order_type = SmOrderType::New;
+			else if (order_type.compare("2") == 0) order->order_type = SmOrderType::Modify;
+			else if (order_type.compare("3") == 0) order->order_type = SmOrderType::Cancel;
+
 			order->order_price = order_info["order_price"];
 			order->order_amount = order_info["order_amount"];
 
@@ -163,6 +177,16 @@ order_p TotalOrderManager::make_order(const order_event& order_info)
 		}
 		break;
 		case OrderEvent::OE_Filled: { // 체결
+			order->order_price = order_info["order_price"];
+			order->order_amount = order_info["order_amount"];
+			order->order_time = order_info["order_time"];
+			order->order_date = order_info["order_date"];
+
+			const std::string order_type = order_info["order_type"];
+			if (order_type.compare("1") == 0) order->order_type = SmOrderType::New;
+			else if (order_type.compare("2") == 0) order->order_type = SmOrderType::Modify;
+			else if (order_type.compare("3") == 0) order->order_type = SmOrderType::Cancel;
+
 			order->filled_price = order_info["filled_price"];
 			order->filled_count = order_info["filled_count"];
 			order->filled_time = order_info["filled_time"];

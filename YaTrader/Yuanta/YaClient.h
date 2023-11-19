@@ -137,6 +137,11 @@ namespace DarkHorse {
 		int dm_provisional_settlement(DhTaskArg arg);
 		int dm_accepted(DhTaskArg arg);
 		int dm_symbol_position(DhTaskArg arg);
+		int dm_option_month_quote(DhTaskArg arg);
+		int dm_option_month_quote_kospi_option(DhTaskArg arg);
+		int dm_option_month_quote_mini_kospi_option(DhTaskArg arg);
+		int dm_option_month_quote_weekly_option(DhTaskArg arg);
+		int dm_option_month_quote_kosdaq_option(DhTaskArg arg);
 		int dm_daily_profit_loss(DhTaskArg arg);
 		int dm_liquidable_qty(DhTaskArg arg);
 		int dm_trade_profit_loss(DhTaskArg arg);
@@ -154,6 +159,10 @@ namespace DarkHorse {
 		void dm_change_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
 
+		void on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info);
+		void on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_info);
+		void on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_info);
+		void on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_info);
 		void on_dm_symbol_profit_loss(const YA_REQ_INFO& req_info);
 		void on_dm_order_filled(const YA_REQ_INFO& req_info);
 		void on_dm_order_orderable(const YA_REQ_INFO& req_info);

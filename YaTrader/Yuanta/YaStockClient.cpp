@@ -156,6 +156,11 @@ int DarkHorse::YaStockClient::GetFilledOrderList(const std::string& account_no, 
 	return 1; // return _ViCtrol->ab_filled_order_list(account_no, pwd);
 }
 
+int YaStockClient::dm_option_month_quote(DhTaskArg arg)
+{
+	return _ViCtrol->dm_option_month_quote(arg);
+}
+
 int YaStockClient::dm_daily_profit_loss(DhTaskArg arg)
 {
 	return _ViCtrol->dm_daily_profit_loss(arg);

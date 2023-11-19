@@ -51,9 +51,13 @@ DarkHorse::OrderBackGround SymbolOrderManager::get_order_background(const int po
 void SymbolOrderManager::on_order_accepted(order_p order, OrderEvent order_event)
 {
 	order->order_state = SmOrderState::Accepted;
-	if (order->order_type != SmOrderType::Cancel) {
+	if (order->order_type == SmOrderType::Modify) {
 		add_accepted_order(order);
-		//mainApp.event_hub()->process_order_event(order, order_event);
+		remove_accepted_order(order->original_order_no);
+	}
+	else if (order->order_type == SmOrderType::Cancel)
+	{
+		remove_accepted_order(order->original_order_no);
 	}
 }
 void SymbolOrderManager::on_order_unfilled(order_p order, OrderEvent order_event)
@@ -109,4 +113,16 @@ void SymbolOrderManager::remove_accepted_order(order_p order)
 	if (it == accepted_order_map_.end()) return;
 	accepted_order_map_.erase(it);
 }
+
+void SymbolOrderManager::remove_accepted_order(const std::string& order_no)
+{
+	std::lock_guard<std::mutex> lock(mutex_); // Lock the mutex
+	auto it = accepted_order_map_.find(order_no);
+	if (it == accepted_order_map_.end()) return;
+	auto order = it->second;
+	accepted_order_map_.erase(it);
+
+	mainApp.event_hub()->process_order_event(order, OrderEvent::OE_Unfilled);
+}
+
 }

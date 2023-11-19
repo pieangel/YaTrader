@@ -83,7 +83,8 @@ enum class DhTaskType
 	DmAccountFeeInfoStep1, // 계좌 정보
 	DmAccountFeeInfoStep2, // 계좌 정보
 	DmSymbolFileDownload, // 심볼파일 다운로드
-	DmSymbolMasterFileDownload // 심볼 마스터 파일 다운로드
+	DmSymbolMasterFileDownload, // 심볼 마스터 파일 다운로드
+	DmOptionMonthQuote, // 옵션 월별 시세
 };
 
 struct DhTaskArg {

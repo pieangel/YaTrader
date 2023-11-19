@@ -1048,4 +1048,11 @@ std::shared_ptr<SmProduct> SmSymbolManager::find_product(
 	return FindProduct(product_code);
 }
 
+std::string SmSymbolManager::get_first_year_month_name(const std::string& product_code)
+{
+	auto product = FindProduct(product_code);
+	if (!product) return "";
+	return product->get_first_year_month_name();
+}
+
 }

@@ -107,6 +107,7 @@ namespace DarkHorse {
 		std::shared_ptr<SmProduct> find_product(
 			const std::string& market_name, 
 			const std::string& product_code);
+		std::string get_first_year_month_name(const std::string& product_code);
 	};
 }
 

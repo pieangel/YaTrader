@@ -85,6 +85,9 @@ namespace DarkHorse {
 		case DhTaskType::DmSymbolHoga:
 			mainApp.Client()->dm_symbol_hoga(arg); // 포함. 
 			break;
+		case DhTaskType::DmOptionMonthQuote:
+			mainApp.Client()->dm_option_month_quote(arg); // 포함. 
+			break;
 		case DhTaskType::AbSymbolChartData:
 			//mainApp.Client().GetAbChartData(arg);
 			break;
@@ -374,6 +377,66 @@ namespace DarkHorse {
 		task_info_.total_task_count = task_info_.argument_map.size();
 		task_info_.remain_task_count = task_info_.argument_map.size();
 		task_info_.task_type = DhTaskType::AbSymbolMasterFileDownload;
+	}
+
+	void YaServerDataReceiver::make_dm_option_month_quote()
+	{
+		DhTaskArg arg;
+		std::string product_code = "201";
+		arg.detail_task_description = "코스피200 옵션 복합시세";
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmOptionMonthQuote;
+		std::string option_month = mainApp.SymMgr()->get_first_year_month_name(product_code);
+		arg.parameter_map["product_code"] = product_code;
+		arg.parameter_map["year_month"] = option_month;
+		task_info_.argument_map[arg.argument_id] = arg;
+
+
+		product_code = "205";
+		arg.detail_task_description = "미니코스피200 옵션 복합시세";
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmOptionMonthQuote;
+		option_month = mainApp.SymMgr()->get_first_year_month_name(product_code);
+		arg.parameter_map["product_code"] = product_code;
+		arg.parameter_map["year_month"] = option_month;
+		task_info_.argument_map[arg.argument_id] = arg;
+
+
+		product_code = "209";
+		arg.detail_task_description = "코스피위클리옵션[T] 옵션 복합시세";
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmOptionMonthQuote;
+		option_month = mainApp.SymMgr()->get_first_year_month_name(product_code);
+		arg.parameter_map["product_code"] = product_code;
+		arg.parameter_map["year_month"] = option_month;
+		task_info_.argument_map[arg.argument_id] = arg;
+
+
+		product_code = "2AF";
+		arg.detail_task_description = "코스피위클리옵션[M] 옵션 복합시세";
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmOptionMonthQuote;
+		option_month = mainApp.SymMgr()->get_first_year_month_name(product_code);
+		arg.parameter_map["product_code"] = product_code;
+		arg.parameter_map["year_month"] = option_month;
+		task_info_.argument_map[arg.argument_id] = arg;
+
+
+
+		product_code = "206";
+		arg.detail_task_description = "코스닥옵션 옵션 복합시세";
+		arg.argument_id = YaServerDataReceiver::get_argument_id();
+		arg.task_type = DhTaskType::DmOptionMonthQuote;
+		option_month = mainApp.SymMgr()->get_first_year_month_name(product_code);
+		arg.parameter_map["product_code"] = product_code;
+		arg.parameter_map["year_month"] = option_month;
+		task_info_.argument_map[arg.argument_id] = arg;
+
+
+		task_info_.task_title = "국내 옵션 복합시세를 내려받고있는 중입니다.";
+		task_info_.total_task_count = task_info_.argument_map.size();
+		task_info_.remain_task_count = task_info_.argument_map.size();
+		task_info_.task_type = DhTaskType::DmOptionMonthQuote;
 	}
 
 	void YaServerDataReceiver::make_ab_symbol_master()
@@ -979,6 +1042,12 @@ namespace DarkHorse {
 	{
 		make_dm_symbol_quote();
 		((CMainFrame*)AfxGetMainWnd())->start_timer(1000);
+	}
+
+	void YaServerDataReceiver::start_dm_option_month_quote()
+	{
+		make_dm_option_month_quote();
+		((CMainFrame*)AfxGetMainWnd())->start_timer(700);
 	}
 
 }

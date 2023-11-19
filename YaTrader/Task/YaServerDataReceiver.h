@@ -66,6 +66,7 @@ namespace DarkHorse {
 		void start_ab_symbol_quote();
 		void start_dm_symbol_hoga();
 		void start_dm_symbol_quote();
+		void start_dm_option_month_quote();
 	private:
 		void register_realtime();
 		void make_dm_symbol_quote();
@@ -84,6 +85,7 @@ namespace DarkHorse {
 		void make_ab_symbol_master();
 		void make_dm_file_download();
 		void make_ab_file_download();
+		void make_dm_option_month_quote();
 		// 일별 손익을 가져옵니다.
 		void make_ab_account_profit_loss();
 		void make_dm_account_profit_loss();
