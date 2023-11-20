@@ -3876,14 +3876,16 @@ void YaClient::on_dm_fut_mini_hoga(const YA_REQ_INFO& req_info)
 int YaClient::dm_option_month_quote(DhTaskArg arg)
 {
 	const std::string product_code = arg.parameter_map["product_code"];
-	if (product_code == "201" )
-		;
+	if (product_code == "201")
+		dm_option_month_quote_kospi_option(arg);
 	else if (product_code == "205" )
-		;
+		dm_option_month_quote_kospi_option(arg);
 	else if (product_code == "209" || product_code == "2AF")
-		;
+		dm_option_month_quote_kospi_option(arg);
 	else if (product_code == "206")
-		;
+		dm_option_month_quote_kospi_option(arg);
+
+	return 1;
 }
 
 int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)

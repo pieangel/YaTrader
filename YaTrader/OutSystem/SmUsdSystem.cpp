@@ -161,11 +161,11 @@ namespace DarkHorse {
 		}
 		
 		if (CheckLigByTime()) {
-			if (buy_position_count_ <= 0 && sell_position_count_ <= 0) {
-				//LOGINFO(CMyLogger::getInstance(), _T("%s buy_position_count[%d], sell_position_count[%d]"), __FUNCTION__, buy_position_count_, sell_position_count_);
-				return;
-			}
 			LOGINFO(CMyLogger::getInstance(), _T("CheckLigByTime::%s time[%02d:%02d:%02d"), __FUNCTION__, end_time_.hour, end_time_.min, end_time_.sec);
+// 			if (buy_position_count_ <= 0 && sell_position_count_ <= 0) {
+// 				return;
+// 			}
+			LOGINFO(CMyLogger::getInstance(), _T("CheckLigByTime::%s buy_position_count[%d], sell_position_count[%d]"), __FUNCTION__, buy_position_count_, sell_position_count_);
 			liq_all();
 			was_liq = true;
 		}
