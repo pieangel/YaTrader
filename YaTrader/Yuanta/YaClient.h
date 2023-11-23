@@ -38,6 +38,7 @@ enum class SERVER_REQ : int {
 	DM_ORDER_CANCEL,
 	DM_FUT_MINI_SISE,
 	DM_FUT_MINI_HOGA,
+	DM_OPTION_MONTH_QUOTE,
 	DM_OPTION_MONTH_QUOTE_KOSPI,
 	DM_OPTION_MONTH_QUOTE_MINI_KOSPI,
 	DM_OPTION_MONTH_QUOTE_WEEKLY,
@@ -67,6 +68,7 @@ struct YA_REQ_INFO {
 	SERVER_REQ req;
 	std::string dso_name;
 	std::string desc;
+	std::string code;
 	int request_id;
 };
 namespace DarkHorse {
@@ -163,8 +165,9 @@ namespace DarkHorse {
 		void dm_change_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
 
+		void on_dm_option_month_quote(const YA_REQ_INFO& req_info);
 		void on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info);
-		void on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_info);
+		void on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_info);
 		void on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_info);
 		void on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_info);
 		void on_dm_symbol_profit_loss(const YA_REQ_INFO& req_info);

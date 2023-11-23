@@ -150,6 +150,8 @@ LRESULT YaClient::OnReceiveData(WPARAM wParam, LPARAM lParam)
 		on_dm_change_order(found->second);
 	else if (found->second.req == SERVER_REQ::DM_ORDER_CANCEL)
 		on_dm_cancel_order(found->second);
+	else if (found->second.req == SERVER_REQ::DM_OPTION_MONTH_QUOTE)
+		on_dm_option_month_quote(found->second);
 	return 0;
 }
 
@@ -1229,25 +1231,29 @@ void YaClient::init_ya_req_info_list()
 
 	req_info.desc = "코스피옵션_월물시세";
 	req_info.dso_name = "DSO361007";
-	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSPI;
+	req_info.code = "201";
+	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
 	req_info.desc = "미니코스피옵션_월물시세";
 	req_info.dso_name = "DSO389004";
-	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_MINI_KOSPI;
+	req_info.code = "205";
+	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
 	req_info.desc = "위클리옵션_월물시세";
 	req_info.dso_name = "DSO389104";
-	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_WEEKLY;
+	req_info.code = "209";
+	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
 	req_info.desc = "코스닥옵션_월물시세";
 	req_info.dso_name = "DSO384007";
-	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSDAQ;
+	req_info.code = "206";
+	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 }
@@ -3914,20 +3920,20 @@ int YaClient::dm_option_month_quote(DhTaskArg arg)
 
 int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)
 {
-	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSPI)];
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// 구분 값을 설정합니다.
 	const std::string year_month = arg.parameter_map["year_month"];
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// 월 값을 설정합니다.
 
-	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("361007"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 코스피 옵션 월별 시세조회를 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("361007"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -3941,7 +3947,7 @@ int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스피 옵션 월별 시세 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스피 옵션 월별 시세 조회중 오류가 발생하였습니다.Error Message[%s]"), _T("361007"), strErrorMsg);
 
 
 
@@ -3955,20 +3961,20 @@ int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)
 
 int YaClient::dm_option_month_quote_mini_kospi_option(DhTaskArg arg)
 {
-	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_POSITION_INFO)];
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// 구분 값을 설정합니다.
 	const std::string year_month = arg.parameter_map["year_month"];
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// 월 값을 설정합니다.
 
-	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("389004"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 미니옵션복합시세 조회를 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("389004"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -3982,7 +3988,7 @@ int YaClient::dm_option_month_quote_mini_kospi_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]미니옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]미니옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), _T("389004"), strErrorMsg);
 
 
 
@@ -3996,20 +4002,20 @@ int YaClient::dm_option_month_quote_mini_kospi_option(DhTaskArg arg)
 
 int YaClient::dm_option_month_quote_weekly_option(DhTaskArg arg)
 {
-	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_POSITION_INFO)];
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// 구분 값을 설정합니다.
 	const std::string year_month = arg.parameter_map["year_month"];
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// 월 값을 설정합니다.
 
-	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("389104"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 코스피위클리옵션복합시세 조회를 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("389104"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -4023,7 +4029,7 @@ int YaClient::dm_option_month_quote_weekly_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스피위클리옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스피위클리옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), _T("389104"), strErrorMsg);
 
 
 
@@ -4037,20 +4043,20 @@ int YaClient::dm_option_month_quote_weekly_option(DhTaskArg arg)
 
 int YaClient::dm_option_month_quote_kosdaq_option(DhTaskArg arg)
 {
-	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_POSITION_INFO)];
+	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// 구분 값을 설정합니다.
 	const std::string year_month = arg.parameter_map["year_month"];
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// 월 값을 설정합니다.
 
-	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
+	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("384007"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 코스닥150옵션복합시세 조회를 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("384007"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -4064,7 +4070,7 @@ int YaClient::dm_option_month_quote_kosdaq_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스닥150옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]코스닥150옵션복합시세 조회중 오류가 발생하였습니다.Error Message[%s]"), _T("384007"), strErrorMsg);
 
 
 
@@ -4097,6 +4103,9 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// 저가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// 잔존일수 값을 가져옵니다.
+
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("NextBlock1"), _T("scrkey"), data, sizeof(data), 0);
 
 	nlohmann::json call_quote;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
@@ -4267,50 +4276,50 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 
 }
 
-void YaClient::on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_info)
+void YaClient::on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// 지수 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// 지수 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// 대비 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// 대비 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// 등락율 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// 등락율 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// 거래량 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// 거래량 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// 시가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// 시가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// 고가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// 고가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// 저가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// 저가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// 잔존일수 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// 잔존일수 값을 가져옵니다.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ccode"), data, sizeof(data), 0);		// C코드 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// C코드 값을 가져옵니다.
 	nlohmann::json call_quote;
 	call_quote["symbol_code"] = data;
 	std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cvolume"), data, sizeof(data), 0);		// C약정 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// C약정 값을 가져옵니다.
 	call_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("copeninterest"), data, sizeof(data), 0);		// C미결제 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// C미결제 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmesuvol"), data, sizeof(data), 0);		// C매수잔 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// C매수잔 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmesuprice"), data, sizeof(data), 0);		// C매수호 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// C매수호 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmedovol"), data, sizeof(data), 0);		// C매도잔 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// C매도잔 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmedoprice"), data, sizeof(data), 0);		// C매도호 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// C매도호 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cdebirate"), data, sizeof(data), 0);		// C등락률 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// C등락률 값을 가져옵니다.
 	call_quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4327,23 +4336,23 @@ void YaClient::on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_in
 	}
 	call_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cdebi"), data, sizeof(data), 0);		// C대비 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// C대비 값을 가져옵니다.
 	call_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cexpect"), data, sizeof(data), 0);		// C예상가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cexpect"), data, sizeof(data), 0);		// C예상가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clast"), data, sizeof(data), 0);		// C현재가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// C현재가 값을 가져옵니다.
 	call_quote["close"] = convert_to_int(symbol_code, data);
 
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cstart"), data, sizeof(data), 0);		// C시가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cstart"), data, sizeof(data), 0);		// C시가 값을 가져옵니다.
 	call_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("chigh"), data, sizeof(data), 0);		// C고가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("chigh"), data, sizeof(data), 0);		// C고가 값을 가져옵니다.
 	call_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clow"), data, sizeof(data), 0);		// C저가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clow"), data, sizeof(data), 0);		// C저가 값을 가져옵니다.
 	call_quote["low"] = convert_to_int(symbol_code, data);
 
 	ya_stock_client_.OnSymbolQuote(std::move(call_quote));
@@ -4352,32 +4361,32 @@ void YaClient::on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_in
 	nlohmann::json put_quote;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pcode"), data, sizeof(data), 0);		// P코드 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// P코드 값을 가져옵니다.
 	symbol_code = data;
 	put_quote["symbol_code"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongprice"), data, sizeof(data), 0);		// 행사가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// 행사가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongsisu"), data, sizeof(data), 0);		// 지수환산 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// 지수환산 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("plast"), data, sizeof(data), 0);		// P현재가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// P현재가 값을 가져옵니다.
 	put_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pexpect"), data, sizeof(data), 0);		// P예상가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pexpect"), data, sizeof(data), 0);		// P예상가 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pstart"), data, sizeof(data), 0);		// P시가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pstart"), data, sizeof(data), 0);		// P시가 값을 가져옵니다.
 	put_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("phigh"), data, sizeof(data), 0);		// P고가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("phigh"), data, sizeof(data), 0);		// P고가 값을 가져옵니다.
 	put_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("plow"), data, sizeof(data), 0);		// P저가 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plow"), data, sizeof(data), 0);		// P저가 값을 가져옵니다.
 	put_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pdebi"), data, sizeof(data), 0);		// P대비 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// P대비 값을 가져옵니다.
 	put_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pdebirate"), data, sizeof(data), 0);		// P등락률 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// P등락률 값을 가져옵니다.
 	put_quote["updown_rate"] = data;
 	updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4394,21 +4403,21 @@ void YaClient::on_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req_in
 	}
 	put_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pmedoprice"), data, sizeof(data), 0);		// P매도호 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// P매도호 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pmedovol"), data, sizeof(data), 0);		// P매도잔 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// P매도잔 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pmesuprice"), data, sizeof(data), 0);		// P매수호 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// P매수호 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pmesuvol"), data, sizeof(data), 0);		// P매수잔 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// P매수잔 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("popeninterest"), data, sizeof(data), 0);		// P미결제 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// P미결제 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pvolume"), data, sizeof(data), 0);		// P약정 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// P약정 값을 가져옵니다.
 	put_quote["volume"] = _ttoi(data);
 	
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("atmflag"), data, sizeof(data), 0);		// ATM여부 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATM여부 값을 가져옵니다.
 
 	ya_stock_client_.OnSymbolQuote(std::move(put_quote));
 
@@ -4748,6 +4757,20 @@ void YaClient::on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_inf
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
+}
+
+void YaClient::on_dm_option_month_quote(const YA_REQ_INFO& req_info)
+{
+	if (req_info.code == "201")
+		on_dm_option_month_quote_kospi_option(req_info);
+	else if (req_info.code == "206")
+		on_dm_option_month_quote_mini_kospi_option(req_info);
+	else if (req_info.code == "209")
+		on_dm_option_month_quote_weekly_option(req_info);
+	else if (req_info.code == "205")
+		on_dm_option_month_quote_kosdaq_option(req_info);
+	else
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_option_month_quote:: unknown dso name[%s]"), req_info.dso_name.c_str());
 }
 
 BOOL DarkHorse::YaClient::OnInitDialog()

@@ -158,6 +158,12 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::DmSymbolHoga:
 		{
+			//start_dm_symbol_position();
+			start_dm_option_month_quote();
+		}
+		break;
+		case DhTaskType::DmOptionMonthQuote:
+		{
 			start_dm_symbol_position();
 		}
 		break;
