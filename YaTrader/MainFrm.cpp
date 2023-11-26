@@ -809,7 +809,11 @@ void CMainFrame::StartDataRequest()
 	mainApp.SvrDataRcvr()->ProgressDlg(ProgressDlg);
 	mainApp.SvrDataRcvr()->StartDataRequest();
 	*/
-
+	// 해외 심볼 코드를 파일에서 읽어 온다. 
+	if (mainApp.mode == 1) {
+		mainApp.SymMgr()->ReadAbroadSymbols();
+		mainApp.SymMgr()->MakeAbFavorite();
+	}
 
 	// 서버 데이터 가져오기를 표시하는 대화 상자를 생성한다.
 	ProgressDlg = std::make_shared<VtProgressDlg>();
@@ -822,11 +826,15 @@ void CMainFrame::StartDataRequest()
 	// 파일에서 국내 선물/옵션 상품 정보를 읽어 온다.
 	//mainApp.LoadProductInfo();
 
-
+	
 	// 진행상황 표시 대화상자를 할당해 준다.
 	mainApp.ya_server_data_receiver()->progress_dialog(ProgressDlg);
+	
 	// 심볼 코드를 가져오기 시작한다.
-	mainApp.ya_server_data_receiver()->start_dm_account_asset();
+	if (mainApp.mode == 0)
+		mainApp.ya_server_data_receiver()->start_dm_account_asset();
+	else
+		mainApp.ya_server_data_receiver()->start_ab_symbol_quote();
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)

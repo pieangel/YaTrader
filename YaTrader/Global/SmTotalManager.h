@@ -36,6 +36,8 @@ namespace DarkHorse {
 	class SmTotalManager
 	{
 	public:
+		// 0 : domestic server, 1 : abroad server
+		int mode = 0;
 		void CreateManagers();
 		std::shared_ptr<SmTaskRequestMaker> ReqMkr() const { return _ReqMkr; }
 		std::shared_ptr<SmServerDataReceiver> SvrDataRcvr() const { return _SvrDataRcvr; }

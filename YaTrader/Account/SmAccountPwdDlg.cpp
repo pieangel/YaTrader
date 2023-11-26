@@ -132,13 +132,11 @@ BOOL SmAccountPwdDlg::OnInitDialog()
 		auto account = *it;
 		if (account->is_subaccount()) continue;
 		const int server_index = mainApp.LoginMgr()->ya_server_index();
-// 		if (server_index == 0 || server_index == 1) {
-// 			if (account->Type()!= "9") continue;
-// 		}
-// 
-// 		if (server_index == 2 || server_index == 3) {
-// 			if (account->Type() != "1") continue;
-// 		}
+
+		// for domestic server
+		if (mainApp.mode == 0 && account->Type() == "1") continue;
+		// for abroad server
+		if (mainApp.mode == 1 && account->Type() == "9") continue;
 		// Create new row:
 		CBCGPGridRow* pRow = m_wndGrid.CreateRow(nColumns);
 		// Set each column data:

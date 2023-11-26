@@ -783,7 +783,6 @@ void SmSymbolManager::InitFavoriteProduct()
 	std::string name = _T("SYMBOL");
 	//favorite = mainApp.ConfigMgr().getString(section, name);
 	if (favorite.length() == 0) {
-		_FavoriteProduct.insert("101");
 		_FavoriteProduct.insert("HSI");
 		_FavoriteProduct.insert("CL");
 		_FavoriteProduct.insert("MNQ");
@@ -934,7 +933,7 @@ void SmSymbolManager::ReadAbroadSymbols() const noexcept
 {
 	mainApp.SymRdr()->ReadAbroadMarketFile();
 	Sleep(500);
-	mainApp.SymRdr()->ReadAbroadSymbolFile();
+	mainApp.SymRdr()->read_abroad_symbol_file();
 }
 
 void SmSymbolManager::MakeDomesticMarket()

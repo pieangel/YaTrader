@@ -188,7 +188,7 @@ int YaStockClient::ab_symbol_master(DhTaskArg arg)
 
 int YaStockClient::ab_account_profit_loss(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_account_profit_loss(arg);
+	return _ViCtrol->ab_account_profit_loss(arg);
 }
 
 int YaStockClient::dm_account_profit_loss(DhTaskArg arg)
@@ -199,7 +199,7 @@ int YaStockClient::dm_account_profit_loss(DhTaskArg arg)
 
 int YaStockClient::ab_symbol_profit_loss(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_symbol_profit_loss(arg);
+	return _ViCtrol->ab_symbol_profit_loss(arg);
 }
 
 int YaStockClient::dm_symbol_profit_loss(DhTaskArg arg)
@@ -971,7 +971,7 @@ int YaStockClient::dm_symbol_master(DhTaskArg arg)
 
 int DarkHorse::YaStockClient::ab_account_asset(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_account_asset(arg);
+	return _ViCtrol->ab_account_asset(arg);
 }
 int DarkHorse::YaStockClient::dm_account_asset(DhTaskArg arg)
 {
@@ -990,25 +990,25 @@ int YaStockClient::dm_symbol_position(DhTaskArg arg)
 
 int YaStockClient::ab_symbol_position(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_symbol_position(arg);
+	return _ViCtrol->ab_symbol_position(arg);
 }
 
 int DarkHorse::YaStockClient::ab_accepted_order(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_accepted_order(arg);
+	return _ViCtrol->ab_accepted_order(arg);
 }
 int DarkHorse::YaStockClient::dm_accepted_order(DhTaskArg arg)
 {
-	return _ViCtrol->dm_accepted(arg);
+	return _ViCtrol->dm_accepted_order(arg);
 }
 
 int YaStockClient::ab_symbol_quote(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_symbol_quote(std::move(arg));
+	return _ViCtrol->ab_symbol_quote(std::move(arg));
 }
 
 int YaStockClient::ab_symbol_hoga(DhTaskArg arg)
 {
-	return 1; // return _ViCtrol->ab_symbol_hoga(std::move(arg));
+	return _ViCtrol->ab_symbol_hoga(std::move(arg));
 }
 

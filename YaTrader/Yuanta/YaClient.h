@@ -140,7 +140,7 @@ namespace DarkHorse {
 		int dm_order_orderable(DhTaskArg arg);
 		int dm_account_asset(DhTaskArg arg);
 		int dm_provisional_settlement(DhTaskArg arg);
-		int dm_accepted(DhTaskArg arg);
+		int dm_accepted_order(DhTaskArg arg);
 		int dm_symbol_position(DhTaskArg arg);
 		int dm_option_month_quote(DhTaskArg arg);
 		int dm_option_month_quote_kospi_option(DhTaskArg arg);
@@ -163,6 +163,31 @@ namespace DarkHorse {
 		void dm_new_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_change_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="req_info"></param>
+		int ab_account_asset(DhTaskArg arg);
+		int ab_account_profit_loss(DhTaskArg arg);
+		int ab_accepted_order(DhTaskArg arg);
+		int ab_symbol_quote(DhTaskArg arg);
+		int ab_symbol_hoga(DhTaskArg arg);
+		int ab_symbol_position(DhTaskArg arg);
+		int ab_symbol_profit_loss(DhTaskArg arg);
+
+		void ab_new_order(const std::shared_ptr<OrderRequest>& order_req);
+		void ab_change_order(const std::shared_ptr<OrderRequest>& order_req);
+		void ab_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
+
+
+		void on_ab_account_asset(const YA_REQ_INFO& req_info);
+		void on_ab_account_profit_loss(const YA_REQ_INFO& req_info);
+		void on_ab_accepted_order(const YA_REQ_INFO& req_info);
+		void on_ab_symbol_quote(const YA_REQ_INFO& req_info);
+		void on_ab_symbol_hoga(const YA_REQ_INFO& req_info);
+		void on_ab_symbol_position(const YA_REQ_INFO& req_info);
+		void on_ab_symbol_profit_loss(const YA_REQ_INFO& req_info);
 
 		void on_dm_option_month_quote(const YA_REQ_INFO& req_info);
 		void on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info);

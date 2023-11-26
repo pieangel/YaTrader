@@ -19,7 +19,9 @@ namespace DarkHorse {
 		void ReadAbroadMarketFile();
 		void ReadAbroadProductFile();
 		void ReadAbroadSymbolFile();
+		void read_abroad_symbol_file();
 	private:
+		void read_abroad_symbol_file(const std::string& fullPath);
 		void InitProductSet();
 		void ReadAbroadMarketFile(const std::string& fullPath) const;
 		void ReadAbroadProductFile(const std::string& fullPath) const;

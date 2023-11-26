@@ -156,6 +156,18 @@ BOOL SmLoginDlg::OnInitDialog()
 
 void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 {
-	mainApp.LoginMgr()->ya_server_index(combol_log_in_server_.GetCurSel() - 1);
+	int cur_index = combol_log_in_server_.GetCurSel();
+	if (cur_index < 0) {
+		return;
+	}
+
+	if (cur_index == 0 || cur_index == 1 || cur_index == 2) {
+		mainApp.mode = 0;
+	}
+	else {
+		mainApp.mode = 1;
+	}
+
+	mainApp.LoginMgr()->ya_server_index(cur_index - 1);
 	mainApp.Client()->init();
 }

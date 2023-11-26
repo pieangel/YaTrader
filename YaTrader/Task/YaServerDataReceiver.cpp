@@ -47,34 +47,34 @@ namespace DarkHorse {
 			mainApp.Client()->dm_account_asset(arg); // 포함
 			break;
 		case DhTaskType::AbAccountAsset:
-			mainApp.Client()->ab_account_asset(arg); // 제외
+			mainApp.Client()->ab_account_asset(arg); // 
 			break;
 		case DhTaskType::AbAccountProfitLoss:
-			mainApp.Client()->ab_account_profit_loss(arg); // 제외
+			mainApp.Client()->ab_account_profit_loss(arg); // 
 			break;
 		case DhTaskType::DmAccountProfitLoss:
 			mainApp.Client()->dm_account_profit_loss(arg); // 포함
 			break;
 		case DhTaskType::AbAcceptedOrderList:
-			mainApp.Client()->ab_accepted_order(arg); // 제외
+			mainApp.Client()->ab_accepted_order(arg); // 
 			break;
 		case DhTaskType::DmAcceptedOrderList:
 			mainApp.Client()->dm_accepted_order(arg); // 포함
 			break;
 		case DhTaskType::AbSymbolQuote:
-			mainApp.Client()->ab_symbol_quote(arg); // 제외
+			mainApp.Client()->ab_symbol_quote(arg); // 
 			break;
 		case DhTaskType::AbSymbolHoga:
-			mainApp.Client()->ab_symbol_hoga(arg); // 제외
+			mainApp.Client()->ab_symbol_hoga(arg); // 
 			break;
 		case DhTaskType::AbSymbolPosition:
-			mainApp.Client()->ab_symbol_position(arg); // 제외
+			mainApp.Client()->ab_symbol_position(arg); // 
 			break;
 		case DhTaskType::DmSymbolPosition:
 			mainApp.Client()->dm_symbol_position(arg); // 포함
 			break;
 		case DhTaskType::AbSymbolProfitLoss:
-			mainApp.Client()->ab_symbol_profit_loss(arg); // 제외
+			mainApp.Client()->ab_symbol_profit_loss(arg); // 
 			break;
 		case DhTaskType::DmSymbolProfitLoss:
 			mainApp.Client()->dm_daily_profit_loss(arg); // 포함. 

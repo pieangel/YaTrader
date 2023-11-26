@@ -142,7 +142,7 @@ void SmSymbolReader::ReadAbroadMarketFile()
 		std::string appPath;
 		appPath = SmConfigManager::GetApplicationPath();
 		appPath.append(_T("\\"));
-		appPath.append(_T("mst"));
+		appPath.append(_T("table"));
 		appPath.append(_T("\\"));
 		std::string file_name = "MRKT.cod";
 		//TRACE(file_name.c_str());
@@ -491,5 +491,157 @@ void SmSymbolReader::ReadKospiOptionInfo(const std::string& fullPath) const
 void SmSymbolReader::ReadUsDollarFutureInfo(const std::string& fullPath) const
 {
 	
+}
+
+void SmSymbolReader::read_abroad_symbol_file(const std::string& fullPath)
+{
+	try {
+		std::ifstream infile(fullPath);
+		std::string line;
+		while (std::getline(infile, line))
+		{
+			std::istringstream iss(line);
+
+			std::string recode_gubun = line.substr(0, 2); // 레코드 구분
+
+			std::string symbol_code = line.substr(2, 32); // 종목코드
+			LOGINFO(CMyLogger::getInstance(), "symbol_code : %s", symbol_code.c_str());
+
+			std::string symbol_name_kr = line.substr(34, 50); // 종목명
+			std::string symbol_name_en = line.substr(34, 50); // 종목명
+
+			std::string exchange_name = line.substr(84, 10); // 거래소 코드 
+
+			std::string product_type = line.substr(94, 3); // 상품 유형
+
+			std::string product_code = line.substr(97, 15); // 상품 코드
+
+			VtStringUtil::trim(symbol_code);
+			VtStringUtil::trim(symbol_name_en);
+			VtStringUtil::trim(symbol_name_kr);
+			VtStringUtil::trim(product_code);
+			//msg.Format(_T("code = %s, name = %s, name_kr = %s\n"), Series.c_str(), SeriesNm.c_str(), SeriesNmKor.c_str());
+			//TRACE(msg);
+
+			std::shared_ptr<SmProduct> product = mainApp.SymMgr()->FindProduct(product_code);
+			if (!product) continue;
+
+			std::shared_ptr<SmSymbol> symbol = product->AddSymbol(std::move(symbol_code));
+			if (!symbol) continue;
+
+			std::string future_option = line.substr(112, 1); // 선물옵션 구분
+
+			std::string strike = line.substr(113, 20); // 행사가격
+
+			std::string tick_size = line.substr(123, 20); // 틱 크기
+
+			std::string tick_value = line.substr(143, 20); // 틱 가치
+
+			std::string decimal = line.substr(163, 3); // 소수점 크기
+
+			std::string MltiPler = line.substr(166, 3); // 표시 진법
+
+			std::string currency = line.substr(169, 3); // 통화 코드
+
+			std::string recent = line.substr(172, 3); // 근월물 순서
+
+			std::string recent_code = line.substr(175, 32); // 연속 원물 코드
+
+			std::string NearSeq = line.substr(207, 1); // 연속월물 구분 
+
+			std::string StatTp = line.substr(208, 1); // 시세조회전용
+
+			std::string last_date = line.substr(209, 8); // 최종거래일
+
+			std::string expire_date = line.substr(217, 8); // 만기일
+
+			std::string sb_date = line.substr(225, 8); // sb date
+
+			std::string contract_size = line.substr(233, 20); // 계약 크기
+
+			std::string crc_cvrt_dt = line.substr(253, 5); // crc_cvrt_dt
+
+			std::string opnn_time = line.substr(258, 6); // opnn_time
+
+			std::string mked_time = line.substr(264, 6); // mked_time
+
+			std::string std_price = line.substr(270, 20); // std_price 
+
+			std::string hstl_price = line.substr(290, 20); // hstl_price
+
+			std::string lstl_price = line.substr(310, 20); // lstl_price
+
+			std::string mrk_m = line.substr(320, 4); // mrk_m
+
+			std::string rmnd_dds = line.substr(324, 6); // rmnd_dds
+
+			std::string call_put = line.substr(330, 1); // call_put
+
+			std::string atm_type = line.substr(331, 1); // atm_type
+
+			std::string us_option = line.substr(332, 1); // us_option
+
+			std::string us_eft_gubun = line.substr(333, 1); // us_eft_gubun
+
+
+			
+
+			//product->AddToYearMonth(sym->ShortCode, sym);
+
+			symbol->ProductCode(product->ProductCode());
+			symbol->MarketName(product->MarketName());
+			symbol->SymbolNameKr(symbol_name_kr);
+			symbol->SymbolNameEn(symbol_name_en);
+			LOGINFO(CMyLogger::getInstance(), "symbol_name_kr : %s", symbol_name_kr.c_str());
+			symbol->symbol_type(SymbolType::Abroad);
+			// 소수점
+			symbol->decimal(std::stoi(decimal));
+			LOGINFO(CMyLogger::getInstance(), "decimal : %s", decimal.c_str());
+			// 숭수
+			symbol->seung_su(std::stoi(crc_cvrt_dt));
+			LOGINFO(CMyLogger::getInstance(), "crc_cvrt_dt : %s", crc_cvrt_dt.c_str());
+			// 계약 크기
+			symbol->CtrtSize(std::stod(contract_size));
+			LOGINFO(CMyLogger::getInstance(), "contract_size : %s", contract_size.c_str());
+			// 틱 가치
+			symbol->TickValue(std::stod(tick_value));
+			LOGINFO(CMyLogger::getInstance(), "tick_value : %s", tick_value.c_str());
+			// 틱 크기
+			symbol->TickSize(std::stod(tick_size));
+			LOGINFO(CMyLogger::getInstance(), "tick_size : %s", tick_size.c_str());
+			// 정수 틱 크기를 계산하여 넣어 준다.
+			//symbol->intTickSize = (int)(sym->TickSize * std::pow(10, sym->Decimal));
+			symbol->ExpireDate(last_date);
+			LOGINFO(CMyLogger::getInstance(), "last_date : %s", last_date.c_str());
+			symbol->PreDayVolume(0);
+		}
+	}
+	catch (std::exception& e)
+	{
+		const std::string error = e.what();
+
+		LOGINFO(CMyLogger::getInstance(), "error : %s", error.c_str());
+	}
+}
+
+void SmSymbolReader::read_abroad_symbol_file()
+{
+	try {
+		std::string appPath;
+		appPath = SmConfigManager::GetApplicationPath();
+		appPath.append(_T("\\"));
+		appPath.append(_T("table"));
+		appPath.append(_T("\\"));
+		std::string file_name = "series_new.tbl";
+		//TRACE(file_name.c_str());
+		std::string file_path = appPath + file_name;
+		read_abroad_symbol_file(file_path);
+	}
+	catch (std::exception& e)
+	{
+		const std::string error = e.what();
+
+		LOGINFO(CMyLogger::getInstance(), "error : %s", error.c_str());
+	}
 }
 
