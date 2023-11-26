@@ -90,6 +90,8 @@ private:
 	void register_symbols_to_server();
 	void set_option_view();
 	void set_strike_start_index(const int distance);
+	void request_symbol_quote(std::shared_ptr<DarkHorse::SmSymbol> symbol);
+	void request_symbol_hoga(std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	void set_strike();
 	void UpdateAccountAssetInfo();
 	void UpdateFundAssetInfo();

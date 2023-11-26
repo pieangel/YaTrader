@@ -1041,19 +1041,19 @@ namespace DarkHorse {
 	void YaServerDataReceiver::start_dm_symbol_hoga()
 	{
 		make_dm_symbol_hoga();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(1000);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(400);
 	}
 
 	void YaServerDataReceiver::start_dm_symbol_quote()
 	{
 		make_dm_symbol_quote();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(1000);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(400);
 	}
 
 	void YaServerDataReceiver::start_dm_option_month_quote()
 	{
 		make_dm_option_month_quote();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(700);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(100);
 	}
 
 }

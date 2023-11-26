@@ -518,11 +518,40 @@ void DmOptionView::set_strike_start_index(const int distance)
 		strike_start_index_ = diff - 2;
 }
 
+
+void DmOptionView::request_symbol_quote(std::shared_ptr<DarkHorse::SmSymbol> symbol)
+{
+	if (!symbol || symbol->quote_requested()) return;
+	DhTaskArg arg;
+	arg.detail_task_description = symbol->SymbolCode();
+	//arg.argument_id = YaServerDataReceiver::get_argument_id();
+	arg.task_type = DhTaskType::DmSymbolQuote;
+	arg.parameter_map["symbol_code"] = symbol->SymbolCode();
+	arg.parameter_map["gubun_code"] = symbol->gubun_code();
+	mainApp.TaskReqMgr()->AddTask(std::move(arg));
+}
+
+void DmOptionView::request_symbol_hoga(std::shared_ptr<DarkHorse::SmSymbol> symbol)
+{
+	DhTaskArg arg;
+	arg.detail_task_description = symbol->SymbolCode();
+	//arg.argument_id = YaServerDataReceiver::get_argument_id();
+	arg.task_type = DhTaskType::DmSymbolHoga;
+	arg.parameter_map["symbol_code"] = symbol->SymbolCode();
+	arg.parameter_map["gubun_code"] = symbol->gubun_code();
+	mainApp.TaskReqMgr()->AddTask(std::move(arg));
+}
+
 void DmOptionView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	auto cell_pos = _Grid->FindRowCol(point.x, point.y);
 	auto found = symbol_map_.find(cell_pos);
 	if (found == symbol_map_.end()) return;
+
+
+	request_symbol_quote(found->second);
+	request_symbol_hoga(found->second);
+
 	mainApp.event_hub()->process_symbol_event(order_window_id_, found->second);
 
 	CBCGPStatic::OnLButtonDown(nFlags, point);
