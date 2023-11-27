@@ -5037,6 +5037,7 @@ void YaClient::on_ab_account_asset(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock1"), _T("list_cnt"), data, sizeof(data), 0);		// 총갯수 값을 가져옵니다.
 	int list_cnt = _ttoi(data);
 	for (int i = 0; i < list_cnt; list_cnt++) {
+		// 계좌 정보에 대한 객체 선언
 		nlohmann::json account_asset;
 
 		g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
