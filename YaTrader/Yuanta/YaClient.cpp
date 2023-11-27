@@ -5101,33 +5101,64 @@ void YaClient::on_ab_account_asset(const YA_REQ_INFO& req_info)
 	//	유안타증권 Open API 출력코드 예제입니다.
 //	[860003] 해외선물 계좌별예수금조회 - 출력블록
 
+
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// 다음버튼 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총갯수 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock1"), _T("list_cnt"), data, sizeof(data), 0);		// 총갯수 값을 가져옵니다.
+	int list_cnt = _ttoi(data);
+	for (int i = 0; i < list_cnt; list_cnt++) {
+		nlohmann::json account_asset;
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// 통화코드 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opn_prf_amt"), data, sizeof(data), 0);		// 위탁증거금 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("adtn_prf_amt"), data, sizeof(data), 0);		// 추가증거금 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tdy_cash_amt"), data, sizeof(data), 0);		// 예탁금 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dptam_blnc"), data, sizeof(data), 0);		// 예탁금잔액 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("whdr_psb_amt"), data, sizeof(data), 0);		// 인출가능액 값을 가져옵니다.
+		g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
+		std::string account_no(data);
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
+		
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("crc_cd"), data, sizeof(data), 0);		// 통화코드 값을 가져옵니다.
+		std::string currency = data;
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("opn_prf_amt"), data, sizeof(data), 0);		// 위탁증거금 값을 가져옵니다.
+		std::string entrust_total = data;
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("adtn_prf_amt"), data, sizeof(data), 0);		// 추가증거금 값을 가져옵니다.
+		std::string additional_margin = data;
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("tdy_cash_amt"), data, sizeof(data), 0);		// 예탁금 값을 가져옵니다.
+		std::string balance = data;
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("dptam_blnc"), data, sizeof(data), 0);		// 예탁금잔액 값을 가져옵니다.
+		std::string entrust_deposit = data;
+		memset(data, 0x00, sizeof(data));
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("whdr_psb_amt"), data, sizeof(data), 0);		// 인출가능액 값을 가져옵니다.
+		std::string withdrawable_amount = data;
+
+		account_asset["account_no"] = account_no;
+		account_asset["currency"] = currency;
+		account_asset["entrust_total"] = _ttof(entrust_total.c_str());
+		account_asset["balance"] = _ttof(balance.c_str());
+		account_asset["outstanding_deposit"] = 0;
+		account_asset["order_deposit"] = 0;
+		account_asset["entrust_deposit"] = _ttof(entrust_deposit.c_str());
+		account_asset["maintenance_margin"] = 0;
+		account_asset["settled_profit_loss"] = 0;
+		account_asset["fee"] = 0;
+		account_asset["open_profit_loss"] = 0;
+		account_asset["open_trust_total"] = 0;
+		account_asset["additional_margin"] = 0;
+		account_asset["order_margin"] = 0;
+
+		mainApp.AcntMgr()->on_account_asset(std::move(account_asset));
+	}
+
+	on_task_complete(req_info.request_id);
 }
 
 void YaClient::on_ab_account_profit_loss(const YA_REQ_INFO& req_info)
