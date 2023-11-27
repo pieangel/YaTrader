@@ -69,16 +69,16 @@ LRESULT YaClient::OnReceiveError(WPARAM wParam, LPARAM lParam)
 	CString strMsg;
 	switch (lParam)
 	{
-	case ERROR_TIMEOUT_DATA:			// ¼³Á¤µÈ ½Ã°£ ¾È¿¡ ¼­¹ö·ÎºÎÅÍ ÀÀ´äÀÌ ¾ø´Â °æ¿ì, Å¸ÀÓ¾Æ¿ôÀÌ ¹ß»ıÇÕ´Ï´Ù. (±âº» 10ÃÊ)
+	case ERROR_TIMEOUT_DATA:			// ì„¤ì •ëœ ì‹œê°„ ì•ˆì— ì„œë²„ë¡œë¶€í„° ì‘ë‹µì´ ì—†ëŠ” ê²½ìš°, íƒ€ì„ì•„ì›ƒì´ ë°œìƒí•©ë‹ˆë‹¤. (ê¸°ë³¸ 10ì´ˆ)
 	{
-		strMsg.Format(_T("Trade Code[%s] [%s] Request id[%d] :: Timeout %s ¿äÃ»ÀÇ ÀÀ´äÀÌ ¾ø½À´Ï´Ù."), trade_code.c_str(), desc.c_str(), request_id);
+		strMsg.Format(_T("Trade Code[%s] [%s] Request id[%d] :: Timeout %s ìš”ì²­ì˜ ì‘ë‹µì´ ì—†ìŠµë‹ˆë‹¤."), trade_code.c_str(), desc.c_str(), request_id);
 	}
 	break;
-	case ERROR_REQUEST_FAIL:			// ¼­¹ö¿¡¼­ Á¶È¸TR(DSO) Ã³¸®Áß ¿À·ù°¡ ÀÖ´Â °æ¿ì ¹ß»ıÇÕ´Ï´Ù.
+	case ERROR_REQUEST_FAIL:			// ì„œë²„ì—ì„œ ì¡°íšŒTR(DSO) ì²˜ë¦¬ì¤‘ ì˜¤ë¥˜ê°€ ìˆëŠ” ê²½ìš° ë°œìƒí•©ë‹ˆë‹¤.
 	{
 		TCHAR msg[2048] = { 0, };
 		error_code = g_iYuantaAPI.YOA_GetLastError();
-		g_iYuantaAPI.YOA_GetErrorMessage(request_id, msg, sizeof(msg));	// Ã³¸® Áß ¿À·ù¿¡ ´ëÇÑ ¸Ş½ÃÁö¸¦ ¾òÀ» ¼ö ÀÖ½À´Ï´Ù.
+		g_iYuantaAPI.YOA_GetErrorMessage(request_id, msg, sizeof(msg));	// ì²˜ë¦¬ ì¤‘ ì˜¤ë¥˜ì— ëŒ€í•œ ë©”ì‹œì§€ë¥¼ ì–»ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 		strMsg.Format(_T("Trade code[%s], desc[%s], error code[%d], Request id[%d], msg [%s]"), trade_code.c_str(), desc.c_str(), error_code, request_id, msg);
 		strMsg.TrimRight();
 		
@@ -205,7 +205,7 @@ LRESULT YaClient::OnLoginComplete(WPARAM wParam, LPARAM lParam)
 	{
 		mainApp.LoginMgr()->IsLoggedIn(true);
 
-		LOGINFO(CMyLogger::getInstance(), "·Î±×ÀÎ ¼º°ø »ç¿ëÀÚ ÀúÀå user id = %s", mainApp.LoginMgr()->id().c_str());
+		LOGINFO(CMyLogger::getInstance(), "ë¡œê·¸ì¸ ì„±ê³µ ì‚¬ìš©ì ì €ì¥ user id = %s", mainApp.LoginMgr()->id().c_str());
 		mainApp.SymMgr()->MakeDomesticMarket();
 
 		get_account_list();
@@ -222,12 +222,12 @@ LRESULT YaClient::OnLoginComplete(WPARAM wParam, LPARAM lParam)
 		CString message;
 		if (ERROR_TIMEOUT_DATA == lParam)
 		{
-			message =_T("·Î±×ÀÎÀÌ ½ÇÆĞÇÏ¿´½À´Ï´Ù.\n");
-			message.Append(_T("¼­¹ö·ÎºÎÅÍ ·Î±×ÀÎ ÀÀ´äÀÌ ¾ø½À´Ï´Ù. ´Ù½Ã ½ÃµµÇÏ¿© ÁÖ½Ê½Ã¿À."));
+			message =_T("ë¡œê·¸ì¸ì´ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.\n");
+			message.Append(_T("ì„œë²„ë¡œë¶€í„° ë¡œê·¸ì¸ ì‘ë‹µì´ ì—†ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì—¬ ì£¼ì‹­ì‹œì˜¤."));
 		}
 		else
 		{
-			message = _T("·Î±×ÀÎÀÌ ½ÇÆĞÇÏ¿´½À´Ï´Ù.\n");
+			message = _T("ë¡œê·¸ì¸ì´ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.\n");
 
 			TCHAR msg[2048] = { 0, };
 
@@ -258,15 +258,15 @@ void YaClient::init()
 	if (RESULT_SUCCESS == g_iYuantaAPI.YOA_Initial(strServer, GetSafeHwnd(), app_path.c_str(), WMU_STARTMSGID, FALSE))
 	{
 		if (0 == nCurSel || 2 == nCurSel)
-			AfxMessageBox(_T("¸ğÀÇÅõÀÚ·Î Á¢¼ÓÇÕ´Ï´Ù.\n¸ğÀÇÅõÀÚÀÇ °èÁÂºñ¹Ğ¹øÈ£´Â 0000ÀÔ´Ï´Ù."));
+			AfxMessageBox(_T("ëª¨ì˜íˆ¬ìë¡œ ì ‘ì†í•©ë‹ˆë‹¤.\nëª¨ì˜íˆ¬ìì˜ ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ëŠ” 0000ì…ë‹ˆë‹¤."));
 
-		LOGINFO(CMyLogger::getInstance(), _T("À¯¾ÈÅ¸ Open API°¡ ÃÊ±âÈ­µÇ¾ú½À´Ï´Ù."));
+		LOGINFO(CMyLogger::getInstance(), _T("ìœ ì•ˆíƒ€ Open APIê°€ ì´ˆê¸°í™”ë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 		g_bInitial = TRUE;
 	}
 	else
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("À¯¾ÈÅ¸ Open API°¡ ÃÊ±âÈ­¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù."), 1);
+		LOGINFO(CMyLogger::getInstance(), _T("ìœ ì•ˆíƒ€ Open APIê°€ ì´ˆê¸°í™”ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤."), 1);
 
 		return;
 	}
@@ -276,7 +276,7 @@ BOOL YaClient::CheckInit()
 {
 	if (FALSE == g_bInitial)
 	{
-		AfxMessageBox("À¯¾ÈÅ¸ Open API ÃÊ±âÈ­°¡ ÇÊ¿äÇÕ´Ï´Ù.", 1);
+		AfxMessageBox("ìœ ì•ˆíƒ€ Open API ì´ˆê¸°í™”ê°€ í•„ìš”í•©ë‹ˆë‹¤.", 1);
 	}
 
 	return g_bInitial;
@@ -286,7 +286,7 @@ BOOL YaClient::CheckLogin()
 {
 	if (FALSE == g_bLogin)
 	{
-		AfxMessageBox("·Î±×ÀÎÀÌ ÇÊ¿äÇÕ´Ï´Ù.", 1);
+		AfxMessageBox("ë¡œê·¸ì¸ì´ í•„ìš”í•©ë‹ˆë‹¤.", 1);
 	}
 
 	return g_bLogin;
@@ -299,11 +299,11 @@ void YaClient::log_in(const std::string& id, const std::string& pwd, const std::
 		long nResult = g_iYuantaAPI.YOA_Login(GetSafeHwnd(), id.c_str(), pwd.c_str(), cert.c_str());
 		if (RESULT_SUCCESS == nResult)
 		{
-			LOGINFO(CMyLogger::getInstance(), _T("·Î±×ÀÎ ¿äÃ»ÀÌ µÇ¾ú½À´Ï´Ù."));
+			LOGINFO(CMyLogger::getInstance(), _T("ë¡œê·¸ì¸ ìš”ì²­ì´ ë˜ì—ˆìŠµë‹ˆë‹¤."));
 		}
 		else
 		{
-			LOGINFO(CMyLogger::getInstance(), _T("·Î±×ÀÎ ¿äÃ»ÀÌ ½ÇÆĞÇÏ¿´½À´Ï´Ù."));
+			LOGINFO(CMyLogger::getInstance(), _T("ë¡œê·¸ì¸ ìš”ì²­ì´ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤."));
 			TCHAR msg[2048] = { 0, };
 			g_iYuantaAPI.YOA_GetErrorMessage(nResult, msg, sizeof(msg));
 			LOGINFO(CMyLogger::getInstance(), msg);
@@ -331,51 +331,51 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	/*
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// °èÁÂ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jumun_gubun"), order_req->position_type == SmPositionType::Sell ? "1" : "2", 0);		// ÁÖ¹®±¸ºĞ1¸Åµµ2¸Å¼ö °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ¸Å¸Å±¸ºĞLÁöÁ¤M½ÃÀåCÁ¶°ÇºÎBÃÖÀ¯ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jong_code"), order_req->symbol_code.c_str(), 0);		// Á¾¸ñÄÚµå °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// ÁÖ¹®¼ö·® °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), order_req->account_no.c_str(), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), order_req->password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jumun_gubun"), order_req->position_type == SmPositionType::Sell ? "1" : "2", 0);		// ì£¼ë¬¸êµ¬ë¶„1ë§¤ë„2ë§¤ìˆ˜ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ë§¤ë§¤êµ¬ë¶„Lì§€ì •Mì‹œì¥Cì¡°ê±´ë¶€Bìµœìœ  ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jong_code"), order_req->symbol_code.c_str(), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldLong(_T("order_cnt"), order_req->order_amount, 0);		// ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	*/
 	CString format_price;
 	format_price.Format("%.2f", static_cast<double>(static_cast<double>(order_req->order_price) / 100.0));
 	std::string order_price = std::string(static_cast<const char*>(format_price));
 	/*
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// ÁÖ¹®°¡°İ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ¼±¹°¿É¼Ç±¸ºĞ0¼±¹°1¿É¼Ç2°³º°3ÄÚ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// ÁÖ¹®Á¶°ÇSÀÏ¹İIÀÏºÎÃæÁ·FÀü·®ÃæÁ· °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("order_price"), order_price.c_str(), 0);		// ì£¼ë¬¸ê°€ê²© ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ì„ ë¬¼ì˜µì…˜êµ¬ë¶„0ì„ ë¬¼1ì˜µì…˜2ê°œë³„3ì½” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("futu_ord_if"), _T("S"), 0);		// ì£¼ë¬¸ì¡°ê±´Sì¼ë°˜Iì¼ë¶€ì¶©ì¡±Fì „ëŸ‰ì¶©ì¡± ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	*/
 
 
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// °èÁÂ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jumun_gubun"), order_req->position_type == SmPositionType::Sell ? "1" : "2", 0);		// ÁÖ¹®±¸ºĞ1¸Åµµ2¸Å¼ö °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ¸Å¸Å±¸ºĞLÁöÁ¤M½ÃÀåCÁ¶°ÇºÎBÃÖÀ¯ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jong_code"), order_req->symbol_code.c_str(), 0);		// Á¾¸ñÄÚµå °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160001"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// ÁÖ¹®¼ö·® °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jumun_gubun"), order_req->position_type == SmPositionType::Sell ? "1" : "2", 0);		// ì£¼ë¬¸êµ¬ë¶„1ë§¤ë„2ë§¤ìˆ˜ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ë§¤ë§¤êµ¬ë¶„Lì§€ì •Mì‹œì¥Cì¡°ê±´ë¶€Bìµœìœ  ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jong_code"), order_req->symbol_code.c_str(), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160001"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// ÁÖ¹®°¡°İ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ¼±¹°¿É¼Ç±¸ºĞ0¼±¹°1¿É¼Ç2°³º°3ÄÚ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// ÁÖ¹®Á¶°ÇSÀÏ¹İIÀÏºÎÃæÁ·FÀü·®ÃæÁ· °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// ì£¼ë¬¸ê°€ê²© ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ì„ ë¬¼ì˜µì…˜êµ¬ë¶„0ì„ ë¬¼1ì˜µì…˜2ê°œë³„3ì½” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160001"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// ì£¼ë¬¸ì¡°ê±´Sì¼ë°˜Iì¼ë¶€ì¶©ì¡±Fì „ëŸ‰ì¶©ì¡± ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ½Ã±×³ÎÀÌ¸§[%s]"), order_req->order_context.signal_name.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: °èÁÂ¹øÈ£[%s]"), order_req->account_no.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ºñ¹Ğ¹øÈ£[%s]"), order_req->password.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: Á¾¸ñÄÚµå[%s]"), order_req->symbol_code.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ¸Å¼ö/¸Åµµ[%s]"), std::to_string((int)order_req->position_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ÁÖ¹®°¡°İ[%s]"), order_price.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ÁÖ¹®¼ö·®[%s]"), std::to_string((int)order_req->order_amount).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ÁÖ¹®Å¸ÀÔ[%s]"), std::to_string((int)order_req->order_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: °¡°İÅ¸ÀÔ[%s]"), std::to_string((int)order_req->price_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ¼±¹°/¿É¼Ç[%s]"), std::to_string((int)order_req->future_or_option).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì‹œê·¸ë„ì´ë¦„[%s]"), order_req->order_context.signal_name.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ê³„ì¢Œë²ˆí˜¸[%s]"), order_req->account_no.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ë¹„ë°€ë²ˆí˜¸[%s]"), order_req->password.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì¢…ëª©ì½”ë“œ[%s]"), order_req->symbol_code.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ë§¤ìˆ˜/ë§¤ë„[%s]"), std::to_string((int)order_req->position_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì£¼ë¬¸ê°€ê²©[%s]"), order_price.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì£¼ë¬¸ìˆ˜ëŸ‰[%s]"), std::to_string((int)order_req->order_amount).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì£¼ë¬¸íƒ€ì…[%s]"), std::to_string((int)order_req->order_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ê°€ê²©íƒ€ì…[%s]"), std::to_string((int)order_req->price_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("dm_new_order:: ì„ ë¬¼/ì˜µì…˜[%s]"), std::to_string((int)order_req->future_or_option).c_str());
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹° ½Å±ÔÁÖ¹® ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ ì‹ ê·œì£¼ë¬¸ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		//request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -390,7 +390,7 @@ void YaClient::dm_new_order(const std::shared_ptr<OrderRequest>& order_req)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹° ½Å±ÔÁÖ¹® ¿äÃ»Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ ì‹ ê·œì£¼ë¬¸ ìš”ì²­ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		//on_task_request_error(arg.argument_id);
 		//return -1;
@@ -405,26 +405,26 @@ void YaClient::dm_change_order(const std::shared_ptr<OrderRequest>& order_req)
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_MOD)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// °èÁÂ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ¸Å¸Å±¸ºĞLÁöÁ¤M½ÃÀåCÁ¶°ÇºÎBÃÖÀ¯ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160003"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// Á¤Á¤ÁÖ¹®¼ö·® °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("meme_gubun"), order_req->price_type == SmPriceType::Price ? "L" : "M", 0);		// ë§¤ë§¤êµ¬ë¶„Lì§€ì •Mì‹œì¥Cì¡°ê±´ë¶€Bìµœìœ  ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160003"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// ì •ì •ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	CString format_price;
 	format_price.Format("%.2f", static_cast<double>(order_req->order_price / 100.0));
 	std::string order_price = std::string(CT2CA(format_price));
 
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// ÁÖ¹®°¡°İ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ¼±¹°¿É¼Ç±¸ºĞ0¼±¹°1¿É¼Ç2°³º°3ÄÚ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// ÁÖ¹®Á¶°ÇSÀÏ¹İIÀÏºÎÃæÁ·FÀü·®ÃæÁ· °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("order_price"), order_price.c_str(), 0);		// ì£¼ë¬¸ê°€ê²© ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("jang_gubun"), std::to_string(order_req->future_or_option).c_str(), 0);		// ì„ ë¬¼ì˜µì…˜êµ¬ë¶„0ì„ ë¬¼1ì˜µì…˜2ê°œë³„3ì½” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160003"), _T("InBlock1"), _T("futu_ord_if"), _T("S"), 0);		// ì£¼ë¬¸ì¡°ê±´Sì¼ë°˜Iì¼ë¶€ì¶©ì¡±Fì „ëŸ‰ì¶©ì¡± ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹° Á¤Á¤ÁÖ¹® ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ ì •ì •ì£¼ë¬¸ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		//request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -439,7 +439,7 @@ void YaClient::dm_change_order(const std::shared_ptr<OrderRequest>& order_req)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹° Á¤Á¤ÁÖ¹® ¿äÃ»Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ ì •ì •ì£¼ë¬¸ ìš”ì²­ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		//on_task_request_error(arg.argument_id);
 		//return -1;
@@ -450,35 +450,35 @@ void YaClient::dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 {
 	ya_request_map_.clear();
 
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ½Ã±×³ÎÀÌ¸§[%s]"), order_req->order_context.signal_name.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ÇØ¿Ü/±¹³»[%s]"), std::to_string((int)order_req->request_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: °èÁÂ¹øÈ£[%s]"), order_req->account_no.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ºñ¹Ğ¹øÈ£[%s]"), order_req->password.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ¿øÁÖ¹®¹øÈ£[%s]"), order_req->original_order_no.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: Á¾¸ñÄÚµå[%s]"), order_req->symbol_code.c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ¸Å¼ö/¸Åµµ[%s]"), std::to_string((int)order_req->position_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ÁÖ¹®°¡°İ[%s]"), std::to_string((int)order_req->order_price).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ÁÖ¹®¼ö·®[%s]"), std::to_string((int)order_req->order_amount).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ÁÖ¹®Å¸ÀÔ[%s]"), std::to_string((int)order_req->order_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: °¡°İÅ¸ÀÔ[%s]"), std::to_string((int)order_req->price_type).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ¼±¹°/¿É¼Ç[%s]"), std::to_string((int)order_req->future_or_option).c_str());
-	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ÁÖ¹®Á¶°Ç[%s]"), std::to_string((int)order_req->fill_condition).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì‹œê·¸ë„ì´ë¦„[%s]"), order_req->order_context.signal_name.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: í•´ì™¸/êµ­ë‚´[%s]"), std::to_string((int)order_req->request_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ê³„ì¢Œë²ˆí˜¸[%s]"), order_req->account_no.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ë¹„ë°€ë²ˆí˜¸[%s]"), order_req->password.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì›ì£¼ë¬¸ë²ˆí˜¸[%s]"), order_req->original_order_no.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì¢…ëª©ì½”ë“œ[%s]"), order_req->symbol_code.c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ë§¤ìˆ˜/ë§¤ë„[%s]"), std::to_string((int)order_req->position_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì£¼ë¬¸ê°€ê²©[%s]"), std::to_string((int)order_req->order_price).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì£¼ë¬¸ìˆ˜ëŸ‰[%s]"), std::to_string((int)order_req->order_amount).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì£¼ë¬¸íƒ€ì…[%s]"), std::to_string((int)order_req->order_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ê°€ê²©íƒ€ì…[%s]"), std::to_string((int)order_req->price_type).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì„ ë¬¼/ì˜µì…˜[%s]"), std::to_string((int)order_req->future_or_option).c_str());
+	LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: ì£¼ë¬¸ì¡°ê±´[%s]"), std::to_string((int)order_req->fill_condition).c_str());
 
 
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_ORDER_CANCEL)];
 	const std::string trade_code = req_info.dso_name.substr(3);
 	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// °èÁÂ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160004"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// Ãë¼ÒÁÖ¹®¼ö·® °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("passwd"), order_req->password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("160004"), _T("InBlock1"), _T("org_order_no"), order_req->original_order_no.c_str(), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldLong(_T("160004"), _T("InBlock1"), _T("order_cnt"), order_req->order_amount, 0);		// ì·¨ì†Œì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹° Ãë¼ÒÁÖ¹® ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ ì·¨ì†Œì£¼ë¬¸ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		//request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -493,7 +493,7 @@ void YaClient::dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹° Ãë¼ÒÁÖ¹® ¿äÃ»Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ ì·¨ì†Œì£¼ë¬¸ ìš”ì²­ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		//on_task_request_error(arg.argument_id);
 		//return -1;
@@ -524,7 +524,7 @@ int YaClient::dm_order_filled(DhTaskArg arg)
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ¼±¹°¿É¼ÇÁÖ¹®Ã¼°á Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ì„ ë¬¼ì˜µì…˜ì£¼ë¬¸ì²´ê²° ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -539,7 +539,7 @@ int YaClient::dm_order_filled(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]¼±¹°¿É¼ÇÁÖ¹®Ã¼°á Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ì„ ë¬¼ì˜µì…˜ì£¼ë¬¸ì²´ê²° ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		on_task_request_error(arg.argument_id);
 		return -1;
@@ -550,16 +550,16 @@ int YaClient::dm_order_filled(DhTaskArg arg)
 
 int YaClient::dm_order_orderable(DhTaskArg arg)
 {
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250012"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂ»óÇ°±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("jong_code"), _T("ÀÔ·Â°ª"), 0);		// Á¾¸ñÄÚµå °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("buy_sell_tp"), _T("ÀÔ·Â°ª"), 0);		// ¸Åµµ¸Å¼ö±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("ÀÔ·Â°ª"), 0);		// ÁÖ¹®À¯Çü±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("qry_tp"), _T("ÀÔ·Â°ª"), 0);		// Á¶È¸±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_qty"), _T("ÀÔ·Â°ª"), 0);		// ÁÖ¹®¼ö·® °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("order_idx"), _T("ÀÔ·Â°ª"), 0);		// ÁÖ¹®Áö¼ö °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250012"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jang_gubun"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œìƒí’ˆêµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("jong_code"), _T("ì…ë ¥ê°’"), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("buy_sell_tp"), _T("ì…ë ¥ê°’"), 0);		// ë§¤ë„ë§¤ìˆ˜êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("ì…ë ¥ê°’"), 0);		// ì£¼ë¬¸ìœ í˜•êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("qry_tp"), _T("ì…ë ¥ê°’"), 0);		// ì¡°íšŒêµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("order_qty"), _T("ì…ë ¥ê°’"), 0);		// ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("order_idx"), _T("ì…ë ¥ê°’"), 0);		// ì£¼ë¬¸ì§€ìˆ˜ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	return 1;
 }
@@ -571,15 +571,15 @@ int YaClient::dm_account_asset(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ÀÚ»êÁ¤º¸ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ìì‚°ì •ë³´ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -594,7 +594,7 @@ int YaClient::dm_account_asset(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ÀÚ»êÁ¤º¸ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ìì‚°ì •ë³´ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		auto account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (account) {
@@ -614,21 +614,21 @@ int YaClient::dm_account_asset(DhTaskArg arg)
 
 int YaClient::dm_provisional_settlement(DhTaskArg arg)
 {
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	return 1;
 }
 
 int YaClient::dm_accepted_order(DhTaskArg arg)
 {
 	/*
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("date"), _T("ÀÔ·Â°ª"), 0);		// Á¶È¸½ÃÀÛÀÏ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("ÀÔ·Â°ª"), 0);		// ¼ø¼­±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("work_tp"), _T("ÀÔ·Â°ª"), 0);		// ¾÷¹«±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("date"), _T("ì…ë ¥ê°’"), 0);		// ì¡°íšŒì‹œì‘ì¼ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("ord_tp"), _T("ì…ë ¥ê°’"), 0);		// ìˆœì„œêµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("work_tp"), _T("ì…ë ¥ê°’"), 0);		// ì—…ë¬´êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	*/
 	//return 1;
 
@@ -638,15 +638,15 @@ int YaClient::dm_accepted_order(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ¹ÌÃ¼°á ÁÖ¹® Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -661,7 +661,7 @@ int YaClient::dm_accepted_order(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]¹ÌÃ¼°á ÁÖ¹® Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		auto account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (account) {
@@ -686,15 +686,15 @@ int YaClient::dm_symbol_position(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ¾÷¹«±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ì—…ë¬´êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° Æ÷Áö¼Ç Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ í¬ì§€ì…˜ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -709,7 +709,7 @@ int YaClient::dm_symbol_position(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° Æ÷Áö¼Ç Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ í¬ì§€ì…˜ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		
 
@@ -728,15 +728,15 @@ int YaClient::dm_daily_profit_loss(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° ÀÏÀÏ ¼ÕÀÍ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ ì¼ì¼ ì†ìµ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -751,7 +751,7 @@ int YaClient::dm_daily_profit_loss(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° ÀÏÀÏ ¼ÕÀÍÁ¶È¸ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ ì¼ì¼ ì†ìµì¡°íšŒ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		
 
@@ -765,10 +765,10 @@ int YaClient::dm_daily_profit_loss(DhTaskArg arg)
 
 int YaClient::dm_liquidable_qty(DhTaskArg arg)
 {
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ÀÔ·Â°ª"), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ÀÔ·Â°ª"), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("qry_tp"), _T("ÀÔ·Â°ª"), 0);		// Á¶È¸±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), _T("ì…ë ¥ê°’"), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), _T("ì…ë ¥ê°’"), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("qry_tp"), _T("ì…ë ¥ê°’"), 0);		// ì¡°íšŒêµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	return 1;
 }
 
@@ -779,15 +779,15 @@ int YaClient::dm_trade_profit_loss(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	//g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ¾÷¹«±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	//g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ì—…ë¬´êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° ½ÇÇö¼ÕÀÍ°ú¼ö¼ö·á Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ ì‹¤í˜„ì†ìµê³¼ìˆ˜ìˆ˜ë£Œ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -802,7 +802,7 @@ int YaClient::dm_trade_profit_loss(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° °èÁÂº° ½ÇÇö¼ÕÀÍ°ú¼ö¼ö·á Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ ê³„ì¢Œë³„ ì‹¤í˜„ì†ìµê³¼ìˆ˜ìˆ˜ë£Œ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		
 
@@ -821,15 +821,15 @@ int YaClient::dm_outstanding_order(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ¾÷¹«±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ì—…ë¬´êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° ¹ÌÃ¼°á ÁÖ¹® Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -844,7 +844,7 @@ int YaClient::dm_outstanding_order(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° ¹ÌÃ¼°á ÁÖ¹® Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		
 		//AfxMessageBox(strErrorMsg);
@@ -861,14 +861,14 @@ int YaClient::dm_fut_sise(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹°½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -883,7 +883,7 @@ int YaClient::dm_fut_sise(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹°½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		
 
@@ -901,14 +901,14 @@ int YaClient::dm_fut_hoga(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹° È£°¡ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ í˜¸ê°€ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -923,7 +923,7 @@ int YaClient::dm_fut_hoga(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹° È£°¡ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ í˜¸ê°€ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -941,14 +941,14 @@ int YaClient::dm_opt_sise(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³» ¿É¼Ç½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ ì˜µì…˜ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -963,7 +963,7 @@ int YaClient::dm_opt_sise(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³» ¿É¼Ç½Ã¼¼  Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ ì˜µì…˜ì‹œì„¸  ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -981,14 +981,14 @@ int YaClient::dm_opt_hoga(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³» ¿É¼Ç È£°¡ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ ì˜µì…˜ í˜¸ê°€ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -1003,7 +1003,7 @@ int YaClient::dm_opt_hoga(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³» ¿É¼Ç È£°¡ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ ì˜µì…˜ í˜¸ê°€ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -1021,14 +1021,14 @@ int YaClient::dm_commodity_sise(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] »óÇ°¼±¹° ½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ìƒí’ˆì„ ë¬¼ ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -1043,7 +1043,7 @@ int YaClient::dm_commodity_sise(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]»óÇ°¼±¹° ½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ìƒí’ˆì„ ë¬¼ ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -1061,14 +1061,14 @@ int YaClient::dm_commodity_hoga(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] »óÇ°¼±¹° È£°¡ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ìƒí’ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -1083,7 +1083,7 @@ int YaClient::dm_commodity_hoga(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]»óÇ°¼±¹° È£°¡ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ìƒí’ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -1103,160 +1103,160 @@ int YaClient::dm_chart_n_min(DhTaskArg arg)
 void YaClient::init_ya_req_info_list()
 {
 	YA_REQ_INFO req_info;
-	req_info.desc = "¼±¹°¿É¼ÇÁÖ¹®Ã¼°á";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì£¼ë¬¸ì²´ê²°";
 	req_info.dso_name = "DSO250009";
 	req_info.req = SERVER_REQ::DM_ORDER_FILLED;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼ÇÁÖ¹®°¡´É¼ö·®Á¶È¸_¼ö·®";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì£¼ë¬¸ê°€ëŠ¥ìˆ˜ëŸ‰ì¡°íšŒ_ìˆ˜ëŸ‰";
 	req_info.dso_name = "DSO250012";
 	req_info.req = SERVER_REQ::DM_ORDER_ORDERABLE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼ÇÁõ°Å±İ»ó¼¼³»¿ª";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì¦ê±°ê¸ˆìƒì„¸ë‚´ì—­";
 	req_info.dso_name = "DSO250013";
 	req_info.req = SERVER_REQ::DM_ASSET;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç°¡Á¤»ê¿¹¼öÇöÈ²";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ê°€ì •ì‚°ì˜ˆìˆ˜í˜„í™©";
 	req_info.dso_name = "DSO250014";
 	req_info.req = SERVER_REQ::DM_PROVISIONAL_SETTLEMENT;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç ¹ÌÃ¼°á Á¶È¸";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ ë¯¸ì²´ê²° ì¡°íšŒ";
 	req_info.dso_name = "DSO250031";
 	req_info.req = SERVER_REQ::DM_ACCEPTED;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç ÀÜ°í Á¶È¸";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ ì”ê³  ì¡°íšŒ";
 	req_info.dso_name = "DSO250032";
 	req_info.req = SERVER_REQ::DM_POSITION_INFO;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç´çÀÏÆò°¡";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ë‹¹ì¼í‰ê°€";
 	req_info.dso_name = "DSO251002";
 	req_info.req = SERVER_REQ::DM_DAILY_PROFIT_LOSS;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼ÇÃ»»ê°¡´É¼ö·®";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰";
 	req_info.dso_name = "DSO251007";
 	req_info.req = SERVER_REQ::DM_LIQUIDABLE_QTY;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç½ÇÇö¼ÕÀÍ°ú¼ö¼ö·áÁ¶È¸";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì‹¤í˜„ì†ìµê³¼ìˆ˜ìˆ˜ë£Œì¡°íšŒ";
 	req_info.dso_name = "DSO251009";
 	req_info.req = SERVER_REQ::DM_TRADE_PROFIT_LOSS;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¹Ì°áÁ¦¾àÁ¤Á¤º¸Á¶È¸";
+	req_info.desc = "ë¯¸ê²°ì œì•½ì •ì •ë³´ì¡°íšŒ";
 	req_info.dso_name = "DSO280002";
 	req_info.req = SERVER_REQ::DM_OUTSTANDING_ORDER;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°ÇöÀç°¡";
+	req_info.desc = "ì„ ë¬¼í˜„ì¬ê°€";
 	req_info.dso_name = "DSO350001";
 	req_info.req = SERVER_REQ::DM_FUT_SISE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°ÇöÀç°¡_È£°¡Ã¼°á";
+	req_info.desc = "ì„ ë¬¼í˜„ì¬ê°€_í˜¸ê°€ì²´ê²°";
 	req_info.dso_name = "DSO350002";
 	req_info.req = SERVER_REQ::DM_FUT_HOGA;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¿É¼ÇÇöÀç°¡";
+	req_info.desc = "ì˜µì…˜í˜„ì¬ê°€";
 	req_info.dso_name = "DSO360001";
 	req_info.req = SERVER_REQ::DM_OPT_SISE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¿É¼ÇÇöÀç°¡_È£°¡Ã¼°á";
+	req_info.desc = "ì˜µì…˜í˜„ì¬ê°€_í˜¸ê°€ì²´ê²°";
 	req_info.dso_name = "DSO360002";
 	req_info.req = SERVER_REQ::DM_OPT_HOGA;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "»óÇ°¼±¹°ÇöÀç°¡";
+	req_info.desc = "ìƒí’ˆì„ ë¬¼í˜„ì¬ê°€";
 	req_info.dso_name = "DSO391001";
 	req_info.req = SERVER_REQ::DM_COMMODITY_SISE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "»óÇ°¼±¹°ÇöÀç°¡_È£°¡Ã¼°á";
+	req_info.desc = "ìƒí’ˆì„ ë¬¼í˜„ì¬ê°€_í˜¸ê°€ì²´ê²°";
 	req_info.dso_name = "DSO391002";
 	req_info.req = SERVER_REQ::DM_COMMODITY_HOGA;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "Ã­Æ®nºĞºÀ";
+	req_info.desc = "ì± íŠ¸në¶„ë´‰";
 	req_info.dso_name = "DSO402001";
 	req_info.req = SERVER_REQ::DM_CHART_N_MIN;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼Ç½Å±ÔÁÖ¹®";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì‹ ê·œì£¼ë¬¸";
 	req_info.dso_name = "DSO160001";
 	req_info.req = SERVER_REQ::DM_ORDER_NEW;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼ÊÁ¤Á¤ÁÖ¹®";
+	req_info.desc = "ì„ ë¬¼ì˜µì…¥ì •ì •ì£¼ë¬¸";
 	req_info.dso_name = "DSO160003";
 	req_info.req = SERVER_REQ::DM_ORDER_MOD;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¼±¹°¿É¼ÇÃë¼ÒÁÖ¹®";
+	req_info.desc = "ì„ ë¬¼ì˜µì…˜ì·¨ì†Œì£¼ë¬¸";
 	req_info.dso_name = "DSO160004";
 	req_info.req = SERVER_REQ::DM_ORDER_CANCEL;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¹Ì´Ï¼±¹°ÇöÀç°¡";
+	req_info.desc = "ë¯¸ë‹ˆì„ ë¬¼í˜„ì¬ê°€";
 	req_info.dso_name = "DSO368001";
 	req_info.req = SERVER_REQ::DM_FUT_MINI_SISE;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¹Ì´Ï¼±¹°ÇöÀç°¡_È£°¡Ã¼°á";
+	req_info.desc = "ë¯¸ë‹ˆì„ ë¬¼í˜„ì¬ê°€_í˜¸ê°€ì²´ê²°";
 	req_info.dso_name = "DSO368002";
 	req_info.req = SERVER_REQ::DM_FUT_MINI_HOGA;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "ÄÚ½ºÇÇ¿É¼Ç_¿ù¹°½Ã¼¼";
+	req_info.desc = "ì½”ìŠ¤í”¼ì˜µì…˜_ì›”ë¬¼ì‹œì„¸";
 	req_info.dso_name = "DSO361007";
 	req_info.code = "201";
 	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSPI;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "¹Ì´ÏÄÚ½ºÇÇ¿É¼Ç_¿ù¹°½Ã¼¼";
+	req_info.desc = "ë¯¸ë‹ˆì½”ìŠ¤í”¼ì˜µì…˜_ì›”ë¬¼ì‹œì„¸";
 	req_info.dso_name = "DSO389004";
 	req_info.code = "205";
 	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_MINI_KOSPI;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "À§Å¬¸®¿É¼Ç_¿ù¹°½Ã¼¼";
+	req_info.desc = "ìœ„í´ë¦¬ì˜µì…˜_ì›”ë¬¼ì‹œì„¸";
 	req_info.dso_name = "DSO389104";
 	req_info.code = "209";
 	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_WEEKLY;
 	req_info.request_id = 0;
 	ya_req_info_list_.push_back(req_info);
 
-	req_info.desc = "ÄÚ½º´Ú¿É¼Ç_¿ù¹°½Ã¼¼";
+	req_info.desc = "ì½”ìŠ¤ë‹¥ì˜µì…˜_ì›”ë¬¼ì‹œì„¸";
 	req_info.dso_name = "DSO384007";
 	req_info.code = "206";
 	req_info.req = SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSDAQ;
@@ -1320,15 +1320,15 @@ void YaClient::on_dm_order_orderable(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250012"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250012"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ksq_brk_prof"), data, sizeof(data), 0);		// À§Å¹Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ksq_brk_prof"), data, sizeof(data), 0);		// ìœ„íƒì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ksq_brk_prof_cash"), data, sizeof(data), 0);		// Çö±İÁõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ksq_brk_prof_cash"), data, sizeof(data), 0);		// í˜„ê¸ˆì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("new_qty"), data, sizeof(data), 0);		// ½Å±Ô¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("new_qty"), data, sizeof(data), 0);		// ì‹ ê·œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clear_qty"), data, sizeof(data), 0);		// Ã»»ê¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clear_qty"), data, sizeof(data), 0);		// ì²­ì‚°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -1354,47 +1354,47 @@ void YaClient::on_dm_asset(const YA_REQ_INFO& req_info)
 	TCHAR data[1024] = { 0, };
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: °èÁÂ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ê³„ì¢Œ[%s]"), data);
 	account_asset["account_no"] = std::string(data);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kyejwa"), data, sizeof(data), 0);		// °èÁÂ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kyejwa"), data, sizeof(data), 0);		// ê³„ì¢Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: kyejwa[%s]"), data);
 	
 
 	memset(data, 0x00, sizeof(data));
 	BYTE jang_gubun = 0;
-	g_iYuantaAPI.YOA_GetFieldByte(_T("jang_gubun"), &jang_gubun, 0);		// °èÁÂ»óÇ°±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldByte(_T("jang_gubun"), &jang_gubun, 0);		// ê³„ì¢Œìƒí’ˆêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250013"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tot"), data, sizeof(data), 0);// ¿¹Å¹ÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ¿¹Å¹ÃÑ¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("tot"), data, sizeof(data), 0);// ì˜ˆíƒì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ì˜ˆíƒì´ì•¡[%s]"), data);
 	account_asset["entrust_total"] = _ttof(data);
 	account_asset["balance"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("deposittot"), data, sizeof(data), 0);// À§Å¹Áõ°Å±İÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: À§Å¹Áõ°Å±İÃÑ¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("deposittot"), data, sizeof(data), 0);// ìœ„íƒì¦ê±°ê¸ˆì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ìœ„íƒì¦ê±°ê¸ˆì´ì•¡[%s]"), data);
 	
 	account_asset["open_trust_total"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("orddeposit"), data, sizeof(data), 0);// ÁÖ¹®°¡´ÉÃÑÁõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ÁÖ¹®°¡´ÉÃÑÁõ°Å±İ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("orddeposit"), data, sizeof(data), 0);// ì£¼ë¬¸ê°€ëŠ¥ì´ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ì£¼ë¬¸ê°€ëŠ¥ì´ì¦ê±°ê¸ˆ[%s]"), data);
 	account_asset["order_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("drawtot"), data, sizeof(data), 0);// ÀÎÃâ°¡´ÉÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ÀÎÃâ°¡´ÉÃÑ¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("drawtot"), data, sizeof(data), 0);// ì¸ì¶œê°€ëŠ¥ì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ì¸ì¶œê°€ëŠ¥ì´ì•¡[%s]"), data);
 	account_asset["outstanding_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("keepdeposit"), data, sizeof(data), 0);// À¯ÁöÁõ°Å±İÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: À¯ÁöÁõ°Å±İÃÑ¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("keepdeposit"), data, sizeof(data), 0);// ìœ ì§€ì¦ê±°ê¸ˆì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ìœ ì§€ì¦ê±°ê¸ˆì´ì•¡[%s]"), data);
 	account_asset["entrust_deposit"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("addtot"), data, sizeof(data), 0);// Ãß°¡Áõ°Å±İÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: Ãß°¡Áõ°Å±İÃÑ¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("addtot"), data, sizeof(data), 0);// ì¶”ê°€ì¦ê±°ê¸ˆì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_asset:: ì¶”ê°€ì¦ê±°ê¸ˆì´ì•¡[%s]"), data);
 	account_asset["additional_margin"] = _ttof(data);
 	account_asset["currency"] = "KRW";
 	
@@ -1420,61 +1420,61 @@ void YaClient::on_dm_provisional_settlement(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_yetak_tot"), data, sizeof(data), 0);		// ¿¹¼ö±İ¿¹Å¹ÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_yetak_tot"), data, sizeof(data), 0);		// ì˜ˆìˆ˜ê¸ˆì˜ˆíƒì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_cash"), data, sizeof(data), 0);		// ¿¹¼ö±İÇö±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_cash"), data, sizeof(data), 0);		// ì˜ˆìˆ˜ê¸ˆí˜„ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_daeyoung"), data, sizeof(data), 0);		// ¿¹¼ö±İ´ë¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("yesu_daeyoung"), data, sizeof(data), 0);		// ì˜ˆìˆ˜ê¸ˆëŒ€ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futjungsan_yt"), data, sizeof(data), 0);		// ¼±¹°Á¤»êÂ÷±İ_¿¹Å¹ÃÑ¾×¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("futjungsan_yt"), data, sizeof(data), 0);		// ì„ ë¬¼ì •ì‚°ì°¨ê¸ˆ_ì˜ˆíƒì´ì•¡ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("optmaesu_yt"), data, sizeof(data), 0);		// ¿É¼Ç¸Å¼ö´ë±İ_¿¹Å¹ÃÑ¾×¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("optmaesu_yt"), data, sizeof(data), 0);		// ì˜µì…˜ë§¤ìˆ˜ëŒ€ê¸ˆ_ì˜ˆíƒì´ì•¡ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("optmaedo_yt"), data, sizeof(data), 0);		// ¿É¼Ç¸Åµµ´ë±İ_¿¹Å¹ÃÑ¾×¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("optmaedo_yt"), data, sizeof(data), 0);		// ì˜µì…˜ë§¤ë„ëŒ€ê¸ˆ_ì˜ˆíƒì´ì•¡ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("b_n11_1"), data, sizeof(data), 0);		// Çà»ç¹èÁ¤Â÷±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("b_n11_1"), data, sizeof(data), 0);		// í–‰ì‚¬ë°°ì •ì°¨ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("b_n12_1"), data, sizeof(data), 0);		// Çà»ç¹èÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("b_n12_1"), data, sizeof(data), 0);		// í–‰ì‚¬ë°°ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("susuryo_yt"), data, sizeof(data), 0);		// ¼ö¼ö·á_¿¹Å¹ÃÑ¾×¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("susuryo_yt"), data, sizeof(data), 0);		// ìˆ˜ìˆ˜ë£Œ_ì˜ˆíƒì´ì•¡ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futjungsan_cash"), data, sizeof(data), 0);		// ¼±¹°Á¤»êÂ÷±İ_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("futjungsan_cash"), data, sizeof(data), 0);		// ì„ ë¬¼ì •ì‚°ì°¨ê¸ˆ_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("optmaesu_cash"), data, sizeof(data), 0);		// ¿É¼Ç¸Å¼ö´ë±İ_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("optmaesu_cash"), data, sizeof(data), 0);		// ì˜µì…˜ë§¤ìˆ˜ëŒ€ê¸ˆ_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("optmaedo_cash"), data, sizeof(data), 0);		// ¿É¼Ç¸Åµµ´ë±İ_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("optmaedo_cash"), data, sizeof(data), 0);		// ì˜µì…˜ë§¤ë„ëŒ€ê¸ˆ_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("b_n11_2"), data, sizeof(data), 0);		// Çà»ç¹èÁ¤Â÷±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("b_n11_2"), data, sizeof(data), 0);		// í–‰ì‚¬ë°°ì •ì°¨ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("b_n12_2"), data, sizeof(data), 0);		// Çà»ç¹èÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("b_n12_2"), data, sizeof(data), 0);		// í–‰ì‚¬ë°°ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("susuryo_cash"), data, sizeof(data), 0);		// ¼ö¼ö·á_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("susuryo_cash"), data, sizeof(data), 0);		// ìˆ˜ìˆ˜ë£Œ_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock4"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock4"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("yesterdaeyoung_yt"), data, sizeof(data), 0);		// ÀüÀÏ´ë¿ë¸Åµµ±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("yesterdaeyoung_yt"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ìš©ë§¤ë„ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("todaydaeyoung_yt"), data, sizeof(data), 0);		// ´çÀÏ´ë¿ë¸Åµµ±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("todaydaeyoung_yt"), data, sizeof(data), 0);		// ë‹¹ì¼ëŒ€ìš©ë§¤ë„ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock5"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock5"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("yesterdaeyoung_cash"), data, sizeof(data), 0);		// ÀüÀÏ´ë¿ë¸Åµµ±İ¾×_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("yesterdaeyoung_cash"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ìš©ë§¤ë„ê¸ˆì•¡_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("todaydaeyoung_cash"), data, sizeof(data), 0);		// ´çÀÏ´ë¿ë¸Åµµ±İ¾×_Çö±İ¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("todaydaeyoung_cash"), data, sizeof(data), 0);		// ë‹¹ì¼ëŒ€ìš©ë§¤ë„ê¸ˆì•¡_í˜„ê¸ˆìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock6"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250014"), _T("OutBlock6"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_yetak_tot"), data, sizeof(data), 0);		// °¡Á¤»ê¿¹¼ö±İ_¿¹Å¹ÃÑ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_yetak_tot"), data, sizeof(data), 0);		// ê°€ì •ì‚°ì˜ˆìˆ˜ê¸ˆ_ì˜ˆíƒì´ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_cash"), data, sizeof(data), 0);		// °¡Á¤»ê¿¹¼ö±İ_Çö±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_cash"), data, sizeof(data), 0);		// ê°€ì •ì‚°ì˜ˆìˆ˜ê¸ˆ_í˜„ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_daeyoung"), data, sizeof(data), 0);		// °¡Á¤»ê¿¹¼ö±İ_´ë¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gajung_daeyoung"), data, sizeof(data), 0);		// ê°€ì •ì‚°ì˜ˆìˆ˜ê¸ˆ_ëŒ€ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -1487,38 +1487,38 @@ void YaClient::on_dm_accepted(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string account_no = data;
 	order_info["account_no"] = account_no;
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: °èÁÂ¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ê³„ì¢Œë²ˆí˜¸[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑÁ¶È¸°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ì¡°íšŒê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const int list_cnt = _ttoi(data);
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ÃÑÁ¶È¸°Ç¼ö[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì´ì¡°íšŒê±´ìˆ˜[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// °èÁÂ±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: °èÁÂ±¸ºĞ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// ê³„ì¢Œêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ê³„ì¢Œêµ¬ë¶„[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < list_cnt; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), i);		// ÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), i);		// ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		order_info["order_no"] = data;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ÁÖ¹®¹øÈ£[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì£¼ë¬¸ë²ˆí˜¸[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), i);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), i);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		order_info["symbol_code"] = data;
 		const std::string symbol_code = data;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: Á¾¸ñÄÚµå[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì¢…ëª©ì½”ë“œ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), i);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: Á¾¸ñ¸í[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), i);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì¢…ëª©ëª…[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), i);		// ¸Åµµ¸Å¼ö±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), i);		// ë§¤ë„ë§¤ìˆ˜êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string buy_sell_tp = data;
-		auto npos = buy_sell_tp.find("¸Åµµ");
+		auto npos = buy_sell_tp.find("ë§¤ë„");
 		if (npos != std::string::npos) {
 			buy_sell_tp = "2";
 		}
@@ -1526,21 +1526,21 @@ void YaClient::on_dm_accepted(const YA_REQ_INFO& req_info)
 			buy_sell_tp = "1";
 		}
 		order_info["position_type"] = buy_sell_tp;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ¸Åµµ¸Å¼ö±¸ºĞ[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ë§¤ë„ë§¤ìˆ˜êµ¬ë¶„[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("order_qty"), data, sizeof(data), i);		// ÁÖ¹®¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("order_qty"), data, sizeof(data), i);		// ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		order_info["order_amount"] = _ttoi(data);
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ÁÖ¹®¼ö·®[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì£¼ë¬¸ìˆ˜ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("order_idx"), data, sizeof(data), i);		// ÁÖ¹®Áö¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("order_idx"), data, sizeof(data), i);		// ì£¼ë¬¸ì§€ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		order_info["order_price"] = convert_to_int(symbol_code, data);
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ÁÖ¹®Áö¼ö[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì£¼ë¬¸ì§€ìˆ˜[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("che_remn_qty"), data, sizeof(data), i);		// ¹ÌÃ¼°áÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ¹ÌÃ¼°áÀÜ·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("che_remn_qty"), data, sizeof(data), i);		// ë¯¸ì²´ê²°ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ë¯¸ì²´ê²°ì”ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("ord_tp"), data, sizeof(data), i);		// ÁÖ¹®À¯Çü °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ÁÖ¹®À¯Çü[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("ord_tp"), data, sizeof(data), i);		// ì£¼ë¬¸ìœ í˜• ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: ì£¼ë¬¸ìœ í˜•[%s]"), data);
 
 
 		order_info["order_event"] = OrderEvent::OE_Accepted;
@@ -1561,9 +1561,9 @@ void YaClient::on_dm_accepted(const YA_REQ_INFO& req_info)
 		mainApp.total_order_manager()->on_order_event(std::move(order_info));
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250031"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ° °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
 
@@ -1576,85 +1576,85 @@ void YaClient::on_dm_symbol_position(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string account_no = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: °èÁÂ¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ê³„ì¢Œë²ˆí˜¸[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑÁ¶È¸°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ÃÑÁ¶È¸°Ç¼ö[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ì¡°íšŒê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì´ì¡°íšŒê±´ìˆ˜[%s]"), data);
 
 	const int list_cnt = _ttoi(data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < list_cnt; i++) {
 		nlohmann::json symbol_position;
 		symbol_position["account_no"] = account_no;
 		symbol_position["account_name"] = "";
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		const std::string symbol_code = data;
 		symbol_position["symbol_code"] = symbol_code;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Á¾¸ñÄÚµå[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì¢…ëª©ì½”ë“œ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Á¾¸ñ¸í[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì¢…ëª©ëª…[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// ¸Å¸Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// ë§¤ë§¤êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		const std::string buy_sell_tp = data;
-		symbol_position["symbol_position"] = buy_sell_tp == "¸Å¼ö" ? 1 : -1;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ¸Å¸Å±¸ºĞ[%s]"), data);
+		symbol_position["symbol_position"] = buy_sell_tp == "ë§¤ìˆ˜" ? 1 : -1;
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ë§¤ë§¤êµ¬ë¶„[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// Æò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		symbol_position["symbol_avg_price"] = convert_to_int(symbol_code, data);
 		symbol_position["symbol_unit_price"] = convert_to_int(symbol_code, data);
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Æò±Õ°¡[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: í‰ê· ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("cur_price"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ÇöÀç°¡[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("cur_price"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: í˜„ì¬ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("cnt"), data, sizeof(data), 0);		// º¸À¯¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("cnt"), data, sizeof(data), 0);		// ë³´ìœ ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		symbol_position["symbol_open_qty"] = _ttoi(data);
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: º¸À¯¼ö·®[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ë³´ìœ ìˆ˜ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("cntclear"), data, sizeof(data), 0);		// Ã»»ê°¡´É¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Ã»»ê°¡´É¼ö·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("cntclear"), data, sizeof(data), 0);		// ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("eval_amt"), data, sizeof(data), 0);		// Æò°¡±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Æò°¡±İ¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("eval_amt"), data, sizeof(data), 0);		// í‰ê°€ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: í‰ê°€ê¸ˆì•¡[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl"), data, sizeof(data), 0);		// Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl"), data, sizeof(data), 0);		// í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		symbol_position["symbol_open_profit_loss"] = _ttof(data);
 		symbol_position["symbol_pre_open_qty"] = 0;
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Æò°¡¼ÕÀÍ[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: í‰ê°€ì†ìµ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ¼öÀÍ·ü °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ¼öÀÍ·ü[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ìˆ˜ìµë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ìˆ˜ìµë¥ [%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// Á¾¸ñº°´ÜÀ§±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: Á¾¸ñº°´ÜÀ§±İ¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// ì¢…ëª©ë³„ë‹¨ìœ„ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì¢…ëª©ë³„ë‹¨ìœ„ê¸ˆì•¡[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// ¿ÀÅä½Ã¼¼¿ëÁ¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ¿ÀÅä½Ã¼¼¿ëÁ¾¸ñÄÚµå[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// ì˜¤í† ì‹œì„¸ìš©ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ì˜¤í† ì‹œì„¸ìš©ì¢…ëª©ì½”ë“œ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("meaip"), data, sizeof(data), 0);		// ¸ÅÀÔ°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ¸ÅÀÔ°¡¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("meaip"), data, sizeof(data), 0);		// ë§¤ì…ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ë§¤ì…ê°€ì•¡[%s]"), data);
 
 		mainApp.total_position_manager()->on_symbol_position(std::move(symbol_position));
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("250032"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ¼±¹°Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ì„ ë¬¼í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ¿É¼ÇÆò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ì˜µì…˜í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tot_eval_pl"), data, sizeof(data), 0);		// ÃÑÆò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tot_eval_pl"), data, sizeof(data), 0);		// ì´í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tot_rate"), data, sizeof(data), 0);		// ÃÑÆò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tot_rate"), data, sizeof(data), 0);		// ì´í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);	
@@ -1666,21 +1666,21 @@ void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string account_no = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: °èÁÂ¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_symbol_position:: ê³„ì¢Œë²ˆí˜¸[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑÁ¶È¸°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ì¡°íšŒê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const int list_cnt = _ttoi(data);
 
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÃÑÁ¶È¸°Ç¼ö[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì´ì¡°íšŒê±´ìˆ˜[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// ½ÃÀå±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ½ÃÀå±¸ºĞ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("jang_gubun"), data, sizeof(data), 0);		// ì‹œì¥êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì‹œì¥êµ¬ë¶„[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < list_cnt; i++) {
 
 		nlohmann::json symbol_profit_loss;
@@ -1688,65 +1688,65 @@ void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 		symbol_profit_loss["account_name"] = "";
 		symbol_profit_loss["currency"] = "KRW";
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		const std::string symbol_code = data;
 		symbol_profit_loss["symbol_code"] = symbol_code;
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Á¾¸ñÄÚµå[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì¢…ëª©ì½”ë“œ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Á¾¸ñ¸í[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì¢…ëª©ëª…[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// ¸Å¼ö/¸Åµµ±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Å¼ö/¸Åµµ±¸ºĞ[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_sell_tp"), data, sizeof(data), 0);		// ë§¤ìˆ˜/ë§¤ë„êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ìˆ˜/ë§¤ë„êµ¬ë¶„[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("now_amount"), data, sizeof(data), 0);		// º¸À¯ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: º¸À¯ÀÜ·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("now_amount"), data, sizeof(data), 0);		// ë³´ìœ ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë³´ìœ ì”ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("buy_price"), data, sizeof(data), 0);		// ¸ÅÀÔ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸ÅÀÔ°¡[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("buy_price"), data, sizeof(data), 0);		// ë§¤ì…ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ì…ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("total_buy_price"), data, sizeof(data), 0);		// ¸ÅÀÔ°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸ÅÀÔ°¡¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_buy_price"), data, sizeof(data), 0);		// ë§¤ì…ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ì…ê°€ì•¡[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("now_price"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÇöÀç°¡[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("now_price"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: í˜„ì¬ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("total_now_price"), data, sizeof(data), 0);		// ÇöÀç°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÇöÀç°¡¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_now_price"), data, sizeof(data), 0);		// í˜„ì¬ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: í˜„ì¬ê°€ì•¡[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸ÅµµÈ£°¡[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ë„í˜¸ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸ÅµµÀÜ·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ë„ì”ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Å¼öÈ£°¡[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ìˆ˜í˜¸ê°€[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Å¼öÀÜ·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ìˆ˜ì”ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¾àÁ¤¼ö·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì•½ì •ìˆ˜ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¹Ì°áÁ¦¾àÁ¤¼ö·®[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("openvol"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("maemae_son"), data, sizeof(data), 0);		// ¸Å¸Å¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Å¸Å¼ÕÀÍ[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("maemae_son"), data, sizeof(data), 0);		// ë§¤ë§¤ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ë§¤ì†ìµ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// Ã»»ê¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// ì²­ì‚°ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		symbol_profit_loss["trade_profit_loss"] = _ttof(data);
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Ã»»ê¼ÕÀÍ[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì²­ì‚°ì†ìµ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// ÃÑ¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// ì´ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		symbol_profit_loss["pure_trade_profit_loss"] = _ttof(data);
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÃÑ¼ÕÀÍ[%s]"), data);
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì´ì†ìµ[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// Á¾¸ñº°´ÜÀ§±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Á¾¸ñº°´ÜÀ§±İ¾×[%s]"), data);
+		g_iYuantaAPI.YOA_GetFieldString(_T("unit"), data, sizeof(data), 0);		// ì¢…ëª©ë³„ë‹¨ìœ„ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì¢…ëª©ë³„ë‹¨ìœ„ê¸ˆì•¡[%s]"), data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// ¿ÀÅä½Ã¼¼¿ëÁ¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("autocode"), data, sizeof(data), 0);		// ì˜¤í† ì‹œì„¸ìš©ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 		symbol_profit_loss["trade_fee"] = 0.0f;
 		
@@ -1755,43 +1755,43 @@ void YaClient::on_dm_daily_profit_loss(const YA_REQ_INFO& req_info)
 		mainApp.total_position_manager()->on_symbol_profit_loss(std::move(symbol_profit_loss));
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251002"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("son"), data, sizeof(data), 0);		// Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Æò°¡¼ÕÀÍ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("son"), data, sizeof(data), 0);		// í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: í‰ê°€ì†ìµ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// Ã»»êºĞ¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: Ã»»êºĞ¼ÕÀÍ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("clear_son"), data, sizeof(data), 0);		// ì²­ì‚°ë¶„ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì²­ì‚°ë¶„ì†ìµ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// ÃÑ¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÃÑ¼ÕÀÍ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("total_son"), data, sizeof(data), 0);		// ì´ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì´ì†ìµ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("today_total_son"), data, sizeof(data), 0);		// ´çÀÏÃÑ¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ´çÀÏÃÑ¼ÕÀÍ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("today_total_son"), data, sizeof(data), 0);		// ë‹¹ì¼ì´ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë‹¹ì¼ì´ì†ìµ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("total_property"), data, sizeof(data), 0);		// ÃßÁ¤¿¹Å¹ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ÃßÁ¤¿¹Å¹[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("total_property"), data, sizeof(data), 0);		// ì¶”ì •ì˜ˆíƒ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ì¶”ì •ì˜ˆíƒ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("buy_opt_amt"), data, sizeof(data), 0);		// ¸Å¼ö¿É¼ÇÇöÀç°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Å¼ö¿É¼ÇÇöÀç°¡¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("buy_opt_amt"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì˜µì…˜í˜„ì¬ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ìˆ˜ì˜µì…˜í˜„ì¬ê°€ì•¡[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sell_opt_amt"), data, sizeof(data), 0);		// ¸Åµµ¿É¼ÇÇöÀç°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¸Åµµ¿É¼ÇÇöÀç°¡¾×[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("sell_opt_amt"), data, sizeof(data), 0);		// ë§¤ë„ì˜µì…˜í˜„ì¬ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ë§¤ë„ì˜µì…˜í˜„ì¬ê°€ì•¡[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("d1yesu"), data, sizeof(data), 0);		// d+1¿¹¼ö±İ_¿ÀÅäÃ³¸®¿ë °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("d1yesu"), data, sizeof(data), 0);		// d+1ì˜ˆìˆ˜ê¸ˆ_ì˜¤í† ì²˜ë¦¬ìš© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// ¼ö¼ö·á °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ¼ö¼ö·á[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// ìˆ˜ìˆ˜ë£Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("dm_daily_pl:: ìˆ˜ìˆ˜ë£Œ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("call_sell_amt"), data, sizeof(data), 0);		// Äİ¸Åµµ¿É¼ÇÆò°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("call_sell_amt"), data, sizeof(data), 0);		// ì½œë§¤ë„ì˜µì…˜í‰ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("call_buy_amt"), data, sizeof(data), 0);		// Äİ¸Å¼ö¿É¼ÇÆò°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("call_buy_amt"), data, sizeof(data), 0);		// ì½œë§¤ìˆ˜ì˜µì…˜í‰ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("put_sell_amt"), data, sizeof(data), 0);		// Ç²¸Åµµ¿É¼ÇÆò°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("put_sell_amt"), data, sizeof(data), 0);		// í’‹ë§¤ë„ì˜µì…˜í‰ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("put_buy_amt"), data, sizeof(data), 0);		// Ç²¸Å¼ö¿É¼ÇÆò°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("put_buy_amt"), data, sizeof(data), 0);		// í’‹ë§¤ìˆ˜ì˜µì…˜í‰ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 
 	mainApp.total_position_manager()->update_account_profit_loss(account_no);
@@ -1804,29 +1804,29 @@ void YaClient::on_dm_liquidable_qty(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑÁ¶È¸°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ì¡°íšŒê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jong_name"), data, sizeof(data), 0);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("result_tp"), data, sizeof(data), 0);		// °á°ú±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("result_tp"), data, sizeof(data), 0);		// ê²°ê³¼êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("qty"), data, sizeof(data), 0);		// º¸À¯¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("qty"), data, sizeof(data), 0);		// ë³´ìœ ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clear_qty"), data, sizeof(data), 0);		// Ã»»ê°¡´É¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clear_qty"), data, sizeof(data), 0);		// ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// Æò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("avg_price"), data, sizeof(data), 0);		// í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("miche_qty"), data, sizeof(data), 0);		// ¹ÌÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("miche_qty"), data, sizeof(data), 0);		// ë¯¸ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251007"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -1841,19 +1841,19 @@ void YaClient::on_dm_trade_profit_loss(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("251009"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string account_no = data;
 	trade_profit_loss["account_no"] = account_no;
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: °èÁÂ¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: ê³„ì¢Œë²ˆí˜¸[%s]"), data);
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("251009"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("251009"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sonik"), data, sizeof(data), 0);		// ½ÇÇö¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: ½ÇÇö¼ÕÀÍ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("sonik"), data, sizeof(data), 0);		// ì‹¤í˜„ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: ì‹¤í˜„ì†ìµ[%s]"), data);
 	trade_profit_loss["trade_profit_loss"] = _ttof(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// ¼ö¼ö·á °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: ¼ö¼ö·á[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn"), data, sizeof(data), 0);		// ìˆ˜ìˆ˜ë£Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_dm_trade_profit_loss:: ìˆ˜ìˆ˜ë£Œ[%s]"), data);
 	trade_profit_loss["trade_fee"] = _ttof(data);
 
 
@@ -1868,27 +1868,27 @@ void YaClient::on_dm_outstanding_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("280002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("280002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medojango"), data, sizeof(data), 0);		// ¸Åµµ¹Ì°áÁ¦ÀÜ°í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medojango"), data, sizeof(data), 0);		// ë§¤ë„ë¯¸ê²°ì œì”ê³  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesujango"), data, sizeof(data), 0);		// ¸Å¼ö¹Ì°áÁ¦ÀÜ°í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesujango"), data, sizeof(data), 0);		// ë§¤ìˆ˜ë¯¸ê²°ì œì”ê³  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medomoney"), data, sizeof(data), 0);		// ¸Åµµ¾àÁ¤±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medomoney"), data, sizeof(data), 0);		// ë§¤ë„ì•½ì •ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesumoney"), data, sizeof(data), 0);		// ¸Å¼ö¾àÁ¤±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesumoney"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì•½ì •ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoopen"), data, sizeof(data), 0);		// ¸Åµµ¹ÌÃ¼°áÀÜ°í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoopen"), data, sizeof(data), 0);		// ë§¤ë„ë¯¸ì²´ê²°ì”ê³  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuopen"), data, sizeof(data), 0);		// ¸Å¼ö¹ÌÃ¼°áÀÜ°í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuopen"), data, sizeof(data), 0);		// ë§¤ìˆ˜ë¯¸ì²´ê²°ì”ê³  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("curprice"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("curprice"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("profit"), data, sizeof(data), 0);		// Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("profit"), data, sizeof(data), 0);		// í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jangbuga"), data, sizeof(data), 0);		// ÀåºÎ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jangbuga"), data, sizeof(data), 0);		// ì¥ë¶€ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -1910,22 +1910,22 @@ void YaClient::on_dm_fut_sise(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("350001"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_code"] = data;
 	const std::string symbol_code = data;
 	std::shared_ptr<SmSymbol> symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå¼³¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œì„¤ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_name_kr"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -1941,118 +1941,118 @@ void YaClient::on_dm_fut_sise(const YA_REQ_INFO& req_info)
 		quote["up_down"] = 0;
 	}
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ±âÁØ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ê¸°ì¤€ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ½Ã°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ì‹œê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
 	quote["time"] = data;
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// »óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// ÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cb»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cbìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbí•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ÄÚ½ºÇÇ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ÄÚ½ºÇÇµî¶ô °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ë“±ë½ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ±«¸®À² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ê´´ë¦¬ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ÀÌ·Ğº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ì´ë¡ ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ½ÃÀåº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ì‹œì¥ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["volume"] = _ttoi(data);
 	quote["cumulative_amount"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ¾àÁ¤´ë±İ(¹é¸¸) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ì•½ì •ëŒ€ê¸ˆ(ë°±ë§Œ) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ÀüÀÏ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ì „ì¼ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["preday_volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ÀÜÀÏ¾àÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ì”ì¼ì•½ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ÀüÀÏ¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ì „ì¼ë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ÀüÀÏ¼ø¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ì „ì¼ìˆœë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// °Å·¡°³½ÃÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// ê±°ë˜ê°œì‹œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ÃÖÁ¾°Å·¡ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ìµœì¢…ê±°ë˜ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->LastTradeDay(data);
 	if (symbol) symbol->ExpireDate(data);
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->RemainDays(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ÃÖ°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ìµœê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ÃÖÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ìµœì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ÃÖ°íÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ìµœê³ ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ÃÖÀúÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ìµœì €ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// °¡ÁßÆò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// ê°€ì¤‘í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cdinterest"), data, sizeof(data), 0);		// CD±İ¸® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cdinterest"), data, sizeof(data), 0);		// CDê¸ˆë¦¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// °Å·¡½Â¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// ê±°ë˜ìŠ¹ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ½Ç½Ã°£»óÇÑ°¡Àû¿ë¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ì‹¤ì‹œê°„ìƒí•œê°€ì ìš©ì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ÀÏÁß»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ì¼ì¤‘ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ÀÏÁßÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ì¼ì¤‘í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 
 	ya_stock_client_.OnSymbolQuote(std::move(quote));
@@ -2067,82 +2067,82 @@ void YaClient::on_dm_fut_hoga(const YA_REQ_INFO& req_info)
 	nlohmann::json hoga;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string symbol_code = data;
 	hoga["symbol_code"] = symbol_code;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_fut_hoga:: symbol code[%s]"), symbol_code.c_str());
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_cnt"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_cnt"] = _ttoi(data);
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock4"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock4"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ¾àÁ¤½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì•½ì •ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ¾àÁ¤°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì•½ì •ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock5"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock5"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["hoga_time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ÃÑ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ì´ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ÃÑ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ÃÑ¸Åµµ°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ì´ë§¤ë„ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ÃÑ¸Å¼ö°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£2 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„2 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// µ¿½Ã±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// ë™ì‹œêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 
 	ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
@@ -2154,29 +2154,29 @@ void YaClient::on_dm_fut_hoga(const YA_REQ_INFO& req_info)
 void YaClient::on_dm_opt_sise(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[360001] ¿É¼ÇÇöÀç°¡ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[360001] ì˜µì…˜í˜„ì¬ê°€ - ì¶œë ¥ë¸”ë¡
 	nlohmann::json quote;
 	TCHAR data[1024] = { 0, };
 	g_iYuantaAPI.YOA_SetTRInfo(_T("360001"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_code"] = data;
 	const std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 	std::shared_ptr<SmSymbol> symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// Á¾¸ñ¸í(¼³¸í) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// ì¢…ëª©ëª…(ì„¤ëª…) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_name_kr"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -2192,109 +2192,109 @@ void YaClient::on_dm_opt_sise(const YA_REQ_INFO& req_info)
 		quote["up_down"] = 0;
 	}
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ±âÁØ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ê¸°ì¤€ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ½Ã°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ì‹œê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// »óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// ÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ÄÚ½ºÇÇ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ÄÚ½ºÇÇµî¶ô °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ë“±ë½ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volatility"), data, sizeof(data), 0);		// ³»Àçº¯µ¿¼º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volatility"), data, sizeof(data), 0);		// ë‚´ì¬ë³€ë™ì„± ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("introvalue"), data, sizeof(data), 0);		// ³»Àç°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("introvalue"), data, sizeof(data), 0);		// ë‚´ì¬ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("delta"), data, sizeof(data), 0);		// µ¨Å¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("delta"), data, sizeof(data), 0);		// ë¸íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gamma"), data, sizeof(data), 0);		// °¨¸¶ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gamma"), data, sizeof(data), 0);		// ê°ë§ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theta"), data, sizeof(data), 0);		// ½êÅ¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theta"), data, sizeof(data), 0);		// ì„íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vega"), data, sizeof(data), 0);		// º£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vega"), data, sizeof(data), 0);		// ë² ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rho"), data, sizeof(data), 0);		// ·Î °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rho"), data, sizeof(data), 0);		// ë¡œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["volume"] = _ttoi(data);
 	quote["cumulative_amount"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ¾àÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ì•½ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ÀüÀÏ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ì „ì¼ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ÀÜÀÏ°Å·¡´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ì”ì¼ê±°ë˜ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ÀüÀÏ¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ì „ì¼ë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevopen"), data, sizeof(data), 0);		// ÀüÀÏ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevopen"), data, sizeof(data), 0);		// ì „ì¼ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["preday_volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ÃÖ°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ìµœê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ÃÖ°íÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ìµœê³ ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ÃÖÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ìµœì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ÃÖÀúÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ìµœì €ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// °Å·¡°³½ÃÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// ê±°ë˜ê°œì‹œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ÃÖÁ¾°Å·¡ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ìµœì¢…ê±°ë˜ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->LastTradeDay(data);
 	if (symbol) symbol->ExpireDate(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->RemainDays(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// °¡ÁßÆò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// ê°€ì¤‘í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// °Å·¡½Â¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// ê±°ë˜ìŠ¹ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ½Ç½Ã°£»óÇÑ°¡Àû¿ë¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ì‹¤ì‹œê°„ìƒí•œê°€ì ìš©ì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ÀÏÁß»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ì¼ì¤‘ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ÀÏÁßÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ì¼ì¤‘í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(quote));
 
@@ -2306,88 +2306,88 @@ void YaClient::on_dm_opt_sise(const YA_REQ_INFO& req_info)
 void YaClient::on_dm_opt_hoga(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[360002] ¿É¼ÇÇöÀç°¡_È£°¡Ã¼°á - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[360002] ì˜µì…˜í˜„ì¬ê°€_í˜¸ê°€ì²´ê²° - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 	nlohmann::json hoga;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_hoga:: symbol code[%s]"), symbol_code.c_str());
 	hoga["symbol_code"] = symbol_code;
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_cnt"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_cnt"] = _ttoi(data);
 	}
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock4"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock4"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ¾àÁ¤½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì•½ì •ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ¾àÁ¤°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì•½ì •ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock5"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("360002"), _T("OutBlock5"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["hoga_time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ÃÑ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ì´ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ÃÑ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ÃÑ¸Åµµ°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ì´ë§¤ë„ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ÃÑ¸Å¼ö°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£2 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„2 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// µ¿½Ã±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// ë™ì‹œêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
 
@@ -2399,31 +2399,31 @@ void YaClient::on_dm_opt_hoga(const YA_REQ_INFO& req_info)
 void YaClient::on_dm_commodity_sise(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[391001] »óÇ°¼±¹°ÇöÀç°¡ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[391001] ìƒí’ˆì„ ë¬¼í˜„ì¬ê°€ - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 	nlohmann::json quote;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("391001"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_code"] = data;
 	const std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_commodity_sise:: symbol code[%s]"), symbol_code.c_str());
 	std::shared_ptr<SmSymbol> symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå¼³¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œì„¤ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_name_kr"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -2439,117 +2439,117 @@ void YaClient::on_dm_commodity_sise(const YA_REQ_INFO& req_info)
 		quote["up_down"] = 0;
 	}
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ±âÁØ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ê¸°ì¤€ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ½Ã°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ì‹œê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// »óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// ÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cb»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cbìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbí•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("baseid"), data, sizeof(data), 0);		// Çö¹°ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("baseid"), data, sizeof(data), 0);		// í˜„ë¬¼ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basename"), data, sizeof(data), 0);		// Çö¹°Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basename"), data, sizeof(data), 0);		// í˜„ë¬¼ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("baseprice"), data, sizeof(data), 0);		// Çö¹°ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("baseprice"), data, sizeof(data), 0);		// í˜„ë¬¼í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basedebi"), data, sizeof(data), 0);		// Çö¹°ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basedebi"), data, sizeof(data), 0);		// í˜„ë¬¼ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("baserate"), data, sizeof(data), 0);		// Çö¹°µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("baserate"), data, sizeof(data), 0);		// í˜„ë¬¼ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ±«¸®À² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ê´´ë¦¬ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ÀÌ·Ğº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ì´ë¡ ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ½ÃÀåº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ì‹œì¥ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["volume"] = _ttoi(data);
 	quote["cumulative_amount"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ¾àÁ¤´ë±İ(¹é¸¸) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ì•½ì •ëŒ€ê¸ˆ(ë°±ë§Œ) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ÀüÀÏ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ì „ì¼ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["preday_volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ÀÜÀÏ¾àÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ì”ì¼ì•½ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ÀüÀÏ¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ì „ì¼ë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ÀüÀÏ¼ø¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ì „ì¼ìˆœë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// °Å·¡°³½ÃÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// ê±°ë˜ê°œì‹œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ÃÖÁ¾°Å·¡ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ìµœì¢…ê±°ë˜ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->LastTradeDay(data);
 	if (symbol) symbol->ExpireDate(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->RemainDays(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ÃÖ°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ìµœê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ÃÖÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ìµœì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ÃÖ°íÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ìµœê³ ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ÃÖÀúÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ìµœì €ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// °¡ÁßÆò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// ê°€ì¤‘í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ½Ç½Ã°£»óÇÑ°¡Àû¿ë¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ì‹¤ì‹œê°„ìƒí•œê°€ì ìš©ì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ÀÏÁß»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ì¼ì¤‘ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ÀÏÁßÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ì¼ì¤‘í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(quote));
 
@@ -2561,86 +2561,86 @@ void YaClient::on_dm_commodity_sise(const YA_REQ_INFO& req_info)
 void YaClient::on_dm_commodity_hoga(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[391002] »óÇ°¼±¹°ÇöÀç°¡_È£°¡Ã¼°á - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[391002] ìƒí’ˆì„ ë¬¼í˜„ì¬ê°€_í˜¸ê°€ì²´ê²° - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 	nlohmann::json hoga;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_commodity_hoga:: symbol code[%s]"), symbol_code.c_str());
 	hoga["symbol_code"] = symbol_code;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_cnt"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_cnt"] = _ttoi(data);
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock4"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock4"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ¾àÁ¤½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì•½ì •ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ¾àÁ¤°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì•½ì •ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock5"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("391002"), _T("OutBlock5"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["hoga_time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ÃÑ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ì´ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ÃÑ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ÃÑ¸Åµµ°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ì´ë§¤ë„ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ÃÑ¸Å¼ö°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£2 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„2 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
 
@@ -2659,11 +2659,11 @@ void YaClient::on_dm_new_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("160001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("160001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ¸Ş¼¼Áö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ë©”ì„¸ì§€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -2673,11 +2673,11 @@ void YaClient::on_dm_change_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("160003"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("160003"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ¸Ş¼¼Áö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ë©”ì„¸ì§€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -2687,11 +2687,11 @@ void YaClient::on_dm_cancel_order(const YA_REQ_INFO& req_info)
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("160004"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("160004"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ¸Ş¼¼Áö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("msg"), data, sizeof(data), 0);		// ë©”ì„¸ì§€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	on_task_complete(req_info.request_id);
 	g_iYuantaAPI.YOA_ReleaseData(req_info.request_id);
@@ -2776,7 +2776,7 @@ void YaClient::get_account_list()
 
 	if (0 == nCnt)
 	{
-		AfxMessageBox(_T("°èÁÂÁ¤º¸°¡ ¾ø½À´Ï´Ù."));
+		AfxMessageBox(_T("ê³„ì¢Œì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤."));
 	}
 }
 
@@ -2794,130 +2794,130 @@ void YaClient::get_symbol_list(const int market_type)
 void YaClient::on_realtime_order()
 {
 	LOGINFO(CMyLogger::getInstance(), _T("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////)"));
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[71] REAL_PA - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[71] REAL_PA - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 	nlohmann::json order_info;
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("71"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("71"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tr_code"), data, sizeof(data), 0);		// TR CODE(1) 0:OR01 1:CH01 2:HO01 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tr_code"), data, sizeof(data), 0);		// TR CODE(1) 0:OR01 1:CH01 2:HO01 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: TR CODE(1) 0:OR01 1:CH01 2:HO01[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ordno"), data, sizeof(data), 0);		// ÁÖ¹®Á¢¼ö¹øÈ£(°Å·¡¼Ò) °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÁÖ¹®Á¢¼ö¹øÈ£(°Å·¡¼Ò)[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("ordno"), data, sizeof(data), 0);		// ì£¼ë¬¸ì ‘ìˆ˜ë²ˆí˜¸(ê±°ë˜ì†Œ) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì£¼ë¬¸ì ‘ìˆ˜ë²ˆí˜¸(ê±°ë˜ì†Œ)[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("autocancel"), data, sizeof(data), 0);		// ÀÚµ¿Ãë¼Ò¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÀÚµ¿Ãë¼Ò¿©ºÎ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("autocancel"), data, sizeof(data), 0);		// ìë™ì·¨ì†Œì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ìë™ì·¨ì†Œì—¬ë¶€[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mdmtp"), data, sizeof(data), 0);		// ¸ÅÃ¼±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ¸ÅÃ¼±¸ºĞ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("mdmtp"), data, sizeof(data), 0);		// ë§¤ì²´êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ë§¤ì²´êµ¬ë¶„[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// filler °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// filler ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: filler[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cheno"), data, sizeof(data), 0);		// Ã¼°á¹øÈ£(c.yak_num) °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á¹øÈ£[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("cheno"), data, sizeof(data), 0);		// ì²´ê²°ë²ˆí˜¸(c.yak_num) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ë²ˆí˜¸[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("origno"), data, sizeof(data), 0);		// ¿øÁÖ¹®¹øÈ£(0) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("origno"), data, sizeof(data), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸(0) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["original_order_no"] = data;
 	order_info["first_order_no"] = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ¿øÁÖ¹®¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì›ì£¼ë¬¸ë²ˆí˜¸[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jumunno"), data, sizeof(data), 0);		// ³»ºÎÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jumunno"), data, sizeof(data), 0);		// ë‚´ë¶€ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	//order_info["order_no"] = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ³»ºÎÁÖ¹®¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ë‚´ë¶€ì£¼ë¬¸ë²ˆí˜¸[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("bpjumunno"), data, sizeof(data), 0);		// ÁöÁ¡º° ÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
-	// ÀÌ¹øÈ£°¡ ³»ºÎ Ã³¸®¿ë ÁÖ¹® ¹øÈ£°¡ µË´Ï´Ù. ±×¸®°í Á¤Á¤, Ãë¼Ò ÁÖ¹®½Ã ÀÌ ÁÖ¹® ¹øÈ£¸¦ »ç¿ëÇØ¾ß ÇÕ´Ï´Ù. 
+	g_iYuantaAPI.YOA_GetFieldString(_T("bpjumunno"), data, sizeof(data), 0);		// ì§€ì ë³„ ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	// ì´ë²ˆí˜¸ê°€ ë‚´ë¶€ ì²˜ë¦¬ìš© ì£¼ë¬¸ ë²ˆí˜¸ê°€ ë©ë‹ˆë‹¤. ê·¸ë¦¬ê³  ì •ì •, ì·¨ì†Œ ì£¼ë¬¸ì‹œ ì´ ì£¼ë¬¸ ë²ˆí˜¸ë¥¼ ì‚¬ìš©í•´ì•¼ í•©ë‹ˆë‹¤. 
 	order_info["order_no"] = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÁöÁ¡º° ÁÖ¹®¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì§€ì ë³„ ì£¼ë¬¸ë²ˆí˜¸[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jumunuv"), data, sizeof(data), 0);		// ÁÖ¹®´Ü°¡(jumun_su) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jumunuv"), data, sizeof(data), 0);		// ì£¼ë¬¸ë‹¨ê°€(jumun_su) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["order_price"] = _ttoi(data);
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÁÖ¹®´Ü°¡[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì£¼ë¬¸ë‹¨ê°€[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jumunqty"), data, sizeof(data), 0);		// ÁÖ¹®¼ö·®(jumun_price) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jumunqty"), data, sizeof(data), 0);		// ì£¼ë¬¸ìˆ˜ëŸ‰(jumun_price) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["order_amount"] = _ttoi(data);
 	order_info["remain_count"] = _ttoi(data);
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÁÖ¹®¼ö·®[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì£¼ë¬¸ìˆ˜ëŸ‰[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("corqty"), data, sizeof(data), 0);		// Á¤Á¤/Ãë¼Ò ¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("corqty"), data, sizeof(data), 0);		// ì •ì •/ì·¨ì†Œ ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const int modified_count = _ttoi(data);
 	
 	order_info["cancelled_count"] = modified_count;
 	order_info["modified_count"] = modified_count;
 
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order::  Á¤Á¤/Ãë¼Ò ¼ö·® [%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order::  ì •ì •/ì·¨ì†Œ ìˆ˜ëŸ‰ [%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cheuv"), data, sizeof(data), 0);		// Ã¼°á´Ü°¡(c.yak_price) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cheuv"), data, sizeof(data), 0);		// ì²´ê²°ë‹¨ê°€(c.yak_price) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["filled_price"] = _ttoi(data);
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á´Ü°¡[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ë‹¨ê°€[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cheqty"), data, sizeof(data), 0);		// Ã¼°á¼ö·®(c.yak_su) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cheqty"), data, sizeof(data), 0);		// ì²´ê²°ìˆ˜ëŸ‰(c.yak_su) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const int filled_count = _ttoi(data);
 	order_info["filled_count"] = filled_count;
 
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á¼ö·®[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ìˆ˜ëŸ‰[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("chesum"), data, sizeof(data), 0);		// Ã¼°á¼ö·®ÇÕ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á¼ö·®ÇÕ[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("chesum"), data, sizeof(data), 0);		// ì²´ê²°ìˆ˜ëŸ‰í•© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ìˆ˜ëŸ‰í•©[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("shyak"), data, sizeof(data), 0);		// S ±Ù¿ù¹° Ã¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("shyak"), data, sizeof(data), 0);		// S ê·¼ì›”ë¬¼ ì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lnyak"), data, sizeof(data), 0);		// S ¿ø¿ù¹° Ã¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lnyak"), data, sizeof(data), 0);		// S ì›ì›”ë¬¼ ì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("bp_time"), data, sizeof(data), 0);		// data ¼ö½Å ¹ß»ı½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("bp_time"), data, sizeof(data), 0);		// data ìˆ˜ì‹  ë°œìƒì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tr_time"), data, sizeof(data), 0);		// Ã¼°á½Ã°£(c.yak_time) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tr_time"), data, sizeof(data), 0);		// ì²´ê²°ì‹œê°„(c.yak_time) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["filled_date"] = data;
 	order_info["filled_time"] = data;
 
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á½Ã°£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ì‹œê°„[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("op_id"), data, sizeof(data), 0);		// °í°´ Login ID(user_id) °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: °í°´ Login ID([%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("op_id"), data, sizeof(data), 0);		// ê³ ê° Login ID(user_id) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ê³ ê° Login ID([%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("custseq"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£(cust_no) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("custseq"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸(cust_no) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["account_no"] = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: °èÁÂ¹øÈ£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ê³„ì¢Œë²ˆí˜¸[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	BYTE buy_or_sell;
-	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// ¸Å¼ö(4) ¸Åµµ(8) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// ë§¤ìˆ˜(4) ë§¤ë„(8) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	
 
 	switch (buy_or_sell)
 	{
-	case '4': // ¸Ş¼ö
-	case '8': // ¸Åµµ
-	case '1': // ¸Å¼öÁÖ¹®
-	case '2': // ¸ÅµµÁÖ¹®
+	case '4': // ë©”ìˆ˜
+	case '8': // ë§¤ë„
+	case '1': // ë§¤ìˆ˜ì£¼ë¬¸
+	case '2': // ë§¤ë„ì£¼ë¬¸
 		order_info["order_type"] = "1";
 		break;
-	case 'N': // Á¤Á¤ÁÖ¹®
-	case 'J': // ¸Å¼öÁ¤Á¤ÁÖ¹®
-	case 'j': // ¸ÅµµÁ¤Á¤ÁÖ¹®
-	case 'M': // ¸Å¼öÁ¤Á¤ÁÖ¹®
-	case 'm': // ¸ÅµµÁ¤Á¤ÁÖ¹®
+	case 'N': // ì •ì •ì£¼ë¬¸
+	case 'J': // ë§¤ìˆ˜ì •ì •ì£¼ë¬¸
+	case 'j': // ë§¤ë„ì •ì •ì£¼ë¬¸
+	case 'M': // ë§¤ìˆ˜ì •ì •ì£¼ë¬¸
+	case 'm': // ë§¤ë„ì •ì •ì£¼ë¬¸
 		order_info["order_type"] = "2";
 		break;
-	case 'D': // Ãë¼ÒÁÖ¹®
-	case 'Z': // ¸Å¼öÃë¼ÒÁÖ¹®
-	case 'z': // ¸ÅµµÃÖ¼öÁÖ¹®
-	case 'C': // ¸Å¼öÃë¼ÒÁÖ¹®
-	case 'c': // ¸ÅµµÃë¼ÒÁÖ¹®
+	case 'D': // ì·¨ì†Œì£¼ë¬¸
+	case 'Z': // ë§¤ìˆ˜ì·¨ì†Œì£¼ë¬¸
+	case 'z': // ë§¤ë„ìµœìˆ˜ì£¼ë¬¸
+	case 'C': // ë§¤ìˆ˜ì·¨ì†Œì£¼ë¬¸
+	case 'c': // ë§¤ë„ì·¨ì†Œì£¼ë¬¸
 		order_info["order_type"] = "3";
 		break;
-	case 'R': // ¸Å¼öÁÖ¹®°ÅºÎ
-	case 'r': // ¸ÅµµÁÖ¹®°ÅºÎ
-	case 'S': // ¸Å¼ö°ÅºÎÈ®ÀÎ
-	case 's': // ¸Åµµ°ÅºÎÈ®ÀÎ
-	case 'T': // Á¤Á¤°ÅºÎ
-	case 't': // Ãë¼Ò°ÅºÎ
+	case 'R': // ë§¤ìˆ˜ì£¼ë¬¸ê±°ë¶€
+	case 'r': // ë§¤ë„ì£¼ë¬¸ê±°ë¶€
+	case 'S': // ë§¤ìˆ˜ê±°ë¶€í™•ì¸
+	case 's': // ë§¤ë„ê±°ë¶€í™•ì¸
+	case 'T': // ì •ì •ê±°ë¶€
+	case 't': // ì·¨ì†Œê±°ë¶€
 		order_info["order_type"] = "1";
 		break;
-	case 'U': // ¾Ë¼ö¾øÀ½.
+	case 'U': // ì•Œìˆ˜ì—†ìŒ.
 		order_info["order_type"] = "1";
 		break;
 	default:
@@ -2953,46 +2953,46 @@ void YaClient::on_realtime_order()
 			break;
 	}
 	//order_info["position_type"] = ((buy_or_sell == '4') || (buy_or_sell == '1')) ? "1" : "2";
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ¸Å¼ö/¸Åµµgubun48[%c]"), buy_or_sell);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ë§¤ìˆ˜/ë§¤ë„gubun48[%c]"), buy_or_sell);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stkcode"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå(c.jongcode) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stkcode"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ(c.jongcode) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	std::string symbol_code = data;
 	if (symbol_code.substr(0, 1).at(0) == '1' && symbol_code.length() > 5)
 		symbol_code = symbol_code.substr(0, 5);
 
 	order_info["symbol_code"] = symbol_code;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Á¾¸ñÄÚµå[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì¢…ëª©ì½”ë“œ[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stkname"), data, sizeof(data), 0);		// Á¾¸ñ¸í(' ... ') °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Á¾¸ñ¸í[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("stkname"), data, sizeof(data), 0);		// ì¢…ëª©ëª…(' ... ') ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì¢…ëª©ëª…[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jununjong"), data, sizeof(data), 0);		// L:ÁöÁ¤°¡ M:½ÃÀå°¡ C:Á¶°ÇºÎÁöÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: L:ÁöÁ¤°¡ M:½ÃÀå°¡ C:Á¶°ÇºÎÁöÁ¤[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("jununjong"), data, sizeof(data), 0);		// L:ì§€ì •ê°€ M:ì‹œì¥ê°€ C:ì¡°ê±´ë¶€ì§€ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: L:ì§€ì •ê°€ M:ì‹œì¥ê°€ C:ì¡°ê±´ë¶€ì§€ì •[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("reject"), data, sizeof(data), 0);		// °ÅºÎ»çÀ¯ ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: °ÅºÎ»çÀ¯ Code[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("reject"), data, sizeof(data), 0);		// ê±°ë¶€ì‚¬ìœ  ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ê±°ë¶€ì‚¬ìœ  Code[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatp"), data, sizeof(data), 0);		// È£°¡À¯Çü °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: È£°¡À¯Çü[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatp"), data, sizeof(data), 0);		// í˜¸ê°€ìœ í˜• ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: í˜¸ê°€ìœ í˜•[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futu_ord_if"), data, sizeof(data), 0);		// ÁÖ¹®Á¶°Ç °ªÀ» °¡Á®¿É´Ï´Ù.
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ÁÖ¹®Á¶°Ç[%s]"), data);
+	g_iYuantaAPI.YOA_GetFieldString(_T("futu_ord_if"), data, sizeof(data), 0);		// ì£¼ë¬¸ì¡°ê±´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì£¼ë¬¸ì¡°ê±´[%s]"), data);
 
 	
 	
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("trtime2"), data, sizeof(data), 0);		// ½Ã°£ HH:MM:SS °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("trtime2"), data, sizeof(data), 0);		// ì‹œê°„ HH:MM:SS ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	order_info["order_time"] = data;
 	order_info["order_date"] = data;
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ½Ã°£[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì‹œê°„[%s]"), data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// Ã¼°á°¡ ¶Ç´Â ÁÖ¹®°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì²´ê²°ê°€ ë˜ëŠ” ì£¼ë¬¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	//order_info["order_price"] = convert_to_int(symbol_code, data);
 	//order_info["filled_price"] = convert_to_int(symbol_code, data);
 
-	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: Ã¼°á°¡ ¶Ç´Â ÁÖ¹®°¡[%s]"), data);
+	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: ì²´ê²°ê°€ ë˜ëŠ” ì£¼ë¬¸ê°€[%s]"), data);
 
 	
 	
@@ -3019,42 +3019,42 @@ void YaClient::on_realtime_order()
 
 	switch (buy_or_sell)
 	{
-	case '4': // ¸Ş¼ö
-	case '8': // ¸Åµµ
-	case '1': // ¸Å¼öÁÖ¹®
-	case '2': // ¸ÅµµÁÖ¹®
+	case '4': // ë©”ìˆ˜
+	case '8': // ë§¤ë„
+	case '1': // ë§¤ìˆ˜ì£¼ë¬¸
+	case '2': // ë§¤ë„ì£¼ë¬¸
 		//mainApp.total_order_manager()->on_order_event(std::move(order_info));
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		break;
-	case 'N': // Á¤Á¤ÁÖ¹®
-	case 'J': // ¸Å¼öÁ¤Á¤ÁÖ¹®
-	case 'j': // ¸ÅµµÁ¤Á¤ÁÖ¹®
-	case 'M': // ¸Å¼öÁ¤Á¤ÁÖ¹®
-	case 'm': // ¸ÅµµÁ¤Á¤ÁÖ¹®
+	case 'N': // ì •ì •ì£¼ë¬¸
+	case 'J': // ë§¤ìˆ˜ì •ì •ì£¼ë¬¸
+	case 'j': // ë§¤ë„ì •ì •ì£¼ë¬¸
+	case 'M': // ë§¤ìˆ˜ì •ì •ì£¼ë¬¸
+	case 'm': // ë§¤ë„ì •ì •ì£¼ë¬¸
 		//mainApp.total_order_manager()->on_order_event(std::move(order_info));
 		//order_info["remain_count"] = 0;
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		break;
-	case 'D': // Ãë¼ÒÁÖ¹®
-	case 'Z': // ¸Å¼öÃë¼ÒÁÖ¹®
-	case 'z': // ¸ÅµµÃÖ¼öÁÖ¹®
-	case 'C': // ¸Å¼öÃë¼ÒÁÖ¹®
-	case 'c': // ¸ÅµµÃë¼ÒÁÖ¹®
+	case 'D': // ì·¨ì†Œì£¼ë¬¸
+	case 'Z': // ë§¤ìˆ˜ì·¨ì†Œì£¼ë¬¸
+	case 'z': // ë§¤ë„ìµœìˆ˜ì£¼ë¬¸
+	case 'C': // ë§¤ìˆ˜ì·¨ì†Œì£¼ë¬¸
+	case 'c': // ë§¤ë„ì·¨ì†Œì£¼ë¬¸
 		order_info["order_type"] = "3";
 		//order_info["remain_count"] = 0;
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		break;
-	case 'R': // ¸Å¼öÁÖ¹®°ÅºÎ
-	case 'r': // ¸ÅµµÁÖ¹®°ÅºÎ
-	case 'S': // ¸Å¼ö°ÅºÎÈ®ÀÎ
-	case 's': // ¸Åµµ°ÅºÎÈ®ÀÎ
-	case 'T': // Á¤Á¤°ÅºÎ
-	case 't': // Ãë¼Ò°ÅºÎ
+	case 'R': // ë§¤ìˆ˜ì£¼ë¬¸ê±°ë¶€
+	case 'r': // ë§¤ë„ì£¼ë¬¸ê±°ë¶€
+	case 'S': // ë§¤ìˆ˜ê±°ë¶€í™•ì¸
+	case 's': // ë§¤ë„ê±°ë¶€í™•ì¸
+	case 'T': // ì •ì •ê±°ë¶€
+	case 't': // ì·¨ì†Œê±°ë¶€
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		order_info["order_type"] = "1";
 		//mainApp.total_order_manager()->on_order_event(std::move(order_info));
 		break;
-	case 'U': // ¾Ë¼ö¾øÀ½.
+	case 'U': // ì•Œìˆ˜ì—†ìŒ.
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		order_info["order_type"] = "1";
 		//mainApp.total_order_manager()->on_order_event(std::move(order_info));
@@ -3081,9 +3081,9 @@ void YaClient::on_realtime_quote()
 	TCHAR data[1024] = { 0, };
 	nlohmann::json quote;
 	nlohmann::json hoga;
-	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	std::string symbol_code = data;
 	if (symbol_code.substr(0, 1).at(0) == '1')
 		symbol_code = symbol_code.substr(0, 5);
@@ -3092,44 +3092,44 @@ void YaClient::on_realtime_quote()
 	std::shared_ptr<SmSymbol> symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ÀüÀÏ´ëºñ¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì •ì „ì¼ëŒ€ë¹„ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["preday_volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤¼ö·®_KOFEX °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰_KOFEX ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤ÀüÀÏ´ëºñ¼ö·®_KOFEX °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì •ì „ì¼ëŒ€ë¹„ìˆ˜ëŸ‰_KOFEX ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ´©ÀûÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ëˆ„ì ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["cumulative_amount"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå´©ÀûÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œëˆ„ì ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ´©Àû°Å·¡´ë±İ_¹é¸¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ëˆ„ì ê±°ë˜ëŒ€ê¸ˆ_ë°±ë§Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå´©Àû°Å·¡´ë±İ_¹é¸¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œëˆ„ì ê±°ë˜ëŒ€ê¸ˆ_ë°±ë§Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler1"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler1"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("changerate"), data, sizeof(data), 0);		// µî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("changerate"), data, sizeof(data), 0);		// ë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -3145,116 +3145,116 @@ void YaClient::on_realtime_quote()
 		quote["up_down"] = 0;
 	}
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mbasis"), data, sizeof(data), 0);		// ½ÃÀåBASIS °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mbasis"), data, sizeof(data), 0);		// ì‹œì¥BASIS ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tbasis"), data, sizeof(data), 0);		// ÀÌ·ĞBASIS °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tbasis"), data, sizeof(data), 0);		// ì´ë¡ BASIS ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theory"), data, sizeof(data), 0);		// ÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theory"), data, sizeof(data), 0);		// ì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volatility"), data, sizeof(data), 0);		// ³»Àçº¯µ¿¼º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volatility"), data, sizeof(data), 0);		// ë‚´ì¬ë³€ë™ì„± ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("delta"), data, sizeof(data), 0);		// µ¨Å¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("delta"), data, sizeof(data), 0);		// ë¸íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ±«¸®À² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ê´´ë¦¬ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time2"), data, sizeof(data), 0);		// ½Ã°£_HH:MM:SS °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time2"), data, sizeof(data), 0);		// ì‹œê°„_HH:MM:SS ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ½Ã°£_HH:MM °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì‹œê°„_HH:MM ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("change"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("change"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// Á÷ÀüÃ¼°á·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì§ì „ì²´ê²°ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highchange"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highchange"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowchange"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowchange"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler2"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler2"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), i);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), i);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_cnt"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_cnt"] = _ttoi(data);
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("41"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ¸ÅµµÃÑÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ë§¤ë„ì´í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ¸Å¼öÃÑÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì´í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["hoga_time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("diffmesumedo"), data, sizeof(data), 0);		// ¸Å¼öÀÜ·®-¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("diffmesumedo"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì”ëŸ‰-ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// °¡ÁßÆò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// ê°€ì¤‘í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gamma"), data, sizeof(data), 0);		// °¨¸¶ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gamma"), data, sizeof(data), 0);		// ê°ë§ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theta"), data, sizeof(data), 0);		// ½êÅ¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theta"), data, sizeof(data), 0);		// ì„íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vega"), data, sizeof(data), 0);		// º£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vega"), data, sizeof(data), 0);		// ë² ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rho"), data, sizeof(data), 0);		// ·Î °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rho"), data, sizeof(data), 0);		// ë¡œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler3"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler3"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ½Ç½Ã°£»óÇÏÇÑ°¡±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ì‹¤ì‹œê°„ìƒí•˜í•œê°€êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// »óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// ÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler4"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler4"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vilevel"), data, sizeof(data), 0);		// °¡°İÁ¦ÇÑÆø´Ü°è °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vilevel"), data, sizeof(data), 0);		// ê°€ê²©ì œí•œí­ë‹¨ê³„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vimaxprice"), data, sizeof(data), 0);		// °¡°İÁ¦ÇÑÆø»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vimaxprice"), data, sizeof(data), 0);		// ê°€ê²©ì œí•œí­ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("viminprice"), data, sizeof(data), 0);		// °¡°İÁ¦ÇÑÆøÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("viminprice"), data, sizeof(data), 0);		// ê°€ê²©ì œí•œí­í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(quote));
 	ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
@@ -3264,89 +3264,89 @@ void YaClient::on_realtime_hoga()
 {
 	TCHAR data[1024] = { 0, };
 	nlohmann::json hoga;
-	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	std::string symbol_code = data;
 	if (symbol_code.substr(0, 1).at(0) == '1' && symbol_code.length() > 5)
 		symbol_code = symbol_code.substr(0, 5);
 
 	hoga["symbol_code"] = symbol_code;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler1"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler1"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ÃÖ¿ì¼±¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ìµœìš°ì„ ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytes¸ÂÃß±âÀ§ÇØ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("filler"), data, sizeof(data), 0);		// 4bytesë§ì¶”ê¸°ìœ„í•´ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("42"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ¸ÅµµÃÑÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ë§¤ë„ì´í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ¸Å¼öÃÑÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì´í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time2"), data, sizeof(data), 0);		// ½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time2"), data, sizeof(data), 0);		// ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("diffmesumedo"), data, sizeof(data), 0);		// ¸Å¼öÀÜ·®-¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("diffmesumedo"), data, sizeof(data), 0);		// ë§¤ìˆ˜ì”ëŸ‰-ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectvol"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectvol"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectrate"), data, sizeof(data), 0);		// ¿¹»óÃ¼°áµî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectrate"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectdebi"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectdebi"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dongsigubun"), data, sizeof(data), 0);		// µ¿½Ã±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dongsigubun"), data, sizeof(data), 0);		// ë™ì‹œêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 void YaClient::on_realtime_accepted_count()
 {
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("44"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("44"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongcode"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ÀüÀÏ´ëºñ¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì •ì „ì¼ëŒ€ë¹„ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤¼ö·®_KOFEX °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì •ìˆ˜ëŸ‰_KOFEX ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤ÀüÀÏ´ëºñ¼ö·®_KOFEX °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì •ì „ì¼ëŒ€ë¹„ìˆ˜ëŸ‰_KOFEX ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 int YaClient::confirm_account_password(DhTaskArg arg)
@@ -3405,7 +3405,7 @@ int YaClient::register_symbol(const std::string& symbol_code)
 
 	if (ERROR_MAX_CODE < nResult)
 	{
-		//LOGINFO(CMyLogger::getInstance(), _T("[41]±¹³» ¼±¹° ¿É¼Ç ½Ç½Ã°£Ã¼°áÀÌ µî·Ï µÇ¾ú½À´Ï´Ù."));
+		//LOGINFO(CMyLogger::getInstance(), _T("[41]êµ­ë‚´ ì„ ë¬¼ ì˜µì…˜ ì‹¤ì‹œê°„ì²´ê²°ì´ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤."));
 		return 1;
 	}
 	else
@@ -3425,7 +3425,7 @@ int YaClient::unregister_symbol(const std::string& symbol_code)
 
 	if (RESULT_SUCCESS == nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[41]±¹³» ¼±¹° ¿É¼Ç ½Ç½Ã°£Ã¼°áÀÌ ÇØÁ¦ µÇ¾ú½À´Ï´Ù."));
+		LOGINFO(CMyLogger::getInstance(), _T("[41]êµ­ë‚´ ì„ ë¬¼ ì˜µì…˜ ì‹¤ì‹œê°„ì²´ê²°ì´ í•´ì œ ë˜ì—ˆìŠµë‹ˆë‹¤."));
 	}
 	else
 	{
@@ -3445,7 +3445,7 @@ int YaClient::register_account(const std::string& account_no)
 
 	if (ERROR_MAX_CODE < nResult)
 	{
-		//LOGINFO(CMyLogger::getInstance(), _T("[71]±¹³» ¼±¹°¿É¼Ç ÁÖ¹®È®ÀÎ_Ã¼°á ½Ç½Ã°£Ã¼°áÀÌ µî·Ï µÇ¾ú½À´Ï´Ù."));
+		//LOGINFO(CMyLogger::getInstance(), _T("[71]êµ­ë‚´ ì„ ë¬¼ì˜µì…˜ ì£¼ë¬¸í™•ì¸_ì²´ê²° ì‹¤ì‹œê°„ì²´ê²°ì´ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤."));
 		return 1;
 	}
 	else
@@ -3465,7 +3465,7 @@ int YaClient::unregister_account(const std::string& account_no)
 
 	if (RESULT_SUCCESS == nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[71]±¹³» ¼±¹° ¿É¼Ç ½Ç½Ã°£Ã¼°áÀÌ ÇØÁ¦ µÇ¾ú½À´Ï´Ù."));
+		LOGINFO(CMyLogger::getInstance(), _T("[71]êµ­ë‚´ ì„ ë¬¼ ì˜µì…˜ ì‹¤ì‹œê°„ì²´ê²°ì´ í•´ì œ ë˜ì—ˆìŠµë‹ˆë‹¤."));
 	}
 	else
 	{
@@ -3576,8 +3576,8 @@ int YaClient::dm_fut_mini_sise(DhTaskArg arg)
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
 	//g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// ¼±¹°ÄÚµå °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// ì„ ë¬¼ì½”ë“œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
@@ -3585,7 +3585,7 @@ int YaClient::dm_fut_mini_sise(DhTaskArg arg)
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¹Ì´Ï ¼±¹°½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ë¯¸ë‹ˆ ì„ ë¬¼ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -3600,7 +3600,7 @@ int YaClient::dm_fut_mini_sise(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹°½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -3618,14 +3618,14 @@ int YaClient::dm_fut_mini_hoga(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¹Ì´Ï¼±¹° È£°¡ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ë¯¸ë‹ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -3640,7 +3640,7 @@ int YaClient::dm_fut_mini_hoga(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¹Ì´Ï¼±¹° È£°¡ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ë¯¸ë‹ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -3668,22 +3668,22 @@ void YaClient::on_dm_fut_mini_sise(const YA_REQ_INFO& req_info)
 
 	g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_code"] = data;
 	const std::string symbol_code = data;
 	std::shared_ptr<SmSymbol> symbol = mainApp.SymMgr()->FindSymbol(symbol_code);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("368001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå¼³¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œì„¤ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["symbol_name_kr"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -3699,118 +3699,118 @@ void YaClient::on_dm_fut_mini_sise(const YA_REQ_INFO& req_info)
 		quote["up_down"] = 0;
 	}
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ±âÁØ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("standardprice"), data, sizeof(data), 0);		// ê¸°ì¤€ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ½Ã°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ì‹œê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
 	quote["time"] = data;
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// »óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice"), data, sizeof(data), 0);		// ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// ÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice"), data, sizeof(data), 0);		// í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cb»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxcb"), data, sizeof(data), 0);		// cbìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mincb"), data, sizeof(data), 0);		// cbí•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ÄÚ½ºÇÇ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospi"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospidebi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ÄÚ½ºÇÇµî¶ô °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("kospirate"), data, sizeof(data), 0);		// ì½”ìŠ¤í”¼ë“±ë½ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("theoreticalprice"), data, sizeof(data), 0);		// ì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ±«¸®À² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("rate"), data, sizeof(data), 0);		// ê´´ë¦¬ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ÀÌ·Ğº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basist"), data, sizeof(data), 0);		// ì´ë¡ ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ½ÃÀåº£ÀÌ½Ã½º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("basism"), data, sizeof(data), 0);		// ì‹œì¥ë² ì´ì‹œìŠ¤ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["volume"] = _ttoi(data);
 	quote["cumulative_amount"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ¾àÁ¤´ë±İ(¹é¸¸) °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("money"), data, sizeof(data), 0);		// ì•½ì •ëŒ€ê¸ˆ(ë°±ë§Œ) ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("smoney"), data, sizeof(data), 0);		// ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ÀüÀÏ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevvolume"), data, sizeof(data), 0);		// ì „ì¼ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	quote["preday_volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevvolume"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ÀÜÀÏ¾àÁ¤´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevmoney"), data, sizeof(data), 0);		// ì”ì¼ì•½ì •ëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ÀüÀÏ½ºÇÁ·¹µå´ë±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sprevmoney"), data, sizeof(data), 0);		// ì „ì¼ìŠ¤í”„ë ˆë“œëŒ€ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ÀüÀÏ¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendebi"), data, sizeof(data), 0);		// ì „ì¼ë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ¼ø¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopeninterest"), data, sizeof(data), 0);		// ìˆœë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ÀüÀÏ¼ø¹Ì°áÁ¦¾àÁ¤´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("netopendebi"), data, sizeof(data), 0);		// ì „ì¼ìˆœë¯¸ê²°ì œì•½ì •ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// °Å·¡°³½ÃÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// ê±°ë˜ê°œì‹œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ÃÖÁ¾°Å·¡ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ìµœì¢…ê±°ë˜ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->LastTradeDay(data);
 	if (symbol) symbol->ExpireDate(data);
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	if (symbol) symbol->RemainDays(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ÃÖ°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highprice"), data, sizeof(data), 0);		// ìµœê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ÃÖÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowprice"), data, sizeof(data), 0);		// ìµœì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebi"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebi"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ÃÖ°í°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedebirate"), data, sizeof(data), 0);		// ìµœê³ ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ÃÖÀú°¡´ëºñÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedebirate"), data, sizeof(data), 0);		// ìµœì €ê°€ëŒ€ë¹„ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ÃÖ°íÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highpricedate"), data, sizeof(data), 0);		// ìµœê³ ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ÃÖÀúÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowpricedate"), data, sizeof(data), 0);		// ìµœì €ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// °¡ÁßÆò±Õ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("weightedavg"), data, sizeof(data), 0);		// ê°€ì¤‘í‰ê· ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cdinterest"), data, sizeof(data), 0);		// CD±İ¸® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cdinterest"), data, sizeof(data), 0);		// CDê¸ˆë¦¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// °Å·¡½Â¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mememulti"), data, sizeof(data), 0);		// ê±°ë˜ìŠ¹ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ½Ç½Ã°£»óÇÑ°¡Àû¿ë¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("restriction_gbn"), data, sizeof(data), 0);		// ì‹¤ì‹œê°„ìƒí•œê°€ì ìš©ì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ÀÏÁß»óÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("maxprice2"), data, sizeof(data), 0);		// ì¼ì¤‘ìƒí•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ÀÏÁßÇÏÇÑ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("minprice2"), data, sizeof(data), 0);		// ì¼ì¤‘í•˜í•œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 
 	ya_stock_client_.OnSymbolQuote(std::move(quote));
@@ -3825,82 +3825,82 @@ void YaClient::on_dm_fut_mini_hoga(const YA_REQ_INFO& req_info)
 	nlohmann::json hoga;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("368002"), _T("InBlock1"));
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("code"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	const std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_fut_mini_hoga:: symbol code[%s]"), symbol_code.c_str());
 	hoga["symbol_code"] = symbol_code;
-	g_iYuantaAPI.YOA_SetTRInfo(_T("368002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("368002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	for (int i = 0; i < 5; i++) {
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), i);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["sell_cnt"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_price"] = convert_to_int(symbol_code, data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_qty"] = _ttoi(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), i);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		hoga["hoga_items"][i]["buy_cnt"] = _ttoi(data);
 	}
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// È£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// È£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vol"), data, sizeof(data), 0);		// í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// È£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("count"), data, sizeof(data), 0);		// í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock4"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock4"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ¾àÁ¤½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì•½ì •ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ¾àÁ¤°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì•½ì •ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock5"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("350002"), _T("OutBlock5"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["hoga_time"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ÃÑ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ì´ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ÃÑ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_qty"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ÃÑ¸Åµµ°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ì´ë§¤ë„ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_sell_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ÃÑ¸Å¼ö°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	hoga["tot_buy_cnt"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£2 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„2 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// µ¿½Ã±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dongsi"), data, sizeof(data), 0);		// ë™ì‹œêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ¿¹»óÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expectjuka"), data, sizeof(data), 0);		// ì˜ˆìƒì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 
 	ya_stock_client_.OnDmSymbolHoga(std::move(hoga));
@@ -3928,16 +3928,16 @@ int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSPI)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// ±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	const std::string year_month = arg.parameter_map["year_month"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ¿ù °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("361007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ì›” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("361007"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ÄÚ½ºÇÇ ¿É¼Ç ¿ùº° ½Ã¼¼Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ì½”ìŠ¤í”¼ ì˜µì…˜ ì›”ë³„ ì‹œì„¸ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("361007"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -3952,7 +3952,7 @@ int YaClient::dm_option_month_quote_kospi_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ÄÚ½ºÇÇ ¿É¼Ç ¿ùº° ½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), _T("361007"), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ì½”ìŠ¤í”¼ ì˜µì…˜ ì›”ë³„ ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), _T("361007"), strErrorMsg);
 
 
 
@@ -3968,17 +3968,17 @@ int YaClient::dm_option_month_quote_mini_kospi_option(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE_MINI_KOSPI)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// ±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	const std::string year_month = arg.parameter_map["year_month"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ¿ù °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("389004"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ì›” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("389004"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ¹Ì´Ï¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ë¯¸ë‹ˆì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("389004"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -3993,7 +3993,7 @@ int YaClient::dm_option_month_quote_mini_kospi_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]¹Ì´Ï¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), _T("389004"), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ë¯¸ë‹ˆì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), _T("389004"), strErrorMsg);
 
 
 
@@ -4009,17 +4009,17 @@ int YaClient::dm_option_month_quote_weekly_option(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE_WEEKLY)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// ±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	const std::string year_month = arg.parameter_map["year_month"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ¿ù °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("389104"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ì›” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("389104"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ÄÚ½ºÇÇÀ§Å¬¸®¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ì½”ìŠ¤í”¼ìœ„í´ë¦¬ì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("389104"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4034,7 +4034,7 @@ int YaClient::dm_option_month_quote_weekly_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ÄÚ½ºÇÇÀ§Å¬¸®¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), _T("389104"), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ì½”ìŠ¤í”¼ìœ„í´ë¦¬ì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), _T("389104"), strErrorMsg);
 
 
 
@@ -4050,17 +4050,17 @@ int YaClient::dm_option_month_quote_kosdaq_option(DhTaskArg arg)
 {
 	YA_REQ_INFO& req_info = ya_req_info_list_[static_cast<int>(SERVER_REQ::DM_OPTION_MONTH_QUOTE_KOSDAQ)];
 	const std::string trade_code = req_info.dso_name.substr(3);
-	g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("InBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// ±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("InBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("janggubun"), _T("0"), 0);		// êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 	const std::string year_month = arg.parameter_map["year_month"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ¿ù °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("384007"), _T("InBlock1"), _T("month"), year_month.c_str(), 0);		// ì›” ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), _T("384007"));
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ÄÚ½º´Ú150¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ì½”ìŠ¤ë‹¥150ì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", _T("384007"), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4075,7 +4075,7 @@ int YaClient::dm_option_month_quote_kosdaq_option(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ÄÚ½º´Ú150¿É¼Çº¹ÇÕ½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), _T("384007"), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ì½”ìŠ¤ë‹¥150ì˜µì…˜ë³µí•©ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), _T("384007"), strErrorMsg);
 
 
 
@@ -4091,49 +4091,49 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 {
 	TCHAR data[1024] = { 0, };
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// Áö¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// ì§€ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("NextBlock1"), _T("scrkey"), data, sizeof(data), 0);
 
 	nlohmann::json call_quote;
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("361007"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// CÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// Cì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	call_quote["symbol_code"] = data;
 	std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("clowprice"), data, sizeof(data), 0);		// CÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("clowprice"), data, sizeof(data), 0);		// Cì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("chighprice"), data, sizeof(data), 0);		// C°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("chighprice"), data, sizeof(data), 0);		// Cê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cstartprice"), data, sizeof(data), 0);		// C½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cstartprice"), data, sizeof(data), 0);		// Cì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// C¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// Cì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["volume"] = _ttoi(data);
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4150,10 +4150,10 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 	}
 	call_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// C´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// CëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// CÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// Cí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["close"] = convert_to_int(symbol_code, data);
 
 	ya_stock_client_.OnSymbolQuote(std::move(call_quote));
@@ -4162,17 +4162,17 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 	nlohmann::json put_quote;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// PÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// Pì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	symbol_code = data;
 	put_quote["symbol_code"] = symbol_code;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// PÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// Pí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// P´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// PëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["updown_rate"] = data;
 	updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4190,16 +4190,16 @@ void YaClient::on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info
 	put_quote["time"] = "00:00:00";
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// P¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// Pì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pstartprice"), data, sizeof(data), 0);		// P½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("pstartprice"), data, sizeof(data), 0);		// Pì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("phighprice"), data, sizeof(data), 0);		// P°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("phighprice"), data, sizeof(data), 0);		// Pê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("plowprice"), data, sizeof(data), 0);		// PÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("361007"), _T("OutBlock2"), _T("plowprice"), data, sizeof(data), 0);		// Pì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["low"] = convert_to_int(symbol_code, data);
 
 	ya_stock_client_.OnSymbolQuote(std::move(put_quote));
@@ -4213,46 +4213,46 @@ void YaClient::on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req
 {
 	TCHAR data[1024] = { 0, };
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// Áö¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// ì§€ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389004"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// CÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// Cì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	nlohmann::json call_quote;
 	call_quote["symbol_code"] = data;
 	std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// C¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// Cì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// C¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// Cë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// C¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// Cë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// C¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// Cë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// C¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// Cë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// C¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// Cë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4269,23 +4269,23 @@ void YaClient::on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req
 	}
 	call_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// C´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// CëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cexpect"), data, sizeof(data), 0);		// C¿¹»ó°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cexpect"), data, sizeof(data), 0);		// Cì˜ˆìƒê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// CÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// Cí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["close"] = convert_to_int(symbol_code, data);
 
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cstart"), data, sizeof(data), 0);		// C½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("cstart"), data, sizeof(data), 0);		// Cì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("chigh"), data, sizeof(data), 0);		// C°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("chigh"), data, sizeof(data), 0);		// Cê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clow"), data, sizeof(data), 0);		// CÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("clow"), data, sizeof(data), 0);		// Cì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["low"] = convert_to_int(symbol_code, data);
 
 	ya_stock_client_.OnSymbolQuote(std::move(call_quote));
@@ -4294,32 +4294,32 @@ void YaClient::on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req
 	nlohmann::json put_quote;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// PÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// Pì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	symbol_code = data;
 	put_quote["symbol_code"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// Çà»ç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// í–‰ì‚¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// Áö¼öÈ¯»ê °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// ì§€ìˆ˜í™˜ì‚° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// PÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// Pí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pexpect"), data, sizeof(data), 0);		// P¿¹»ó°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pexpect"), data, sizeof(data), 0);		// Pì˜ˆìƒê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pstart"), data, sizeof(data), 0);		// P½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pstart"), data, sizeof(data), 0);		// Pì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("phigh"), data, sizeof(data), 0);		// P°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("phigh"), data, sizeof(data), 0);		// Pê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plow"), data, sizeof(data), 0);		// PÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("plow"), data, sizeof(data), 0);		// Pì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// P´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// PëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["updown_rate"] = data;
 	updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4336,21 +4336,21 @@ void YaClient::on_dm_option_month_quote_mini_kospi_option(const YA_REQ_INFO& req
 	}
 	put_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// P¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// Pë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// P¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// Pë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// P¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// Pë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// P¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// Pë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// P¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// Pë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// P¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// Pì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["volume"] = _ttoi(data);
 	
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATM¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389004"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATMì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(put_quote));
 
@@ -4362,46 +4362,46 @@ void YaClient::on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_inf
 {
 	TCHAR data[1024] = { 0, };
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// Áö¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// ì§€ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("389104"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// CÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// Cì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	nlohmann::json call_quote;
 	call_quote["symbol_code"] = data;
 	std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// C¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// Cì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// C¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// Cë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// C¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// Cë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// C¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// Cë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// C¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// Cë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// C¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// Cë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4418,26 +4418,26 @@ void YaClient::on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_inf
 	}
 	call_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// C´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// CëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cexpect"), data, sizeof(data), 0);		// C¿¹»ó°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cexpect"), data, sizeof(data), 0);		// Cì˜ˆìƒê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// CÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// Cí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cstart"), data, sizeof(data), 0);		// C½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("cstart"), data, sizeof(data), 0);		// Cì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("chigh"), data, sizeof(data), 0);		// C°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("chigh"), data, sizeof(data), 0);		// Cê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("clow"), data, sizeof(data), 0);		// CÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("clow"), data, sizeof(data), 0);		// Cì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// Çà»ç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// í–‰ì‚¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// Áö¼öÈ¯»ê °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// ì§€ìˆ˜í™˜ì‚° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(call_quote));
 
@@ -4445,29 +4445,29 @@ void YaClient::on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_inf
 	nlohmann::json put_quote;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// PÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// Pì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	symbol_code = data;
 	put_quote["symbol_code"] = data;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// PÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// Pí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pexpect"), data, sizeof(data), 0);		// P¿¹»ó°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pexpect"), data, sizeof(data), 0);		// Pì˜ˆìƒê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pstart"), data, sizeof(data), 0);		// P½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pstart"), data, sizeof(data), 0);		// Pì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("phigh"), data, sizeof(data), 0);		// P°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("phigh"), data, sizeof(data), 0);		// Pê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("plow"), data, sizeof(data), 0);		// PÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("plow"), data, sizeof(data), 0);		// Pì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// P´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// PëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["updown_rate"] = data;
 	updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4484,20 +4484,20 @@ void YaClient::on_dm_option_month_quote_weekly_option(const YA_REQ_INFO& req_inf
 	}
 	put_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// P¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// Pë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// P¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// Pë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// P¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// Pë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// P¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// Pë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// P¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// Pë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// P¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// Pì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATM¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("389104"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATMì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(put_quote));
 
@@ -4510,75 +4510,75 @@ void YaClient::on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_inf
 {
 	TCHAR data[1024] = { 0, };
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// Áö¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("last"), data, sizeof(data), 0);		// ì§€ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("debi"), data, sizeof(data), 0);		// ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock1"), _T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	//g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// CÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ccode"), data, sizeof(data), 0);		// Cì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	nlohmann::json call_quote;
 	call_quote["symbol_code"] = data;
 	std::string symbol_code = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_dm_opt_sise:: symbol code[%s]"), symbol_code.c_str());
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctv"), data, sizeof(data), 0);		// C½Ã°£°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctv"), data, sizeof(data), 0);		// Cì‹œê°„ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("civ"), data, sizeof(data), 0);		// C³»Àç°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("civ"), data, sizeof(data), 0);		// Cë‚´ì¬ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("copendiff"), data, sizeof(data), 0);		// C¹Ì°áÁ¦Áõ°¨ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("copendiff"), data, sizeof(data), 0);		// Cë¯¸ê²°ì œì¦ê° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("crho"), data, sizeof(data), 0);		// C·Î °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("crho"), data, sizeof(data), 0);		// Cë¡œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cvega"), data, sizeof(data), 0);		// C¹è°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cvega"), data, sizeof(data), 0);		// Cë°°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctheta"), data, sizeof(data), 0);		// C½êÅ¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctheta"), data, sizeof(data), 0);		// Cì„íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cgamma"), data, sizeof(data), 0);		// C°¨¸¶ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cgamma"), data, sizeof(data), 0);		// Cê°ë§ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdelta"), data, sizeof(data), 0);		// Cµ¨Å¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdelta"), data, sizeof(data), 0);		// Cë¸íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("civdiff"), data, sizeof(data), 0);		// C³»Á¦º¯µ¿¼º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("civdiff"), data, sizeof(data), 0);		// Cë‚´ì œë³€ë™ì„± ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctheoryprice"), data, sizeof(data), 0);		// CÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ctheoryprice"), data, sizeof(data), 0);		// Cì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("clowprice"), data, sizeof(data), 0);		// CÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("clowprice"), data, sizeof(data), 0);		// Cì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("chighprice"), data, sizeof(data), 0);		// C°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("chighprice"), data, sizeof(data), 0);		// Cê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cstartprice"), data, sizeof(data), 0);		// C½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cstartprice"), data, sizeof(data), 0);		// Cì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// C¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cvolume"), data, sizeof(data), 0);		// Cì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// C¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("copeninterest"), data, sizeof(data), 0);		// Cë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// C¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmesuvol"), data, sizeof(data), 0);		// Cë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// C¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmesuprice"), data, sizeof(data), 0);		// Cë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// C¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmedovol"), data, sizeof(data), 0);		// Cë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// C¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cmedoprice"), data, sizeof(data), 0);		// Cë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdebirate"), data, sizeof(data), 0);		// Cë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["updown_rate"] = data;
 	double updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4595,10 +4595,10 @@ void YaClient::on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_inf
 	}
 	call_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// C´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("cdebi"), data, sizeof(data), 0);		// CëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["delta_day"] = data;
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// CÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("clast"), data, sizeof(data), 0);		// Cí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	call_quote["close"] = convert_to_int(symbol_code, data);
 
 	ya_stock_client_.OnSymbolQuote(std::move(call_quote));
@@ -4607,21 +4607,21 @@ void YaClient::on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_inf
 	nlohmann::json put_quote;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// PÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pcode"), data, sizeof(data), 0);		// Pì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	symbol_code = data;
 	put_quote["symbol_code"] = data;
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// Çà»ç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("jongprice"), data, sizeof(data), 0);		// í–‰ì‚¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// Áö¼öÈ¯»ê °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("jongsisu"), data, sizeof(data), 0);		// ì§€ìˆ˜í™˜ì‚° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// PÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("plast"), data, sizeof(data), 0);		// Pí˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["close"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// P´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdebi"), data, sizeof(data), 0);		// PëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pµî¶ô·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdebirate"), data, sizeof(data), 0);		// Pë“±ë½ë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["updown_rate"] = data;
 	updown_rate = _ttof(data);
 	if (updown_rate > 0) {
@@ -4638,53 +4638,53 @@ void YaClient::on_dm_option_month_quote_kosdaq_option(const YA_REQ_INFO& req_inf
 	}
 	put_quote["time"] = "00:00:00";
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// P¸ÅµµÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmedoprice"), data, sizeof(data), 0);		// Pë§¤ë„í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// P¸ÅµµÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmedovol"), data, sizeof(data), 0);		// Pë§¤ë„ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// P¸Å¼öÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmesuprice"), data, sizeof(data), 0);		// Pë§¤ìˆ˜í˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// P¸Å¼öÀÜ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pmesuvol"), data, sizeof(data), 0);		// Pë§¤ìˆ˜ì” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// P¹Ì°áÁ¦ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("popeninterest"), data, sizeof(data), 0);		// Pë¯¸ê²°ì œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// P¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pvolume"), data, sizeof(data), 0);		// Pì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["volume"] = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pstartprice"), data, sizeof(data), 0);		// P½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pstartprice"), data, sizeof(data), 0);		// Pì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["open"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("phighprice"), data, sizeof(data), 0);		// P°í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("phighprice"), data, sizeof(data), 0);		// Pê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["high"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("plowprice"), data, sizeof(data), 0);		// PÀú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("plowprice"), data, sizeof(data), 0);		// Pì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	put_quote["low"] = convert_to_int(symbol_code, data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptheoryprice"), data, sizeof(data), 0);		// PÀÌ·Ğ°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptheoryprice"), data, sizeof(data), 0);		// Pì´ë¡ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pivdiff"), data, sizeof(data), 0);		// P³»Á¦º¯µ¿¼º °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pivdiff"), data, sizeof(data), 0);		// Pë‚´ì œë³€ë™ì„± ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdelta"), data, sizeof(data), 0);		// Pµ¨Å¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pdelta"), data, sizeof(data), 0);		// Pë¸íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pgamma"), data, sizeof(data), 0);		// P°¨¸¶ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pgamma"), data, sizeof(data), 0);		// Pê°ë§ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptheta"), data, sizeof(data), 0);		// P½êÅ¸ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptheta"), data, sizeof(data), 0);		// Pì„íƒ€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pvega"), data, sizeof(data), 0);		// P¹è°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("pvega"), data, sizeof(data), 0);		// Pë°°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("prho"), data, sizeof(data), 0);		// P·Î °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("prho"), data, sizeof(data), 0);		// Pë¡œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("popendiff"), data, sizeof(data), 0);		// P¹Ì°áÁ¦Áõ°¨ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("popendiff"), data, sizeof(data), 0);		// Pë¯¸ê²°ì œì¦ê° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("piv"), data, sizeof(data), 0);		// P³»Àç°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("piv"), data, sizeof(data), 0);		// Pë‚´ì¬ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptv"), data, sizeof(data), 0);		// P½Ã°£°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("ptv"), data, sizeof(data), 0);		// Pì‹œê°„ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATM¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("atmflag"), data, sizeof(data), 0);		// ATMì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock3"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("384007"), _T("OutBlock3"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("next"), data, sizeof(data), 0);		// ´ÙÀ½ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("384007"), _T("OutBlock2"), _T("next"), data, sizeof(data), 0);		// ë‹¤ìŒ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 	ya_stock_client_.OnSymbolQuote(std::move(put_quote));
 
@@ -4713,15 +4713,15 @@ int YaClient::ab_account_asset(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ÀÚ»êÁ¤º¸ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ìì‚°ì •ë³´ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4736,7 +4736,7 @@ int YaClient::ab_account_asset(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ÀÚ»êÁ¤º¸ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ìì‚°ì •ë³´ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		auto account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (account) {
@@ -4761,15 +4761,15 @@ int YaClient::ab_account_profit_loss(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° ÀÏÀÏ ¼ÕÀÍ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ ì¼ì¼ ì†ìµ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4784,7 +4784,7 @@ int YaClient::ab_account_profit_loss(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° ÀÏÀÏ ¼ÕÀÍÁ¶È¸ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ ì¼ì¼ ì†ìµì¡°íšŒ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -4803,15 +4803,15 @@ int YaClient::ab_accepted_order(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// °èÁÂºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ê³„ì¢Œë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ¹ÌÃ¼°á ÁÖ¹® Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], account_no[%s], Request : %s", trade_code.c_str(), account_no.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4826,7 +4826,7 @@ int YaClient::ab_accepted_order(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]¹ÌÃ¼°á ÁÖ¹® Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ë¯¸ì²´ê²° ì£¼ë¬¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 		auto account = mainApp.AcntMgr()->FindAccount(account_no);
 		if (account) {
@@ -4850,14 +4850,14 @@ int YaClient::ab_symbol_quote(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¼±¹°½Ã¼¼ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ì„ ë¬¼ì‹œì„¸ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4872,7 +4872,7 @@ int YaClient::ab_symbol_quote(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¼±¹°½Ã¼¼ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ì„ ë¬¼ì‹œì„¸ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -4890,14 +4890,14 @@ int YaClient::ab_symbol_hoga(DhTaskArg arg)
 	const std::string trade_code = req_info.dso_name.substr(3);
 	//g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string symbol_code = arg.parameter_map["symbol_code"];
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("368001"), _T("InBlock1"), _T("code"), symbol_code.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] ±¹³»¹Ì´Ï¼±¹° È£°¡ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] êµ­ë‚´ë¯¸ë‹ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4912,7 +4912,7 @@ int YaClient::ab_symbol_hoga(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]±¹³»¹Ì´Ï¼±¹° È£°¡ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]êµ­ë‚´ë¯¸ë‹ˆì„ ë¬¼ í˜¸ê°€ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -4931,15 +4931,15 @@ int YaClient::ab_symbol_position(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ¾÷¹«±¸ºĞ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldByte(_T("work_tp"), 1);		// ì—…ë¬´êµ¬ë¶„ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° Æ÷Áö¼Ç Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ í¬ì§€ì…˜ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4954,7 +4954,7 @@ int YaClient::ab_symbol_position(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° Æ÷Áö¼Ç Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ í¬ì§€ì…˜ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -4973,15 +4973,15 @@ int YaClient::ab_symbol_profit_loss(DhTaskArg arg)
 	g_iYuantaAPI.YOA_SetTRInfo(trade_code.c_str(), _T("InBlock1"));
 	const std::string account_no = arg.parameter_map["account_no"];
 	const std::string password = arg.parameter_map["password"];
-	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// °èÁÂ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ºñ¹Ğ¹øÈ£ °ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetFieldString(_T("acnt_aid"), account_no.c_str(), 0);		// ê³„ì¢Œ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	g_iYuantaAPI.YOA_SetFieldString(_T("passwd"), password.c_str(), 0);		// ë¹„ë°€ë²ˆí˜¸ ê°’ì„ ì„¤ì •í•©ë‹ˆë‹¤.
 
 	const int req_id = g_iYuantaAPI.YOA_Request(GetSafeHwnd(), trade_code.c_str());
 	req_info.request_id = req_id;
 	if (ERROR_MAX_CODE < req_id)
 	{
 		CString strMsg;
-		strMsg.Format(_T("[ReqID:%d] °èÁÂº° ÀÏÀÏ ¼ÕÀÍ Á¶È¸¸¦ ¿äÃ»ÇÏ¿´½À´Ï´Ù."), req_id);
+		strMsg.Format(_T("[ReqID:%d] ê³„ì¢Œë³„ ì¼ì¼ ì†ìµ ì¡°íšŒë¥¼ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤."), req_id);
 		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
 		request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
@@ -4996,7 +4996,7 @@ int YaClient::ab_symbol_profit_loss(DhTaskArg arg)
 		CString strErrorMsg;
 		strErrorMsg.Format(_T("Error code:[%d] Message[%s]"), nErrorCode, msg);
 
-		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]°èÁÂº° ÀÏÀÏ ¼ÕÀÍÁ¶È¸ Á¶È¸Áß ¿À·ù°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
+		LOGINFO(CMyLogger::getInstance(), _T("Trade Code[%s]ê³„ì¢Œë³„ ì¼ì¼ ì†ìµì¡°íšŒ ì¡°íšŒì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.Error Message[%s]"), trade_code.c_str(), strErrorMsg);
 
 
 
@@ -5025,46 +5025,46 @@ void YaClient::ab_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 
 void YaClient::on_ab_account_asset(const YA_REQ_INFO& req_info)
 {
-	//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[860003] ÇØ¿Ü¼±¹° °èÁÂº°¿¹¼ö±İÁ¶È¸ - Ãâ·Âºí·Ï
+	//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[860003] í•´ì™¸ì„ ë¬¼ ê³„ì¢Œë³„ì˜ˆìˆ˜ê¸ˆì¡°íšŒ - ì¶œë ¥ë¸”ë¡
 
 
 	TCHAR data[1024] = { 0, };
 
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ° °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock1"), _T("list_cnt"), data, sizeof(data), 0);		// ÃÑ°¹¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock1"), _T("list_cnt"), data, sizeof(data), 0);		// ì´ê°¯ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	int list_cnt = _ttoi(data);
 	for (int i = 0; i < list_cnt; list_cnt++) {
 		nlohmann::json account_asset;
 
-		g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+		g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string account_no(data);
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("lst_acnt_no"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("lst_acnt_no"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_kor_nm"), data, sizeof(data), 0);		// °èÁÂ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_kor_nm"), data, sizeof(data), 0);		// ê³„ì¢Œëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("crc_cd"), data, sizeof(data), 0);		// ÅëÈ­ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("crc_cd"), data, sizeof(data), 0);		// í†µí™”ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string currency = data;
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("opn_prf_amt"), data, sizeof(data), 0);		// À§Å¹Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("opn_prf_amt"), data, sizeof(data), 0);		// ìœ„íƒì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string entrust_total = data;
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("adtn_prf_amt"), data, sizeof(data), 0);		// Ãß°¡Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("adtn_prf_amt"), data, sizeof(data), 0);		// ì¶”ê°€ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string additional_margin = data;
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("tdy_cash_amt"), data, sizeof(data), 0);		// ¿¹Å¹±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("tdy_cash_amt"), data, sizeof(data), 0);		// ì˜ˆíƒê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string balance = data;
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("dptam_blnc"), data, sizeof(data), 0);		// ¿¹Å¹±İÀÜ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("dptam_blnc"), data, sizeof(data), 0);		// ì˜ˆíƒê¸ˆì”ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string entrust_deposit = data;
 		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("whdr_psb_amt"), data, sizeof(data), 0);		// ÀÎÃâ°¡´É¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("whdr_psb_amt"), data, sizeof(data), 0);		// ì¸ì¶œê°€ëŠ¥ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		std::string withdrawable_amount = data;
 
 		account_asset["account_no"] = account_no;
@@ -5089,414 +5089,415 @@ void YaClient::on_ab_account_asset(const YA_REQ_INFO& req_info)
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-	//	[863007] ÇØ¿Ü¼±¹°_¸Å¸ÅÇöÈ²¿¹¼ö±İÀÜ°í - Ãâ·Âºí·Ï
+	//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+	//	[863007] í•´ì™¸ì„ ë¬¼_ë§¤ë§¤í˜„í™©ì˜ˆìˆ˜ê¸ˆì”ê³  - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("863007"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("863007"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ½Äº°¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œì‹ë³„ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// °èÁÂ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// ê³„ì¢Œëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// ÅëÈ­ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// í†µí™”ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tdy_cash_amt"), data, sizeof(data), 0);		// ¿¹Å¹±İÀÜ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tdy_cash_amt"), data, sizeof(data), 0);		// ì˜ˆíƒê¸ˆì”ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_pl_amt"), data, sizeof(data), 0);		// È®Á¤¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_pl_amt"), data, sizeof(data), 0);		// í™•ì •ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl_amt"), data, sizeof(data), 0);		// Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl_amt"), data, sizeof(data), 0);		// í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn_amt"), data, sizeof(data), 0);		// ¼ö¼ö·á °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn_amt"), data, sizeof(data), 0);		// ìˆ˜ìˆ˜ë£Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pstn_opn_prfam"), data, sizeof(data), 0);		// ¹Ì°áÁ¦Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("pstn_opn_prfam"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_ord_opn_prf_amt"), data, sizeof(data), 0);		// ÁÖ¹®Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_ord_opn_prf_amt"), data, sizeof(data), 0);		// ì£¼ë¬¸ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opn_prf_amt"), data, sizeof(data), 0);		// À§Å¹Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opn_prf_amt"), data, sizeof(data), 0);		// ìœ„íƒì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("psv_prf_amt"), data, sizeof(data), 0);		// À¯ÁöÁõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("psv_prf_amt"), data, sizeof(data), 0);		// ìœ ì§€ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("adtn_prf_amt"), data, sizeof(data), 0);		// Ãß°¡Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("adtn_prf_amt"), data, sizeof(data), 0);		// ì¶”ê°€ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vrtl_exmo_amt"), data, sizeof(data), 0);		// °¡È¯Àü±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("vrtl_exmo_amt"), data, sizeof(data), 0);		// ê°€í™˜ì „ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_psb_amt"), data, sizeof(data), 0);		// ÁÖ¹®°¡´É±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_psb_amt"), data, sizeof(data), 0);		// ì£¼ë¬¸ê°€ëŠ¥ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("whdr_psb_amt"), data, sizeof(data), 0);		// ÀÎÃâ°¡´É±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("whdr_psb_amt"), data, sizeof(data), 0);		// ì¸ì¶œê°€ëŠ¥ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pres_dptam"), data, sizeof(data), 0);		// ¿¹Å¹ÀÚ»êÆò°¡¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("pres_dptam"), data, sizeof(data), 0);		// ì˜ˆíƒìì‚°í‰ê°€ì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("deposit_limit"), data, sizeof(data), 0);		// »çÈÄÁõ°Å±İÇÑµµ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("deposit_limit"), data, sizeof(data), 0);		// ì‚¬í›„ì¦ê±°ê¸ˆí•œë„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_eval_pl_amt"), data, sizeof(data), 0);		// Á¤»ê¹Ì°áÁ¦¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_eval_pl_amt"), data, sizeof(data), 0);		// ì •ì‚°ë¯¸ê²°ì œì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_cmsn_amt"), data, sizeof(data), 0);		// Á¤»ê¹Ì°áÁ¦¼ö¼ö·á °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_cmsn_amt"), data, sizeof(data), 0);		// ì •ì‚°ë¯¸ê²°ì œìˆ˜ìˆ˜ë£Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 }
 
 void YaClient::on_ab_account_profit_loss(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[861001] ÇØ¿Ü¼±¹°_°èÁÂº°º¸À¯Æò°¡Á¶È¸ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[861001] í•´ì™¸ì„ ë¬¼_ê³„ì¢Œë³„ë³´ìœ í‰ê°€ì¡°íšŒ - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑ°³¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ê°œìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ°"1"ÀÏ°æ¿ì´ÙÀ½Á¶È¸Á¸Àç °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼"1"ì¼ê²½ìš°ë‹¤ìŒì¡°íšŒì¡´ì¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// °èÁÂ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// ê³„ì¢Œëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// Á¾¸ñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// ì¢…ëª© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_nm"), data, sizeof(data), 0);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_nm"), data, sizeof(data), 0);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ¸Å¸Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ë§¤ë§¤êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// Æò±ÕÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// í‰ê· ì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ë¯¸ê²°ì œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// Ã»»ê°¡´É¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crprc"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("crprc"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ¼±¹°Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ì„ ë¬¼í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ¿É¼ÇÆò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ì˜µì…˜í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_amt"), data, sizeof(data), 0);		// ¿É¼ÇÆò°¡±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_amt"), data, sizeof(data), 0);		// ì˜µì…˜í‰ê°€ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gnrt"), data, sizeof(data), 0);		// ¼öÀÍ·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gnrt"), data, sizeof(data), 0);		// ìˆ˜ìµë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// ÅëÈ­ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// í†µí™”ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_rsrv_qty"), data, sizeof(data), 0);		// Çà»ç¿¹¾à¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exci_rsrv_qty"), data, sizeof(data), 0);		// í–‰ì‚¬ì˜ˆì•½ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_req_qty"), data, sizeof(data), 0);		// Çà»ç½ÅÃ»¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exci_req_qty"), data, sizeof(data), 0);		// í–‰ì‚¬ì‹ ì²­ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fnd_dt"), data, sizeof(data), 0);		// ÃÖÃÊÅëº¸ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fnd_dt"), data, sizeof(data), 0);		// ìµœì´ˆí†µë³´ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("std_dt"), data, sizeof(data), 0);		// ±âÁØÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("std_dt"), data, sizeof(data), 0);		// ê¸°ì¤€ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_qty"), data, sizeof(data), 0);		// ¹ÌÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_qty"), data, sizeof(data), 0);		// ë¯¸ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futr_tp"), data, sizeof(data), 0);		// ¼±¹°¿É¼Ç±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("futr_tp"), data, sizeof(data), 0);		// ì„ ë¬¼ì˜µì…˜êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 void YaClient::on_ab_accepted_order(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[860005] ÇØ¿Ü¼±¹°_°èÁÂº°¹ÌÃ¼°á³»¿ªÁ¶È¸ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[860005] í•´ì™¸ì„ ë¬¼_ê³„ì¢Œë³„ë¯¸ì²´ê²°ë‚´ì—­ì¡°íšŒ - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("860005"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("860005"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ° °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑ°¹¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ê°¯ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("860005"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("860005"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), 0);		// ÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), 0);		// ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// °èÁÂ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// ê³„ì¢Œëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// Á¾¸ñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// ì¢…ëª© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_sb_tp"), data, sizeof(data), 0);		// ¸Å¸Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_sb_tp"), data, sizeof(data), 0);		// ë§¤ë§¤êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_prc"), data, sizeof(data), 0);		// ÁÖ¹®°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_prc"), data, sizeof(data), 0);		// ì£¼ë¬¸ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_qty"), data, sizeof(data), 0);		// ÁÖ¹®¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_qty"), data, sizeof(data), 0);		// ì£¼ë¬¸ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_rmqn"), data, sizeof(data), 0);		// ¹ÌÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_rmqn"), data, sizeof(data), 0);		// ë¯¸ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mth_qty"), data, sizeof(data), 0);		// Ã¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mth_qty"), data, sizeof(data), 0);		// ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cond_prc"), data, sizeof(data), 0);		// STOP °¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cond_prc"), data, sizeof(data), 0);		// STOP ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_ord_tp_cd"), data, sizeof(data), 0);		// Àü·«±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_ord_tp_cd"), data, sizeof(data), 0);		// ì „ëµêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("chnl_tp_cd"), data, sizeof(data), 0);		// Åë½Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("chnl_tp_cd"), data, sizeof(data), 0);		// í†µì‹ êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ¿øÁÖ¹®¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// ì›ì£¼ë¬¸ë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("temp_dt"), data, sizeof(data), 0);		// ³¯Â¥ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("temp_dt"), data, sizeof(data), 0);		// ë‚ ì§œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("temp_time"), data, sizeof(data), 0);		// ½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("temp_time"), data, sizeof(data), 0);		// ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("wrk_emp_nm"), data, sizeof(data), 0);		// ÁÖ¹®ÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("wrk_emp_nm"), data, sizeof(data), 0);		// ì£¼ë¬¸ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci"), data, sizeof(data), 0);		// Çà»ç °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exci"), data, sizeof(data), 0);		// í–‰ì‚¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("term"), data, sizeof(data), 0);		// ±â°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("term"), data, sizeof(data), 0);		// ê¸°ê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_end_dt"), data, sizeof(data), 0);		// ÁÖ¹®Á¾·áÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_end_dt"), data, sizeof(data), 0);		// ì£¼ë¬¸ì¢…ë£Œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_akprc_tp_cd"), data, sizeof(data), 0);		// ÁÖ¹®±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_akprc_tp_cd"), data, sizeof(data), 0);		// ì£¼ë¬¸êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_prc_cond_tp_cd"), data, sizeof(data), 0);		// À¯Çü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_prc_cond_tp_cd"), data, sizeof(data), 0);		// ìœ í˜• ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_dtm"), data, sizeof(data), 0);		// ÁÖ¹®ÀÏ½Ã °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_dtm"), data, sizeof(data), 0);		// ì£¼ë¬¸ì¼ì‹œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
 }
 
 void YaClient::on_ab_symbol_quote(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[810001] ÇØ¿Ü¼±¹°_ÇöÀç°¡ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[810001] í•´ì™¸ì„ ë¬¼_í˜„ì¬ê°€ - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("810001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("810001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå¼³¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("jongname"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œì„¤ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// µî¶ôÀ² °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debirate"), data, sizeof(data), 0);		// ë“±ë½ìœ¨ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ½Ã°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("startdebi"), data, sizeof(data), 0);		// ì‹œê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// °í°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("highdebi"), data, sizeof(data), 0);		// ê³ ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// °í°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hightime"), data, sizeof(data), 0);		// ê³ ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// Àú°¡´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowdebi"), data, sizeof(data), 0);		// ì €ê°€ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// Àú°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lowtime"), data, sizeof(data), 0);		// ì €ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevlast"), data, sizeof(data), 0);		// ÀüÀÏÁ¾°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevlast"), data, sizeof(data), 0);		// ì „ì¼ì¢…ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exchangecode"), data, sizeof(data), 0);		// °Å·¡¼Ò °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exchangecode"), data, sizeof(data), 0);		// ê±°ë˜ì†Œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("underclass"), data, sizeof(data), 0);		// »óÇ°±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("underclass"), data, sizeof(data), 0);		// ìƒí’ˆêµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("currencycode"), data, sizeof(data), 0);		// °Å·¡ÅëÈ­ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("currencycode"), data, sizeof(data), 0);		// ê±°ë˜í†µí™” ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// °Å·¡°³½ÃÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opendate"), data, sizeof(data), 0);		// ê±°ë˜ê°œì‹œì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ÃÖÁ¾°Å·¡ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lastdate"), data, sizeof(data), 0);		// ìµœì¢…ê±°ë˜ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fnd"), data, sizeof(data), 0);		// ÃÖÁ¾Åëº¸ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fnd"), data, sizeof(data), 0);		// ìµœì¢…í†µë³´ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ÀÜÁ¸ÀÏ¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// ì”ì¡´ì¼ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("expirysettlement"), data, sizeof(data), 0);		// ¸¸±â°áÀç¹æ½Ä °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("expirysettlement"), data, sizeof(data), 0);		// ë§Œê¸°ê²°ì¬ë°©ì‹ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tradeyn"), data, sizeof(data), 0);		// °Å·¡¿©ºÎ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tradeyn"), data, sizeof(data), 0);		// ê±°ë˜ì—¬ë¶€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("contractsize"), data, sizeof(data), 0);		// °è¾àÅ©±â °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("contractsize"), data, sizeof(data), 0);		// ê³„ì•½í¬ê¸° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ticksize"), data, sizeof(data), 0);		// Æ½»çÀÌÁî °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("ticksize"), data, sizeof(data), 0);		// í‹±ì‚¬ì´ì¦ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("tickvalue"), data, sizeof(data), 0);		// Æ½°¡Ä¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("tickvalue"), data, sizeof(data), 0);		// í‹±ê°€ì¹˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opentime"), data, sizeof(data), 0);		// Àå°³½Ã °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opentime"), data, sizeof(data), 0);		// ì¥ê°œì‹œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("closetime"), data, sizeof(data), 0);		// Àå¸¶°¨ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("closetime"), data, sizeof(data), 0);		// ì¥ë§ˆê° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("marginrate1"), data, sizeof(data), 0);		// À§Å¹Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("marginrate1"), data, sizeof(data), 0);		// ìœ„íƒì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("marginrate2"), data, sizeof(data), 0);		// ´ÜÀ§Áõ°Å±İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("marginrate2"), data, sizeof(data), 0);		// ë‹¨ìœ„ì¦ê±°ê¸ˆ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pointsize"), data, sizeof(data), 0);		// ¼Ò¼öÁ¡Å©±â °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("pointsize"), data, sizeof(data), 0);		// ì†Œìˆ˜ì í¬ê¸° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dispscale"), data, sizeof(data), 0);		// Ç¥½ÃÁø¹ı °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dispscale"), data, sizeof(data), 0);		// í‘œì‹œì§„ë²• ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 void YaClient::on_ab_symbol_hoga(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[810002] ÇØ¿Ü¼±¹°ÇöÀç°¡_È£°¡Ã¼°á - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[810002] í•´ì™¸ì„ ë¬¼í˜„ì¬ê°€_í˜¸ê°€ì²´ê²° - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("HOKALIST"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("HOKALIST"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medoprice"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medovol"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ¸ÅµµÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("medocount"), data, sizeof(data), 0);		// ë§¤ë„í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuprice"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡ÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesuvol"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ¸Å¼öÈ£°¡°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("mesucount"), data, sizeof(data), 0);		// ë§¤ìˆ˜í˜¸ê°€ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("TICKLIST"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("TICKLIST"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ¾àÁ¤½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("time"), data, sizeof(data), 0);		// ì•½ì •ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ¾àÁ¤°¡°İ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("price"), data, sizeof(data), 0);		// ì•½ì •ê°€ê²© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ¾àÁ¤¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nowvol"), data, sizeof(data), 0);		// ì•½ì •ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// °Å·¡·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// ê±°ë˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("810002"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// È£°¡½Ã°£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ÃÑ¸ÅµµÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedovol"), data, sizeof(data), 0);		// ì´ë§¤ë„ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ÃÑ¸Å¼öÀÜ·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesuvol"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ì”ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ÃÑ¸Åµµ°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmedocount"), data, sizeof(data), 0);		// ì´ë§¤ë„ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ÃÑ¸Å¼ö°Ç¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("totmesucount"), data, sizeof(data), 0);		// ì´ë§¤ìˆ˜ê±´ìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// È£°¡½Ã°£2 °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("hokatime2"), data, sizeof(data), 0);		// í˜¸ê°€ì‹œê°„2 ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("last"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¾àÁ¤ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("openinterest"), data, sizeof(data), 0);		// ë¯¸ê²°ì œì•½ì • ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ÀüÀÏ´ëºñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("debi"), data, sizeof(data), 0);		// ì „ì¼ëŒ€ë¹„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ½Ã°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("start"), data, sizeof(data), 0);		// ì‹œê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// °í°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("high"), data, sizeof(data), 0);		// ê³ ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// Àú°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("low"), data, sizeof(data), 0);		// ì €ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prevlast"), data, sizeof(data), 0);		// ÀüÀÏÁ¾°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prevlast"), data, sizeof(data), 0);		// ì „ì¼ì¢…ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pointsize"), data, sizeof(data), 0);		// ¼Ò¼öÁ¡Å©±â °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("pointsize"), data, sizeof(data), 0);		// ì†Œìˆ˜ì í¬ê¸° ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("dispscale"), data, sizeof(data), 0);		// Ç¥½ÃÁø¹ı °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("dispscale"), data, sizeof(data), 0);		// í‘œì‹œì§„ë²• ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 void YaClient::on_ab_symbol_position(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[862009] ÇØ¿Ü¼±¹°ÀÏÀÚº°ÀÜ°í_GLOBALAPI - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[862009] í•´ì™¸ì„ ë¬¼ì¼ìë³„ì”ê³ _GLOBALAPI - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("862009"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("862009"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑ°³¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ê°œìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ°"1"ÀÏ°æ¿ì´ÙÀ½Á¶È¸Á¸Àç °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼"1"ì¼ê²½ìš°ë‹¤ìŒì¡°íšŒì¡´ì¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("862009"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("862009"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("base_dt"), data, sizeof(data), 0);		// Á¶È¸ÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("base_dt"), data, sizeof(data), 0);		// ì¡°íšŒì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// Á¾¸ñÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// ì¢…ëª©ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("prc_crc_cd"), data, sizeof(data), 0);		// ÅëÈ­ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("prc_crc_cd"), data, sizeof(data), 0);		// í†µí™”ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ¸Å¸Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ë§¤ë§¤êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// Æò±ÕÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// í‰ê· ì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ë¯¸ê²°ì œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// Ã»»ê°¡´É¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 void YaClient::on_ab_symbol_profit_loss(const YA_REQ_INFO& req_info)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	À¯¾ÈÅ¸Áõ±Ç Open API Ãâ·ÂÄÚµå ¿¹Á¦ÀÔ´Ï´Ù.
-//	[861001] ÇØ¿Ü¼±¹°_°èÁÂº°º¸À¯Æò°¡Á¶È¸ - Ãâ·Âºí·Ï
+//	ìœ ì•ˆíƒ€ì¦ê¶Œ Open API ì¶œë ¥ì½”ë“œ ì˜ˆì œì…ë‹ˆë‹¤.
+//	[861001] í•´ì™¸ì„ ë¬¼_ê³„ì¢Œë³„ë³´ìœ í‰ê°€ì¡°íšŒ - ì¶œë ¥ë¸”ë¡
 
 	TCHAR data[1024] = { 0, };
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock1"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock1"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ÃÑ°³¼ö °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// ì´ê°œìˆ˜ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+	int list_cnt = _ttoi(data);
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ´ÙÀ½¹öÆ°"1"ÀÏ°æ¿ì´ÙÀ½Á¶È¸Á¸Àç °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// ë‹¤ìŒë²„íŠ¼"1"ì¼ê²½ìš°ë‹¤ìŒì¡°íšŒì¡´ì¬ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock2"));			// TRÁ¤º¸(TR¸í, Block¸í)¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock2"));			// TRì •ë³´(TRëª…, Blockëª…)ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// °èÁÂ¹øÈ£ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// ê³„ì¢Œë²ˆí˜¸ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// °èÁÂ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// ê³„ì¢Œëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// Á¾¸ñ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// ì¢…ëª© ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_nm"), data, sizeof(data), 0);		// Á¾¸ñ¸í °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("stk_nm"), data, sizeof(data), 0);		// ì¢…ëª©ëª… ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ¸Å¸Å±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// ë§¤ë§¤êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// Æò±ÕÃ¼°á°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// í‰ê· ì²´ê²°ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ¹Ì°áÁ¦¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// ë¯¸ê²°ì œìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// Ã»»ê°¡´É¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// ì²­ì‚°ê°€ëŠ¥ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crprc"), data, sizeof(data), 0);		// ÇöÀç°¡ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("crprc"), data, sizeof(data), 0);		// í˜„ì¬ê°€ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ¼±¹°Æò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// ì„ ë¬¼í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ¿É¼ÇÆò°¡¼ÕÀÍ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// ì˜µì…˜í‰ê°€ì†ìµ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_amt"), data, sizeof(data), 0);		// ¿É¼ÇÆò°¡±İ¾× °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_amt"), data, sizeof(data), 0);		// ì˜µì…˜í‰ê°€ê¸ˆì•¡ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gnrt"), data, sizeof(data), 0);		// ¼öÀÍ·ü °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("gnrt"), data, sizeof(data), 0);		// ìˆ˜ìµë¥  ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// ÅëÈ­ÄÚµå °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// í†µí™”ì½”ë“œ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_rsrv_qty"), data, sizeof(data), 0);		// Çà»ç¿¹¾à¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exci_rsrv_qty"), data, sizeof(data), 0);		// í–‰ì‚¬ì˜ˆì•½ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_req_qty"), data, sizeof(data), 0);		// Çà»ç½ÅÃ»¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("exci_req_qty"), data, sizeof(data), 0);		// í–‰ì‚¬ì‹ ì²­ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fnd_dt"), data, sizeof(data), 0);		// ÃÖÃÊÅëº¸ÀÏ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("fnd_dt"), data, sizeof(data), 0);		// ìµœì´ˆí†µë³´ì¼ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("std_dt"), data, sizeof(data), 0);		// ±âÁØÀÏÀÚ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("std_dt"), data, sizeof(data), 0);		// ê¸°ì¤€ì¼ì ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_qty"), data, sizeof(data), 0);		// ¹ÌÃ¼°á¼ö·® °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_qty"), data, sizeof(data), 0);		// ë¯¸ì²´ê²°ìˆ˜ëŸ‰ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futr_tp"), data, sizeof(data), 0);		// ¼±¹°¿É¼Ç±¸ºĞ °ªÀ» °¡Á®¿É´Ï´Ù.
+	g_iYuantaAPI.YOA_GetFieldString(_T("futr_tp"), data, sizeof(data), 0);		// ì„ ë¬¼ì˜µì…˜êµ¬ë¶„ ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 }
 
 BOOL DarkHorse::YaClient::OnInitDialog()
