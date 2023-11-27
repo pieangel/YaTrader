@@ -1993,6 +1993,7 @@ void YaClient::on_dm_fut_sise(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("volume"), data, sizeof(data), 0);		// 약정수량 값을 가져옵니다.
 	quote["volume"] = _ttoi(data);
 	quote["cumulative_amount"] = _ttoi(data);
+	// 한글 테스트 
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("svolume"), data, sizeof(data), 0);		// 스프레드수량 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
