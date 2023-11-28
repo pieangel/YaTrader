@@ -4169,6 +4169,7 @@ void DarkHorse::ViClient::on_ab_account_asset(const CString& sTrCode, const LONG
 	}
 
 	on_task_complete(nRqID);
+
 }
 
 void DarkHorse::ViClient::on_dm_account_asset(const CString& sTrCode, const LONG& nRqID)

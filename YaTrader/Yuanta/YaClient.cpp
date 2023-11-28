@@ -5032,172 +5032,79 @@ void YaClient::on_ab_account_asset(const YA_REQ_INFO& req_info)
 
 
 	TCHAR data[1024] = { 0, };
-
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// 다음버튼 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock1"), _T("list_cnt"), data, sizeof(data), 0);		// 총갯수 값을 가져옵니다.
-	int list_cnt = _ttoi(data);
-	for (int i = 0; i < list_cnt; list_cnt++) {
-		// 계좌 정보에 대한 객체 선언
-		nlohmann::json account_asset;
-
-		g_iYuantaAPI.YOA_SetTRInfo(_T("860003"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-		std::string account_no(data);
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
-		
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("crc_cd"), data, sizeof(data), 0);		// 통화코드 값을 가져옵니다.
-		std::string currency = data;
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("opn_prf_amt"), data, sizeof(data), 0);		// 위탁증거금 값을 가져옵니다.
-		std::string entrust_total = data;
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("adtn_prf_amt"), data, sizeof(data), 0);		// 추가증거금 값을 가져옵니다.
-		std::string additional_margin = data;
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("tdy_cash_amt"), data, sizeof(data), 0);		// 예탁금 값을 가져옵니다.
-		std::string balance = data;
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("dptam_blnc"), data, sizeof(data), 0);		// 예탁금잔액 값을 가져옵니다.
-		std::string entrust_deposit = data;
-		memset(data, 0x00, sizeof(data));
-		g_iYuantaAPI.YOA_GetTRFieldString(_T("860003"), _T("OutBlock2"), _T("whdr_psb_amt"), data, sizeof(data), 0);		// 인출가능액 값을 가져옵니다.
-		std::string withdrawable_amount = data;
-
-		account_asset["account_no"] = account_no;
-		account_asset["currency"] = currency;
-		account_asset["entrust_total"] = _ttof(entrust_total.c_str());
-		account_asset["balance"] = _ttof(balance.c_str());
-		account_asset["outstanding_deposit"] = 0;
-		account_asset["order_deposit"] = 0;
-		account_asset["entrust_deposit"] = _ttof(entrust_deposit.c_str());
-		account_asset["maintenance_margin"] = 0;
-		account_asset["settled_profit_loss"] = 0;
-		account_asset["fee"] = 0;
-		account_asset["open_profit_loss"] = 0;
-		account_asset["open_trust_total"] = 0;
-		account_asset["additional_margin"] = 0;
-		account_asset["order_margin"] = 0;
-
-		mainApp.AcntMgr()->on_account_asset(std::move(account_asset));
-	}
-
-	on_task_complete(req_info.request_id);
-
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//	유안타증권 Open API 출력코드 예제입니다.
-	//	[863007] 해외선물_매매현황예수금잔고 - 출력블록
-
-	//TCHAR data[1024] = { 0, };
-
+	nlohmann::json account_asset;
 	g_iYuantaAPI.YOA_SetTRInfo(_T("863007"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌식별번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
+	std::string account_no(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// 통화코드 값을 가져옵니다.
+	std::string currency = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("tdy_cash_amt"), data, sizeof(data), 0);		// 예탁금잔액 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_pl_amt"), data, sizeof(data), 0);		// 확정손익 값을 가져옵니다.
+	double entrust_total = _ttof(data);
+	double balance = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl_amt"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn_amt"), data, sizeof(data), 0);		// 수수료 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("pstn_opn_prfam"), data, sizeof(data), 0);		// 미결제증거금 값을 가져옵니다.
+	double outstanding_deposit = _ttof(data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_ord_opn_prf_amt"), data, sizeof(data), 0);		// 주문증거금 값을 가져옵니다.
+	double order_deposit = _ttof(data);
+
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("opn_prf_amt"), data, sizeof(data), 0);		// 위탁증거금 값을 가져옵니다.
+	double entrust_deposit = _ttof(data);
+
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("psv_prf_amt"), data, sizeof(data), 0);		// 유지증거금 값을 가져옵니다.
+	double maintenance_margin = _ttof(data);
+
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("adtn_prf_amt"), data, sizeof(data), 0);		// 추가증거금 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_pl_amt"), data, sizeof(data), 0);		// 확정손익 값을 가져옵니다.
+	double settled_profit_loss = _ttof(data);
+	
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("vrtl_exmo_amt"), data, sizeof(data), 0);		// 가환전금액 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetFieldString(_T("cmsn_amt"), data, sizeof(data), 0);		// 수수료 값을 가져옵니다.
+	double fee = _ttof(data);
+	
 	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_psb_amt"), data, sizeof(data), 0);		// 주문가능금액 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("whdr_psb_amt"), data, sizeof(data), 0);		// 인출가능금액 값을 가져옵니다.
+	g_iYuantaAPI.YOA_GetFieldString(_T("eval_pl_amt"), data, sizeof(data), 0);		// 평가손익 값을 가져옵니다.
+	double open_profit_loss = _ttof(data);
+	
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("pres_dptam"), data, sizeof(data), 0);		// 예탁자산평가액 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("deposit_limit"), data, sizeof(data), 0);		// 사후증거금한도 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_eval_pl_amt"), data, sizeof(data), 0);		// 정산미결제손익 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nsetl_cmsn_amt"), data, sizeof(data), 0);		// 정산미결제수수료 값을 가져옵니다.
+	double open_trust_total = _ttof(data);
 
+
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("adtn_prf_amt"), data, sizeof(data), 0);		// 추가증거금 값을 가져옵니다.
+	double additional_margin = _ttof(data);
+
+	memset(data, 0x00, sizeof(data));
+	g_iYuantaAPI.YOA_GetFieldString(_T("ord_psb_amt"), data, sizeof(data), 0);		// 주문가능금액 값을 가져옵니다.
+	double order_margin = _ttof(data);
+	
+	account_asset["account_no"] = account_no;
+	account_asset["currency"] = currency;
+	account_asset["entrust_total"] = entrust_total;
+	account_asset["balance"] = balance;
+	account_asset["outstanding_deposit"] = outstanding_deposit;
+	account_asset["order_deposit"] = order_deposit;
+	account_asset["entrust_deposit"] = entrust_deposit;
+	account_asset["maintenance_margin"] = maintenance_margin;
+	account_asset["settled_profit_loss"] = settled_profit_loss;
+	account_asset["fee"] = fee;
+	account_asset["open_profit_loss"] = open_profit_loss;
+	account_asset["open_trust_total"] = open_trust_total;
+	account_asset["additional_margin"] = additional_margin;
+	account_asset["order_margin"] = order_margin;
+
+	mainApp.AcntMgr()->on_account_asset(std::move(account_asset));
 }
 
 void YaClient::on_ab_account_profit_loss(const YA_REQ_INFO& req_info)
 {
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	유안타증권 Open API 출력코드 예제입니다.
-//	[861001] 해외선물_계좌별보유평가조회 - 출력블록
-
-	TCHAR data[1024] = { 0, };
-
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("list_cnt"), data, sizeof(data), 0);		// 총개수 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("next"), data, sizeof(data), 0);		// 다음버튼"1"일경우다음조회존재 값을 가져옵니다.
-
-	g_iYuantaAPI.YOA_SetTRInfo(_T("861001"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// 종목 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("stk_nm"), data, sizeof(data), 0);		// 종목명 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("sb_tp_cd"), data, sizeof(data), 0);		// 매매구분 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("avg_mth_prc"), data, sizeof(data), 0);		// 평균체결가 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opst_qty"), data, sizeof(data), 0);		// 미결제수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("clrn_psb_qty"), data, sizeof(data), 0);		// 청산가능수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crprc"), data, sizeof(data), 0);		// 현재가 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fut_eval_pl"), data, sizeof(data), 0);		// 선물평가손익 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_pl"), data, sizeof(data), 0);		// 옵션평가손익 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("opt_eval_amt"), data, sizeof(data), 0);		// 옵션평가금액 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("gnrt"), data, sizeof(data), 0);		// 수익률 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("crc_cd"), data, sizeof(data), 0);		// 통화코드 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_rsrv_qty"), data, sizeof(data), 0);		// 행사예약수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci_req_qty"), data, sizeof(data), 0);		// 행사신청수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("fnd_dt"), data, sizeof(data), 0);		// 최초통보일 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("std_dt"), data, sizeof(data), 0);		// 기준일자 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("nmth_qty"), data, sizeof(data), 0);		// 미체결수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("futr_tp"), data, sizeof(data), 0);		// 선물옵션구분 값을 가져옵니다.
+	
 }
 
 void YaClient::on_ab_accepted_order(const YA_REQ_INFO& req_info)
@@ -5217,51 +5124,68 @@ void YaClient::on_ab_accepted_order(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_SetTRInfo(_T("860005"), _T("OutBlock2"));			// TR정보(TR명, Block명)를 설정합니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), 0);		// 주문번호 값을 가져옵니다.
+	std::string order_no = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("lst_acnt_no"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("acnt_kor_nm"), data, sizeof(data), 0);		// 계좌명 값을 가져옵니다.
+	std::string account_no = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("stk_cd"), data, sizeof(data), 0);		// 종목 값을 가져옵니다.
+	std::string symbol_code = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_sb_tp"), data, sizeof(data), 0);		// 매매구분 값을 가져옵니다.
+	std::string position_type = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("ord_prc"), data, sizeof(data), 0);		// 주문가격 값을 가져옵니다.
+	std::string order_price = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("ord_qty"), data, sizeof(data), 0);		// 주문수량 값을 가져옵니다.
+	std::string order_amount = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("ord_rmqn"), data, sizeof(data), 0);		// 미체결수량 값을 가져옵니다.
+	std::string remain_count = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("mth_qty"), data, sizeof(data), 0);		// 체결수량 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("cond_prc"), data, sizeof(data), 0);		// STOP 가격 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_ord_tp_cd"), data, sizeof(data), 0);		// 전략구분 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("chnl_tp_cd"), data, sizeof(data), 0);		// 통신구분 값을 가져옵니다.
+	std::string filled_count = data;
+
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// 원주문번호 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("temp_dt"), data, sizeof(data), 0);		// 날짜 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("temp_time"), data, sizeof(data), 0);		// 시간 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("wrk_emp_nm"), data, sizeof(data), 0);		// 주문자 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("exci"), data, sizeof(data), 0);		// 행사 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("term"), data, sizeof(data), 0);		// 기간 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_end_dt"), data, sizeof(data), 0);		// 주문종료일 값을 가져옵니다.
+	std::string original_order_no = data;
+	std::string first_order_no = data;
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_akprc_tp_cd"), data, sizeof(data), 0);		// 주문구분 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_prc_cond_tp_cd"), data, sizeof(data), 0);		// 유형 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
-	g_iYuantaAPI.YOA_GetFieldString(_T("ord_dtm"), data, sizeof(data), 0);		// 주문일시 값을 가져옵니다.
 
+
+	nlohmann::json order_info;
+	order_info["order_event"] = OrderEvent::OE_Unfilled;
+	order_info["account_no"] = account_no;
+	order_info["order_no"] = order_no;
+	order_info["symbol_code"] = symbol_code;
+	order_info["order_price"] = order_price;
+	order_info["order_amount"] = _ttoi(order_amount.c_str());
+	order_info["position_type"] = static_cast<const char*>(position_type.c_str());
+	//order_info["price_type"] = static_cast<const char*>(strPriceType.Trim());
+	order_info["original_order_no"] = static_cast<const char*>(original_order_no.c_str());
+	order_info["first_order_no"] = static_cast<const char*>(first_order_no.c_str());
+	//order_info["order_type"] = static_cast<const char*>(strMan.Trim());
+	order_info["remain_count"] = _ttoi(remain_count.c_str());
+	order_info["cancelled_count"] = 0;
+	order_info["modified_count"] = 0;
+	order_info["filled_count"] = _ttoi(filled_count.c_str());
+	order_info["order_sequence"] = 1;
+	order_info["custom_info"] = "";
+	//order_info["order_date"] = static_cast<const char*>(strOrderDate.Trim());
+	//order_info["order_time"] = static_cast<const char*>(strOrderTime.Trim());
+
+	//order_info["filled_price"] = static_cast<const char*>(strFilledPrice.Trim());
+	//order_info["filled_amount"] = static_cast<const char*>(strFilledAmount.Trim());
+
+	//order_info["filled_date"] = static_cast<const char*>(strFilledDate.Trim());
+	//order_info["filled_time"] = static_cast<const char*>(strFilledTime.Trim());
+
+
+	mainApp.total_order_manager()->on_order_event(std::move(order_info));
 }
 
 void YaClient::on_ab_symbol_quote(const YA_REQ_INFO& req_info)
