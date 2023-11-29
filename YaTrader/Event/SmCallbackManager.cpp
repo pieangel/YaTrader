@@ -223,6 +223,7 @@ void DarkHorse::SmCallbackManager::OnFundChanged()
 
 void DarkHorse::SmCallbackManager::OnChartEvent(std::shared_ptr<DarkHorse::SmChartData> chart_data, const int& action)
 {
+	
 	if (!chart_data)
 		return;
 	for (auto it = _ChartMap.begin(); it != _ChartMap.end(); ++it) {
