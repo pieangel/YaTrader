@@ -199,7 +199,7 @@ namespace DarkHorse {
 		void on_dm_order_orderable(const YA_REQ_INFO& req_info);
 		void on_dm_asset(const YA_REQ_INFO& req_info);
 		void on_dm_provisional_settlement(const YA_REQ_INFO& req_info);
-		void on_dm_accepted(const YA_REQ_INFO& req_info);
+		void on_dm_accepted_order(const YA_REQ_INFO& req_info);
 		void on_dm_symbol_position(const YA_REQ_INFO& req_info);
 		void on_dm_daily_profit_loss(const YA_REQ_INFO& req_info);
 		void on_dm_liquidable_qty(const YA_REQ_INFO& req_info);
