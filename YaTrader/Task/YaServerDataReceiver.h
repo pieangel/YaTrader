@@ -67,7 +67,9 @@ namespace DarkHorse {
 		void start_dm_symbol_hoga();
 		void start_dm_symbol_quote();
 		void start_dm_option_month_quote();
+		void start_ab_trade_profit_loss();
 	private:
+		void make_ab_trade_profit_loss();
 		void register_realtime();
 		void make_dm_symbol_quote();
 		void make_dm_symbol_hoga();

@@ -41,7 +41,18 @@ enum class SERVER_REQ : int {
 	DM_OPTION_MONTH_QUOTE_KOSPI,
 	DM_OPTION_MONTH_QUOTE_MINI_KOSPI,
 	DM_OPTION_MONTH_QUOTE_WEEKLY,
-	DM_OPTION_MONTH_QUOTE_KOSDAQ
+	DM_OPTION_MONTH_QUOTE_KOSDAQ,
+	AB_ASSET,
+	AB_ACCOUNT_PROFIT_LOSS,
+	AB_SYMBOL_PROFIT_LOSS,
+	AB_ACCEPTED_ORDER,
+	AB_SYMBOL_QUOTE,
+	AB_SYMBOL_HOGA,
+	AB_SYMBOL_POSITION,
+	AB_TRADE_PROFIT_LOSS,
+	AB_ORDER_NEW,
+	AB_ORDER_MOD,
+	AB_ORDER_CANCEL
 };
 
 // enum class InfoType {
@@ -160,6 +171,12 @@ namespace DarkHorse {
 		int dm_commodity_sise(DhTaskArg arg);
 		int dm_commodity_hoga(DhTaskArg arg);
 		int dm_chart_n_min(DhTaskArg arg);
+
+
+		void new_order(const std::shared_ptr<OrderRequest>& order_req);
+		void change_order(const std::shared_ptr<OrderRequest>& order_req);
+		void cancel_order(const std::shared_ptr<OrderRequest>& order_req);
+
 		void dm_new_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_change_order(const std::shared_ptr<OrderRequest>& order_req);
 		void dm_cancel_order(const std::shared_ptr<OrderRequest>& order_req);
@@ -170,11 +187,12 @@ namespace DarkHorse {
 		/// <param name="req_info"></param>
 		int ab_account_asset(DhTaskArg arg);
 		int ab_account_profit_loss(DhTaskArg arg);
+		int ab_symbol_profit_loss(DhTaskArg arg);
 		int ab_accepted_order(DhTaskArg arg);
 		int ab_symbol_quote(DhTaskArg arg);
 		int ab_symbol_hoga(DhTaskArg arg);
 		int ab_symbol_position(DhTaskArg arg);
-		int ab_symbol_profit_loss(DhTaskArg arg);
+		int ab_trade_profit_loss(DhTaskArg arg);
 
 		void ab_new_order(const std::shared_ptr<OrderRequest>& order_req);
 		void ab_change_order(const std::shared_ptr<OrderRequest>& order_req);
@@ -188,6 +206,7 @@ namespace DarkHorse {
 		void on_ab_symbol_hoga(const YA_REQ_INFO& req_info);
 		void on_ab_symbol_position(const YA_REQ_INFO& req_info);
 		void on_ab_symbol_profit_loss(const YA_REQ_INFO& req_info);
+		void on_ab_trade_profit_loss(const YA_REQ_INFO& req_info);
 
 		void on_dm_option_month_quote(const YA_REQ_INFO& req_info);
 		void on_dm_option_month_quote_kospi_option(const YA_REQ_INFO& req_info);

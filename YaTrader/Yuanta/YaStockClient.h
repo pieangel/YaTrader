@@ -127,6 +127,7 @@ namespace DarkHorse {
 
 		int ab_symbol_hoga(DhTaskArg arg);
 		int ab_symbol_quote(DhTaskArg arg);
+		int ab_trade_profit_loss(DhTaskArg arg);
 	private:
 		int GetDomesticSymbolCode(task_arg&& arg);
 		bool _Enable{ true };

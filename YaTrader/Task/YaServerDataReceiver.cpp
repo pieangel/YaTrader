@@ -17,6 +17,7 @@
 #include "../Symbol/SmSymbolManager.h"
 #include "../Symbol/SmProduct.h"
 #include "../Symbol/SmProductYearMonth.h"
+#include "../Util/VtStringUtil.h"
 
 #include <set>
 
@@ -96,6 +97,9 @@ namespace DarkHorse {
 			break;
 		case DhTaskType::AbFilledDetail:
 			//mainApp.Client().GetAbFilledOrderDetail(arg);
+			break;
+		case DhTaskType::AbTradeProfitLoss:
+				mainApp.Client()->ab_trade_profit_loss(arg); // 포함. 
 			break;
 		default:
 			break;
@@ -300,7 +304,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_account_profit_loss()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
@@ -325,7 +329,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_dm_account_profit_loss()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("9", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
@@ -489,7 +493,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_dm_account_asset()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("9", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->skip_confirm()) continue;
@@ -513,7 +517,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_account_asset()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
@@ -525,6 +529,8 @@ namespace DarkHorse {
 			arg.task_type = DhTaskType::AbAccountAsset;
 			arg.parameter_map["account_no"] = account->No();
 			arg.parameter_map["password"] = account->Pwd();
+			arg.parameter_map["crc_cd"] = "USD";
+			arg.parameter_map["qry_tp"] = "F";
 
 			task_info_.argument_map[arg.argument_id] = arg;
 		}
@@ -591,7 +597,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_dm_accepted_order()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("9", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
@@ -615,7 +621,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_accepted_order()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
@@ -640,7 +646,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_symbol_position()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
@@ -665,7 +671,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_dm_symbol_position()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("9", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
@@ -687,6 +693,42 @@ namespace DarkHorse {
 		task_info_.task_type = DhTaskType::DmSymbolPosition;
 	}
 
+
+	void YaServerDataReceiver::make_ab_trade_profit_loss()
+	{
+		const std::map<int, std::shared_ptr<SmSymbol>>& ab_symbol_favorite = mainApp.SymMgr()->get_ab_favorite_map();
+		std::vector<std::shared_ptr<SmAccount>> account_vec;
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
+		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
+			std::shared_ptr<SmAccount> account = *it;
+			if (account->Type() != "9") continue;
+			if (account->skip_confirm()) continue;
+			if (account->is_subaccount()) continue;
+
+			for (auto it = ab_symbol_favorite.begin(); it != ab_symbol_favorite.end(); it++) {
+				DhTaskArg arg;
+				std::string description = account->No() + "::" + it->second->SymbolCode();
+				arg.detail_task_description = description;
+				arg.argument_id = YaServerDataReceiver::get_argument_id();
+				arg.task_type = DhTaskType::AbTradeProfitLoss;
+				arg.parameter_map["account_no"] = account->No();
+				arg.parameter_map["password"] = account->Pwd();
+				arg.parameter_map["symbol_code"] = it->second->SymbolCode();
+				arg.parameter_map["start_date"] = VtStringUtil::getCurentDate();
+				arg.parameter_map["end_date"] = VtStringUtil::getCurentDate();
+				arg.parameter_map["ftop_tp"] = "%";
+				arg.parameter_map["qty_tp"] = "1";
+				arg.parameter_map["prc_crc_cd"] = "USD";
+
+				task_info_.argument_map[arg.argument_id] = arg;
+			}
+		}
+
+		task_info_.task_title = "해외 매매손익을 가져오는 중입니다.";
+		task_info_.total_task_count = task_info_.argument_map.size();
+		task_info_.remain_task_count = task_info_.argument_map.size();
+		task_info_.task_type = DhTaskType::AbTradeProfitLoss;
+	}
 
 	void YaServerDataReceiver::register_realtime()
 	{
@@ -790,8 +832,13 @@ namespace DarkHorse {
 
 	void YaServerDataReceiver::register_account()
 	{
+		std::string account_type;
+		if (mainApp.mode == 0)
+			account_type = "9";
+		else
+			account_type = "1";
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector(account_type, account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			mainApp.Client()->RegisterAccount(account->No());
@@ -893,7 +940,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_symbol_profit_loss()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "1") continue;
@@ -917,7 +964,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_dm_symbol_profit_loss()
 	{
 		std::vector<std::shared_ptr<SmAccount>> account_vec;
-		mainApp.AcntMgr()->get_main_account_vector(account_vec);
+		mainApp.AcntMgr()->get_main_account_vector("9", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
 			if (account->Type() != "9") continue;
@@ -1053,6 +1100,12 @@ namespace DarkHorse {
 	void YaServerDataReceiver::start_dm_option_month_quote()
 	{
 		make_dm_option_month_quote();
+		((CMainFrame*)AfxGetMainWnd())->start_timer(100);
+	}
+
+	void YaServerDataReceiver::start_ab_trade_profit_loss()
+	{
+		make_ab_trade_profit_loss();
 		((CMainFrame*)AfxGetMainWnd())->start_timer(100);
 	}
 

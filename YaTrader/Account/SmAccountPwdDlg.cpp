@@ -122,8 +122,14 @@ BOOL SmAccountPwdDlg::OnInitDialog()
 	
 	std::vector<std::shared_ptr<SmAccount>> main_acnt_vector;
 	const int nColumns = m_wndGrid.GetColumnCount();
-
-	mainApp.AcntMgr()->get_main_account_vector(main_acnt_vector);
+	std::string account_type;
+	// for domestic server
+	if (mainApp.mode == 0)
+		account_type = "9";
+	else
+		account_type = "1";
+	
+	mainApp.AcntMgr()->get_main_account_vector(account_type, main_acnt_vector);
 
 	mainApp.SaveMgr()->LoadAccountPasswords();
 
@@ -132,11 +138,6 @@ BOOL SmAccountPwdDlg::OnInitDialog()
 		auto account = *it;
 		if (account->is_subaccount()) continue;
 		const int server_index = mainApp.LoginMgr()->ya_server_index();
-
-		// for domestic server
-		if (mainApp.mode == 0 && account->Type() == "1") continue;
-		// for abroad server
-		if (mainApp.mode == 1 && account->Type() == "9") continue;
 		// Create new row:
 		CBCGPGridRow* pRow = m_wndGrid.CreateRow(nColumns);
 		// Set each column data:
@@ -293,6 +294,7 @@ void SmAccountPwdDlg::OnTimer(UINT_PTR nIDEvent)
 		arg.task_type = DhTaskType::DmAccountAsset;
 		arg.parameter_map["account_no"] = account->No();
 		arg.parameter_map["password"] = account->Pwd();
+		arg.parameter_map["account_type"] = account->Type();
 		mainApp.Client()->confirm_account_password(arg);
 		_ReqQ.pop_front();
 	}

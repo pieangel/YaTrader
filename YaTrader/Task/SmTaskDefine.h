@@ -45,6 +45,7 @@ enum class DhTaskType
 	AbFilledOrderList, // 해외 체결 주문
 	AbFilledDetail, // 해외 체결 주문
 	AbSymbolMasterFileDownload, // 심볼 마스터 파일 다운로드
+	AbTradeProfitLoss, // 해외 선물 옵션 매매 손익
 
 	DmSymbolQuote, // 국내 종목 시세
 	DmSymbolHoga, // 국내 종목 호가
