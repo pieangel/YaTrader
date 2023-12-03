@@ -784,12 +784,17 @@ void SmSymbolManager::InitFavoriteProduct()
 	//favorite = mainApp.ConfigMgr().getString(section, name);
 	if (favorite.length() == 0) {
 		_FavoriteProduct.insert("HSI");
+		_FavoriteProduct.insert("SFC");
+		_FavoriteProduct.insert("MHI");
+		_FavoriteProduct.insert("CES");
+		/*
 		_FavoriteProduct.insert("CL");
 		_FavoriteProduct.insert("MNQ");
 		_FavoriteProduct.insert("CN");
 		_FavoriteProduct.insert("GC");
 		_FavoriteProduct.insert("NKD");
 		_FavoriteProduct.insert("NQ");
+		*/
 	}
 }
 

@@ -178,18 +178,18 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::AbSymbolHoga:
 		{
-			start_ab_account_asset();
+			start_ab_symbol_profit_loss();
 		}
 		break;
 
 		case DhTaskType::AbAccountAsset:
 		{
-			start_ab_accepted_order();
+			start_ab_symbol_quote();
 		}
 		break;
 		case DhTaskType::AbAcceptedOrderList:
 		{
-			start_dm_accepted_order();
+			start_ab_symbol_position();
 		}
 		break;
 		case DhTaskType::DmAcceptedOrderList:
@@ -202,7 +202,11 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::AbSymbolPosition:
 		{
-			start_dm_symbol_position();
+			//start_dm_symbol_position();
+			register_realtime();
+
+			server_data_receive_on_ = false;
+			end_all_task();
 		}
 		break;
 		case DhTaskType::DmSymbolPosition:
@@ -218,7 +222,7 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::AbSymbolProfitLoss:
 		{
-			start_dm_symbol_profit_loss();
+			start_ab_accepted_order();
 		}
 		break;
 		case DhTaskType::DmSymbolProfitLoss:
@@ -633,6 +637,8 @@ namespace DarkHorse {
 			arg.task_type = DhTaskType::AbAcceptedOrderList;
 			arg.parameter_map["account_no"] = account->No();
 			arg.parameter_map["password"] = account->Pwd();
+			arg.parameter_map["start_date"] = VtStringUtil::getCurentDate();
+			arg.parameter_map["end_date"] = VtStringUtil::getCurentDate();
 
 			task_info_.argument_map[arg.argument_id] = arg;
 		}

@@ -47,13 +47,13 @@ namespace DarkHorse {
 		}
 		std::shared_ptr<VtProgressDlg> progress_dialog() const { return progress_dialog_; }
 		void progress_dialog(std::shared_ptr<VtProgressDlg> val) { progress_dialog_ = val; }
-
+		void start_dm_account_asset();
+		void start_ab_account_asset();
+	private:
 		void start_dm_symbol_master_file_download();
 		void start_ab_symbol_master_file_download();
 		void start_ab_symbol_master();
 		void start_dm_symbol_master();
-		void start_dm_account_asset();
-		void start_ab_account_asset();
 		void start_ab_account_profit_loss();
 		void start_dm_account_profit_loss();
 		void start_dm_accepted_order();
@@ -68,7 +68,7 @@ namespace DarkHorse {
 		void start_dm_symbol_quote();
 		void start_dm_option_month_quote();
 		void start_ab_trade_profit_loss();
-	private:
+
 		void make_ab_trade_profit_loss();
 		void register_realtime();
 		void make_dm_symbol_quote();

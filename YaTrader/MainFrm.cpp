@@ -834,7 +834,7 @@ void CMainFrame::StartDataRequest()
 	if (mainApp.mode == 0)
 		mainApp.ya_server_data_receiver()->start_dm_account_asset();
 	else
-		mainApp.ya_server_data_receiver()->start_ab_symbol_quote();
+		mainApp.ya_server_data_receiver()->start_ab_account_asset();
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)

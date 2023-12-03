@@ -291,7 +291,16 @@ void SmAccountPwdDlg::OnTimer(UINT_PTR nIDEvent)
 		DhTaskArg arg;
 		arg.detail_task_description = account->No();
 		arg.argument_id = YaServerDataReceiver::get_argument_id();
-		arg.task_type = DhTaskType::DmAccountAsset;
+		if (mainApp.mode == 0) {
+			arg.task_type = DhTaskType::DmAccountAsset;
+			arg.parameter_map["crc_cd"] = "KRW";
+			arg.parameter_map["qry_tp"] = "%";
+		}
+		else {
+			arg.task_type = DhTaskType::AbAccountAsset;
+			arg.parameter_map["crc_cd"] = "USD";
+			arg.parameter_map["qry_tp"] = "%";
+		}
 		arg.parameter_map["account_no"] = account->No();
 		arg.parameter_map["password"] = account->Pwd();
 		arg.parameter_map["account_type"] = account->Type();

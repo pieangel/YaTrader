@@ -42,7 +42,7 @@ enum class SERVER_REQ : int {
 	DM_OPTION_MONTH_QUOTE_MINI_KOSPI,
 	DM_OPTION_MONTH_QUOTE_WEEKLY,
 	DM_OPTION_MONTH_QUOTE_KOSDAQ,
-	AB_ASSET,
+	AB_ACCOUNT_ASSET,
 	AB_ACCOUNT_PROFIT_LOSS,
 	AB_SYMBOL_PROFIT_LOSS,
 	AB_ACCEPTED_ORDER,
@@ -237,10 +237,18 @@ namespace DarkHorse {
 		void on_dm_change_order(const YA_REQ_INFO& req_info);
 		void on_dm_cancel_order(const YA_REQ_INFO& req_info);
 
-		void on_realtime_order();
-		void on_realtime_quote();
-		void on_realtime_hoga();
-		void on_realtime_accepted_count();
+		void on_ab_order_new(const YA_REQ_INFO& req_info);
+		void on_ab_order_mod(const YA_REQ_INFO& req_info);
+		void on_ab_order_cancel(const YA_REQ_INFO& req_info);
+
+		void on_dm_realtime_order();
+		void on_dm_realtime_quote();
+		void on_dm_realtime_hoga();
+		void on_dm_realtime_accepted_count();
+
+		void on_ab_realtime_order();
+		void on_ab_realtime_quote();
+		void on_ab_realtime_hoga();
 
 		// WPARAM wParam, LPARAM lParam
 		virtual BOOL OnInitDialog();
