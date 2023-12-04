@@ -5561,14 +5561,18 @@ void YaClient::on_ab_symbol_quote(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("remainday"), data, sizeof(data), 0);		// 잔존일수 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("expirysettlement"), data, sizeof(data), 0);		// 만기결재방식 값을 가져옵니다.
-	memset(data, 0x00, sizeof(data));
+ 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("tradeyn"), data, sizeof(data), 0);		// 거래여부 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("contractsize"), data, sizeof(data), 0);		// 계약크기 값을 가져옵니다.
+	symbol->CtrtSize(_ttof(data));
+	symbol->seung_su(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("ticksize"), data, sizeof(data), 0);		// 틱사이즈 값을 가져옵니다.
+	symbol->TickSize(_ttof(data));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("tickvalue"), data, sizeof(data), 0);		// 틱가치 값을 가져옵니다.
+	symbol->TickValue(_ttof(data));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("opentime"), data, sizeof(data), 0);		// 장개시 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
@@ -5581,6 +5585,7 @@ void YaClient::on_ab_symbol_quote(const YA_REQ_INFO& req_info)
 	g_iYuantaAPI.YOA_GetFieldString(_T("marginrate2"), data, sizeof(data), 0);		// 단위증거금 값을 가져옵니다.
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("pointsize"), data, sizeof(data), 0);		// 소수점크기 값을 가져옵니다.
+	symbol->decimal(_ttoi(data));
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("dispscale"), data, sizeof(data), 0);		// 표시진법 값을 가져옵니다.
 
