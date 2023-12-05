@@ -505,7 +505,7 @@ void SmSymbolReader::read_abroad_symbol_file(const std::string& fullPath)
 			std::string recode_gubun = line.substr(0, 2); // 레코드 구분
 
 			std::string symbol_code = line.substr(2, 32); // 종목코드
-			LOGINFO(CMyLogger::getInstance(), "symbol_code : %s", symbol_code.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "symbol_code : %s", symbol_code.c_str());
 
 			std::string symbol_name_kr = line.substr(34, 50); // 종목명
 			std::string symbol_name_en = line.substr(34, 50); // 종목명

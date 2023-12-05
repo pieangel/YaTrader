@@ -196,6 +196,7 @@ namespace DarkHorse {
 		{
 			register_realtime();
 
+
 			server_data_receive_on_ = false;
 			end_all_task();
 		}
@@ -203,7 +204,9 @@ namespace DarkHorse {
 		case DhTaskType::AbSymbolPosition:
 		{
 			//start_dm_symbol_position();
-			register_realtime();
+
+			register_ab_symbol();
+			register_account();
 
 			server_data_receive_on_ = false;
 			end_all_task();
@@ -847,7 +850,18 @@ namespace DarkHorse {
 		mainApp.AcntMgr()->get_main_account_vector(account_type, account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
-			mainApp.Client()->RegisterAccount(account->No());
+			if (account_type == "9")
+				mainApp.Client()->RegisterAccount(account->No());
+			else if (account_type == "1")
+				mainApp.Client()->RegisterAbAccount(account->No());
+		}
+	}
+
+	void YaServerDataReceiver::register_ab_symbol()
+	{
+		const std::map<int, std::shared_ptr<SmSymbol>>& ab_symbol_favorite = mainApp.SymMgr()->get_ab_favorite_map();
+		for (auto it = ab_symbol_favorite.begin(); it != ab_symbol_favorite.end(); it++) {
+			mainApp.Client()->RegisterAbSymbol(it->second->SymbolCode());
 		}
 	}
 

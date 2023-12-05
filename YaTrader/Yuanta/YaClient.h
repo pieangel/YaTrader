@@ -138,10 +138,16 @@ namespace DarkHorse {
 		void start_timer();
 		void stop_timer();
 	public:
-		int register_symbol(const std::string& symbol_code);
-		int unregister_symbol(const std::string& symbol_code);
-		int register_account(const std::string& account_no);
-		int unregister_account(const std::string& account_no);
+		int register_dm_symbol(const std::string& symbol_code);
+		int unregister_dm_symbol(const std::string& symbol_code);
+		int register_dm_account(const std::string& account_no);
+		int unregister_dm_account(const std::string& account_no);
+
+		int register_ab_symbol(const std::string& symbol_code);
+		int unregister_ab_symbol(const std::string& symbol_code);
+		int register_ab_account(const std::string& account_no);
+		int unregister_ab_account(const std::string& account_no);
+
 		int dm_symbol_quote(DhTaskArg arg);
 		int dm_symbol_hoga(DhTaskArg arg);
 		int confirm_account_password(DhTaskArg arg);

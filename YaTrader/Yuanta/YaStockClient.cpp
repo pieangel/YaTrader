@@ -247,6 +247,16 @@ void YaStockClient::dm_cancel_order(order_request_p order_req)
 	//_ViCtrol->cancel_order(order_req);
 }
 
+void YaStockClient::RegisterAbAccount(const std::string& account_no)
+{
+	_ViCtrol->register_ab_account(account_no);
+}
+
+void YaStockClient::UnregisterAbAccount(const std::string& account_no)
+{
+	_ViCtrol->unregister_ab_account(account_no);
+}
+
 void DarkHorse::YaStockClient::NewOrder(const std::shared_ptr<SmOrderRequest>& order_req)
 {
 	if (_TestMode) SendOrderAcceptedData(order_req);
@@ -276,22 +286,32 @@ void DarkHorse::YaStockClient::CancelOrder(const std::shared_ptr<SmOrderRequest>
 
 void DarkHorse::YaStockClient::RegisterSymbol(const std::string& symbol_code)
 {
-	_ViCtrol->register_symbol(symbol_code);
+	_ViCtrol->register_dm_symbol(symbol_code);
 }
 
 void DarkHorse::YaStockClient::UnregisterSymbol(const std::string& symbol_code)
 {
-	_ViCtrol->unregister_symbol(symbol_code);
+	_ViCtrol->unregister_dm_symbol(symbol_code);
 }
 
 void DarkHorse::YaStockClient::RegisterAccount(const std::string& account_no)
 {
-	_ViCtrol->register_account(account_no);
+	_ViCtrol->register_dm_account(account_no);
+}
+
+void YaStockClient::UnregisterAbSymbol(const std::string& symbol_code)
+{
+	_ViCtrol->unregister_ab_symbol(symbol_code);
+}
+
+void YaStockClient::RegisterAbSymbol(const std::string& symbol_code)
+{
+	_ViCtrol->register_ab_symbol(symbol_code);
 }
 
 void YaStockClient::UnregisterAccount(const std::string& account_no)
 {
-	_ViCtrol->unregister_account(account_no);
+	_ViCtrol->unregister_dm_account(account_no);
 }
 
 void DarkHorse::YaStockClient::SendOrderAcceptedData(const std::shared_ptr<SmOrderRequest>& order_req)
