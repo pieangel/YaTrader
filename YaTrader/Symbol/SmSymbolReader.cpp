@@ -592,27 +592,27 @@ void SmSymbolReader::read_abroad_symbol_file(const std::string& fullPath)
 			symbol->MarketName(product->MarketName());
 			symbol->SymbolNameKr(symbol_name_kr);
 			symbol->SymbolNameEn(symbol_name_en);
-			LOGINFO(CMyLogger::getInstance(), "symbol_name_kr : %s", symbol_name_kr.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "symbol_name_kr : %s", symbol_name_kr.c_str());
 			symbol->symbol_type(SymbolType::Abroad);
 			// 소수점
 			symbol->decimal(std::stoi(decimal));
-			LOGINFO(CMyLogger::getInstance(), "decimal : %s", decimal.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "decimal : %s", decimal.c_str());
 			// 숭수
 			symbol->seung_su(std::stoi(crc_cvrt_dt));
-			LOGINFO(CMyLogger::getInstance(), "crc_cvrt_dt : %s", crc_cvrt_dt.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "crc_cvrt_dt : %s", crc_cvrt_dt.c_str());
 			// 계약 크기
 			symbol->CtrtSize(std::stod(contract_size));
-			LOGINFO(CMyLogger::getInstance(), "contract_size : %s", contract_size.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "contract_size : %s", contract_size.c_str());
 			// 틱 가치
 			symbol->TickValue(std::stod(tick_value));
-			LOGINFO(CMyLogger::getInstance(), "tick_value : %s", tick_value.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "tick_value : %s", tick_value.c_str());
 			// 틱 크기
 			symbol->TickSize(std::stod(tick_size));
-			LOGINFO(CMyLogger::getInstance(), "tick_size : %s", tick_size.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "tick_size : %s", tick_size.c_str());
 			// 정수 틱 크기를 계산하여 넣어 준다.
 			//symbol->intTickSize = (int)(sym->TickSize * std::pow(10, sym->Decimal));
 			symbol->ExpireDate(last_date);
-			LOGINFO(CMyLogger::getInstance(), "last_date : %s", last_date.c_str());
+			//LOGINFO(CMyLogger::getInstance(), "last_date : %s", last_date.c_str());
 			symbol->PreDayVolume(0);
 		}
 	}

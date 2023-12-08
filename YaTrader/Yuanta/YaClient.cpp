@@ -5102,7 +5102,7 @@ void YaClient::ab_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	//	유안타증권 Open API 입력코드 예제입니다.
 	//	[850001] 해외선물_신규주문 - 입력블록
 
-	g_iYuantaAPI.YOA_SetTRInfo(_T("850001"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
+	//g_iYuantaAPI.YOA_SetTRInfo(_T("850001"), _T("InBlock1"));			// TR정보(TR명, Block명)를 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850001"), _T("InBlock1"), _T("usr_tp"), _T("0"), 0);		// 사용자구분 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850001"), _T("InBlock1"), _T("acnt_aid"), order_req->account_no.c_str(), 0);		// 계좌번호 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850001"), _T("InBlock1"), _T("acnt_pwsd"), order_req->password.c_str(), 0);		// 계좌비밀번호 값을 설정합니다.
@@ -5138,7 +5138,7 @@ void YaClient::ab_new_order(const std::shared_ptr<OrderRequest>& order_req)
 	{
 		CString strMsg;
 		strMsg.Format(_T("[ReqID:%d] 해외선물 신규주문 요청하였습니다."), req_id);
-		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], Request : %s", trade_code.c_str(), strMsg);
+		LOGINFO(CMyLogger::getInstance(), "Trade Code[%s], reg_id[%d], Request : %s", trade_code.c_str(), req_id, strMsg);
 		//request_map_[req_id] = arg;
 		ya_request_map_[req_id] = req_info;
 	}
@@ -6331,7 +6331,7 @@ int YaClient::unregister_ab_symbol(const std::string& symbol_code)
 
 	if (RESULT_SUCCESS == nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[61]국내 선물 옵션 실시간체결이 해제 되었습니다."));
+		LOGINFO(CMyLogger::getInstance(), _T("[61]해외 선물 옵션 종목[%s] 실시간체결이 해제 되었습니다."), symbol_code.c_str());
 	}
 	else
 	{
@@ -6345,7 +6345,7 @@ int YaClient::unregister_ab_symbol(const std::string& symbol_code)
 
 	if (RESULT_SUCCESS == nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[61]국내 선물 옵션 실시간체결이 해제 되었습니다."));
+		LOGINFO(CMyLogger::getInstance(), _T("[62]해외 선물 옵션 종목[%s] 실시간체결이 해제 되었습니다."), symbol_code.c_str());
 	}
 	else
 	{
@@ -6364,7 +6364,7 @@ int YaClient::register_ab_account(const std::string& account_no)
 
 	if (ERROR_MAX_CODE < nResult)
 	{
-		//LOGINFO(CMyLogger::getInstance(), _T("[71]국내 선물옵션 주문확인_체결 실시간체결이 등록 되었습니다."));
+		LOGINFO(CMyLogger::getInstance(), _T("[81]해외 선물옵션 주문확인_체결 계좌[%s] 실시간체결이 등록 되었습니다."), account_no.c_str());
 		return 1;
 	}
 	else
@@ -6384,7 +6384,7 @@ int YaClient::unregister_ab_account(const std::string& account_no)
 
 	if (RESULT_SUCCESS == nResult)
 	{
-		LOGINFO(CMyLogger::getInstance(), _T("[71]국내 선물 옵션 실시간체결이 해제 되었습니다."));
+		LOGINFO(CMyLogger::getInstance(), _T("[81]해외 선물 옵션 실시간체결이 해제 되었습니다."));
 	}
 	else
 	{
