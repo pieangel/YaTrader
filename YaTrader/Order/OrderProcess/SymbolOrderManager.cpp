@@ -51,7 +51,10 @@ DarkHorse::OrderBackGround SymbolOrderManager::get_order_background(const int po
 void SymbolOrderManager::on_order_accepted(order_p order, OrderEvent order_event)
 {
 	order->order_state = SmOrderState::Accepted;
-	if (order->order_type == SmOrderType::Modify) {
+	if (order->order_type == SmOrderType::New) {
+		add_accepted_order(order);
+	}
+	else if (order->order_type == SmOrderType::Modify) {
 		add_accepted_order(order);
 		remove_accepted_order(order->original_order_no);
 	}

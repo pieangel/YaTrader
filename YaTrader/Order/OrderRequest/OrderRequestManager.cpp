@@ -10,6 +10,10 @@
 #include "../OrderProcess/OrderProcessor.h"
 #include "../../Client/ViClient.h"
 #include "../../Util/VtStringUtil.h"
+#include "../../Order/OrderProcess/TotalOrderManager.h"
+#include "../../Quote/SmQuoteManager.h"
+#include "../../Quote/SmQuote.h"
+#include "../../Account/SmAccountManager.h"
 
 namespace DarkHorse {
 int OrderRequestManager::id_ = 0;
@@ -70,7 +74,7 @@ bool OrderRequestManager::handle_order_request(order_request_p order_request)
 {
 	if (!order_request) return false;
 
-	if (simulation_) { handle_order_simulation(order_request); return true; }
+	if (simulation_) { handle_order_simulation_ya(order_request); return true; }
 
 	switch (order_request->order_type) {
 	case SmOrderType::New: mainApp.Client()->NewOrder(order_request); break;
@@ -110,6 +114,18 @@ bool OrderRequestManager::handle_order_simulation(order_request_p order_request)
 	case SmOrderType::Modify: on_change_order(order_request); break;
 	case SmOrderType::Cancel: on_cancel_order(order_request); break;
 	}
+	return true;
+}
+
+bool OrderRequestManager::handle_order_simulation_ya(order_request_p order_request)
+{
+	if (!order_request) return false;
+
+	//auto account = mainApp.AcntMgr()->FindAccount(order_request->account_no);
+
+	ya_make_ab_accepted_order_event(order_request);
+	ya_make_ab_filled_order_event(order_request);
+	
 	return true;
 }
 
@@ -577,6 +593,96 @@ void OrderRequestManager::ab_make_new_order_event(order_request_p order_request)
 	order_info2["custom_info"] = user_defined_string;
 
 	mainApp.order_processor()->add_order_event(std::move(order_info2));
+}
+
+void OrderRequestManager::ya_make_ab_accepted_order_event(order_request_p order_request)
+{
+	nlohmann::json order_info;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//	유안타증권 Open API 출력코드 예제입니다.
+	//	[81] FF_REAL_F7 - 출력블록
+
+	order_info["order_event"] = OrderEvent::OE_Accepted;
+	order_info["account_no"] = order_request->account_no;
+	std::string symbol_code = order_request->symbol_code;
+	order_info["symbol_code"] = symbol_code;
+	order_info["order_type"] = "1";
+	order_info["order_time"] = "20231201";
+	order_info["order_date"] = "20231212";
+	const std::string order_no = std::to_string(get_order_no());
+	order_info["order_no"] = order_no;
+	order_info["original_order_no"] = order_no;
+	order_info["first_order_no"] = order_no;
+	if (order_request->position_type == SmPositionType::Buy) order_info["position_type"] = "1";
+	else order_info["position_type"] = "2";
+	order_info["order_price"] = order_request->order_price;
+	order_info["order_amount"] = order_request->order_amount;
+	const int filled_count = 0;
+	order_info["filled_count"] = filled_count;
+
+	order_info["filled_price"] = order_request->order_price;
+	order_info["filled_time"] = "20231202";
+
+	order_info["remain_count"] = order_request->order_amount;
+	order_info["cancelled_count"] = 0;
+	order_info["modified_count"] = 0;
+
+	order_info["order_sequence"] = 1;
+	order_info["custom_info"] = "";
+
+	
+
+	mainApp.total_order_manager()->on_order_event(std::move(order_info));
+}
+
+void OrderRequestManager::ya_make_ab_filled_order_event(order_request_p order_request)
+{
+
+	auto quote_p = mainApp.QuoteMgr()->find_quote(order_request->symbol_code);
+	if (!quote_p) return;
+
+	if ((order_request->position_type == SmPositionType::Buy && quote_p->close > order_request->order_price) ||
+		(order_request->position_type != SmPositionType::Buy && quote_p->close < order_request->order_price)) {
+		return;
+	}
+
+	nlohmann::json order_info;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//	유안타증권 Open API 출력코드 예제입니다.
+	//	[81] FF_REAL_F7 - 출력블록
+
+	order_info["order_event"] = OrderEvent::OE_Filled;
+	order_info["account_no"] = order_request->account_no;
+	std::string symbol_code = order_request->symbol_code;
+	order_info["symbol_code"] = symbol_code;
+	order_info["order_type"] = "1";
+	order_info["order_time"] = "20231201";
+	order_info["order_date"] = "20231212";
+	const std::string order_no = std::to_string(get_order_no());
+	order_info["order_no"] = order_no;
+	order_info["original_order_no"] = order_no;
+	order_info["first_order_no"] = order_no;
+	if (order_request->position_type == SmPositionType::Buy) order_info["position_type"] = "1";
+	else order_info["position_type"] = "2";
+	order_info["order_price"] = order_request->order_price;
+	order_info["order_amount"] = order_request->order_amount;
+	const int filled_count = order_request->order_amount;
+	order_info["filled_count"] = filled_count;
+
+	order_info["filled_price"] = order_request->order_price;
+	order_info["filled_time"] = "20231202";
+	order_info["filled_date"] = "20231202";
+
+	order_info["remain_count"] = 0;
+	order_info["cancelled_count"] = 0;
+	order_info["modified_count"] = 0;
+
+	order_info["order_sequence"] = 1;
+	order_info["custom_info"] = "";
+
+
+
+	mainApp.total_order_manager()->on_order_event(std::move(order_info));
 }
 
 void OrderRequestManager::ab_make_change_order_event(order_request_p order_request)

@@ -203,15 +203,24 @@ namespace DarkHorse {
 		break;
 		case DhTaskType::AbSymbolPosition:
 		{
-			//start_dm_symbol_position();
+			start_ab_trade_profit_loss();
+			/*
+			register_ab_symbol();
+			register_account();
 
+			server_data_receive_on_ = false;
+			end_all_task();
+			*/
+		}
+		break;
+		case DhTaskType::AbTradeProfitLoss:
+		{
 			register_ab_symbol();
 			register_account();
 
 			server_data_receive_on_ = false;
 			end_all_task();
 		}
-		break;
 		case DhTaskType::DmSymbolPosition:
 		{
 			start_dm_account_profit_loss();
@@ -710,7 +719,7 @@ namespace DarkHorse {
 		mainApp.AcntMgr()->get_main_account_vector("1", account_vec);
 		for (auto it = account_vec.begin(); it != account_vec.end(); it++) {
 			std::shared_ptr<SmAccount> account = *it;
-			if (account->Type() != "9") continue;
+			if (account->Type() != "1") continue;
 			if (account->skip_confirm()) continue;
 			if (account->is_subaccount()) continue;
 
@@ -725,7 +734,7 @@ namespace DarkHorse {
 				arg.parameter_map["symbol_code"] = it->second->SymbolCode();
 				arg.parameter_map["start_date"] = VtStringUtil::getCurentDate();
 				arg.parameter_map["end_date"] = VtStringUtil::getCurentDate();
-				arg.parameter_map["ftop_tp"] = "%";
+				arg.parameter_map["ftop_tp"] = "%%";
 				arg.parameter_map["qty_tp"] = "1";
 				arg.parameter_map["prc_crc_cd"] = "USD";
 

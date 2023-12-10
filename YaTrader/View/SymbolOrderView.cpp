@@ -1599,7 +1599,7 @@ int SymbolOrderView::find_zero_value_row()
 
 int SymbolOrderView::find_row(const int value)
 {
-	if (!product_control_ || price_to_row_.size() == 0)
+	if (value == 0|| !product_control_ || price_to_row_.size() == 0)
 		return 0;
 	auto it = price_to_row_.find(value);
 	if (it != price_to_row_.end()) { // 값이 보이는 범위 안에 있을 때

@@ -130,6 +130,7 @@ namespace DarkHorse {
 		bool handle_order_request(std::array<order_request_p, BulkOrderRequestSize>& arr, int taken);
 		bool handle_order_request(order_request_p order_request);
 		bool handle_order_simulation(order_request_p order_request);
+		bool handle_order_simulation_ya(order_request_p order_request);
 		order_request_p make_dummy_order_request();
 		void add_order_request_map(order_request_p order_request);
 		bool simulation_{ false };
@@ -139,6 +140,10 @@ namespace DarkHorse {
 		void dm_make_cancel_order_event(order_request_p order_request);
 		void dm_make_filled_order_event(order_request_p order_request);
 		void ab_make_new_order_event(order_request_p order_request);
+
+		void ya_make_ab_accepted_order_event(order_request_p order_request);
+		void ya_make_ab_filled_order_event(order_request_p order_request);
+
 		void ab_make_change_order_event(order_request_p order_request);
 		void ab_make_cancel_order_event(order_request_p order_request);
 		void ab_make_filled_order_event(order_request_p order_request);
