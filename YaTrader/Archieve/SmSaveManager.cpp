@@ -2218,9 +2218,9 @@ namespace DarkHorse {
 				start_time_end_t.sec = seconds;
 
 				std::string end_time = out_system_data["end_time"];
-				hours_str = start_time_end.substr(0, 2);
-				minutes_str = start_time_end.substr(2, 2);
-				seconds_str = start_time_end.substr(4, 2);
+				hours_str = end_time.substr(0, 2);
+				minutes_str = end_time.substr(2, 2);
+				seconds_str = end_time.substr(4, 2);
 
 				// Converting string to integers
 				hours = std::stoi(hours_str);

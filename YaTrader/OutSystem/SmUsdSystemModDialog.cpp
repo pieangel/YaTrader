@@ -112,13 +112,15 @@ void SmUsdSystemModDialog::set_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem
 	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
 	_DpEntBegin.SetTime(NewDate);
 
+	COleDateTime NewDate2;
 	esTime = usd_system->start_time_end();
-	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
-	_DpEntEnd.SetTime(NewDate);
+	NewDate2.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
+	_DpEntEnd.SetTime(NewDate2);
 
+	COleDateTime NewDate3;
 	esTime = usd_system->end_time();
-	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
-	_DpLiq.SetTime(NewDate);
+	NewDate3.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
+	_DpLiq.SetTime(NewDate3);
 
 
 	DarkHorse::SmUsdStrategy usd_strategy = usd_system->strategy();
@@ -153,19 +155,21 @@ void SmUsdSystemModDialog::OnBnClickedBtnMod()
 
 	usd_system_->start_time_begin(startTime);
 
-	_DpEntEnd.GetTime(esTime);
+	CTime esTime2;
+	_DpEntEnd.GetTime(esTime2);
 	VtTime endTime;//
-	endTime.hour = esTime.GetHour();
-	endTime.min = esTime.GetMinute();
-	endTime.sec = esTime.GetSecond();
+	endTime.hour = esTime2.GetHour();
+	endTime.min = esTime2.GetMinute();
+	endTime.sec = esTime2.GetSecond();
 
 	usd_system_->start_time_end(endTime);
 
-	_DpLiq.GetTime(esTime);
+	CTime esTime3;
+	_DpLiq.GetTime(esTime3);
 	VtTime ligTime; //
-	ligTime.hour = esTime.GetHour();
-	ligTime.min = esTime.GetMinute();
-	ligTime.sec = esTime.GetSecond();
+	ligTime.hour = esTime3.GetHour();
+	ligTime.min = esTime3.GetMinute();
+	ligTime.sec = esTime3.GetSecond();
 
 	usd_system_->end_time(ligTime);
 
