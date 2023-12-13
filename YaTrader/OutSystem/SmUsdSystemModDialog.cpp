@@ -23,6 +23,8 @@
 #include "../Util/IdGenerator.h"
 #include "../Util/VtTime.h"
 #include "../OutSystem/SmUsdSystem.h"
+#include "../Global/SmTotalManager.h"
+#include "../Archieve/SmSaveManager.h"
 // SmUsdSystemModDialog dialog
 using namespace DarkHorse;
 
@@ -81,7 +83,7 @@ BOOL SmUsdSystemModDialog::OnInitDialog()
 	_LiqGrid.AttachGrid(this, IDC_STATIC_LIQ_GRID);
 
 	_EditEntMax.SetWindowText("0");
-	set_usd_system(usd_system_);
+	set_usd_system();
 	InitCombo();
 	InitUsdStrategyCombo();
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -98,36 +100,40 @@ void SmUsdSystemModDialog::InitUsdStrategyCombo()
 
 }
 
-void SmUsdSystemModDialog::set_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> usd_system)
+void SmUsdSystemModDialog::set_usd_system()
 {
-	if (!usd_system) return;
+	if (!usd_system_) return;
+
+	CString title;
+	title.Format(_T("USD 시스템 수정 - %s"), usd_system_->name().c_str());
+	SetWindowText(title);
 
 	CString orderLimitCount;
-	orderLimitCount.Format("%d", usd_system->order_limit_count());
+	orderLimitCount.Format("%d", usd_system_->order_limit_count());
 	_EditEntMax.SetWindowText(orderLimitCount);
 
 	COleDateTime NewDate;
 	CTime curTime = CTime::GetCurrentTime();
-	VtTime esTime = usd_system->start_time_begin();
+	VtTime esTime = usd_system_->start_time_begin();
 	NewDate.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
 	_DpEntBegin.SetTime(NewDate);
 
 	COleDateTime NewDate2;
-	esTime = usd_system->start_time_end();
+	esTime = usd_system_->start_time_end();
 	NewDate2.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
 	_DpEntEnd.SetTime(NewDate2);
 
 	COleDateTime NewDate3;
-	esTime = usd_system->end_time();
+	esTime = usd_system_->end_time();
 	NewDate3.SetDateTime(curTime.GetYear(), curTime.GetMonth(), curTime.GetDay(), esTime.hour, esTime.min, esTime.sec);
 	_DpLiq.SetTime(NewDate3);
 
 
-	DarkHorse::SmUsdStrategy usd_strategy = usd_system->strategy();
+	DarkHorse::SmUsdStrategy& usd_strategy = usd_system_->strategy();
 	_EntGrid.ClearArgMap();
 	_LiqGrid.ClearArgMap();
 
-	const std::vector<DarkHorse::GroupArg>& argGrpVec = usd_strategy.group_args;
+	std::vector<DarkHorse::GroupArg>& argGrpVec = usd_strategy.group_args;
 	for (auto it = argGrpVec.begin(); it != argGrpVec.end(); ++it) {
 		const GroupArg& argGrp = *it;
 		if (argGrp.name.compare(_T("매수진입")) == 0 ||
@@ -178,7 +184,7 @@ void SmUsdSystemModDialog::OnBnClickedBtnMod()
 	usd_system_->order_limit_count(_ttoi(value));
 
 
-	DarkHorse::SmUsdStrategy  strategy = usd_system_->strategy();
+	DarkHorse::SmUsdStrategy&  strategy = usd_system_->strategy();
 	CUGCell cell;
 	// 매수 진입
 	for (size_t i = 0; i < 4; ++i) {
@@ -217,10 +223,12 @@ void SmUsdSystemModDialog::OnBnClickedBtnMod()
 		num == 1.0 ? strategy.group_args[3].sys_args[i].enable = true : strategy.group_args[3].sys_args[i].enable = false;
 	}
 
-	usd_system_->strategy(strategy);
+	//usd_system_->strategy(strategy);
 
 	if (source_dialog_)
 		source_dialog_->update_usd_system(usd_system_);
+
+	mainApp.SaveMgr()->save_usd_system("usd_system_list.json");
 }
 
 

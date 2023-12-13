@@ -59,7 +59,7 @@ namespace DarkHorse {
 		void start_time_end(VtTime val) { start_time_end_ = val; }
 		VtTime end_time() const { return end_time_; }
 		void end_time(VtTime val) { end_time_ = val; }
-		DarkHorse::SmUsdStrategy strategy() const { return strategy_; }
+		DarkHorse::SmUsdStrategy& strategy() { return strategy_; }
 		void strategy(DarkHorse::SmUsdStrategy val) { strategy_ = val; }
 	};
 }

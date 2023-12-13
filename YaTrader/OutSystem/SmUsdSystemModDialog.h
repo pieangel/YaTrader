@@ -54,7 +54,7 @@ public:
 	void InitCombo();
 	void InitUsdStrategyCombo();
 private:
-	 void set_usd_system(std::shared_ptr<DarkHorse::SmUsdSystem> usd_system);
+	 void set_usd_system();
 	VtUsdEntConfigGrid _EntGrid;
 	VtUsdStrategyConfigGrid _LiqGrid;
 	int id_ = 0;

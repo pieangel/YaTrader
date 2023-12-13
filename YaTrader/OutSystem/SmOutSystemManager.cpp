@@ -598,7 +598,7 @@ namespace DarkHorse {
 
 		strategy_name = magic_enum::enum_name(DarkHorse::SmStrategyType::TR_US2).data();
 		strategy.type(strategy_name);
-
+		strategy.group_args.clear();
 
 		// 매수 진입 조건 
 		grp_arg.sys_args.clear();
@@ -766,7 +766,7 @@ namespace DarkHorse {
 
 		strategy_name = magic_enum::enum_name(DarkHorse::SmStrategyType::TR_US3).data();
 		strategy.type(strategy_name);
-
+		strategy.group_args.clear();
 		// 매수 진입 조건 
 		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
@@ -933,7 +933,7 @@ namespace DarkHorse {
 
 		strategy_name = magic_enum::enum_name(DarkHorse::SmStrategyType::US_IN1).data();
 		strategy.type(strategy_name);
-
+		strategy.group_args.clear();
 		// 매수 진입 조건 
 		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
@@ -1100,7 +1100,7 @@ namespace DarkHorse {
 
 		strategy_name = magic_enum::enum_name(DarkHorse::SmStrategyType::US_IN2).data();
 		strategy.type(strategy_name);
-
+		strategy.group_args.clear();
 		// 매수 진입 조건 
 		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";
@@ -1266,7 +1266,7 @@ namespace DarkHorse {
 
 		strategy_name = magic_enum::enum_name(DarkHorse::SmStrategyType::US_IN3).data();
 		strategy.type(strategy_name);
-
+		strategy.group_args.clear();
 		// 매수 진입 조건 
 		grp_arg.sys_args.clear();
 		arg.name = "ubc>uac";

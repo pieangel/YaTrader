@@ -23,6 +23,8 @@
 #include "../Util/IdGenerator.h"
 #include "../Util/VtTime.h"
 #include "../OutSystem/SmUsdSystem.h"
+#include "../Global/SmTotalManager.h"
+#include "../Archieve/SmSaveManager.h"
 // SmAddUsdSystemDlg dialog
 using namespace DarkHorse;
 
@@ -134,6 +136,7 @@ void SmAddUsdSystemDlg::OnCbnSelchangeComboSignal()
 	auto it = combo_usd_strategy_map_.find(selIndex);
 	if (it != combo_usd_strategy_map_.end()) {
 		strategy_type_ = it->second;
+		strategy_.group_args.clear();
 
 		set_strategy_type();
 	}
@@ -361,8 +364,6 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 	CString value;
 	_EditEntMax.GetWindowText(value);
 	usd_system->order_limit_count(_ttoi(value));
-
-
 	CUGCell cell;
 	// 매수 진입
 	for (size_t i = 0; i < 4; ++i) {
@@ -409,5 +410,5 @@ void SmAddUsdSystemDlg::OnBnClickedBtnAdd()
 		auto_connect_dialog_->add_usd_system(usd_system);
 
 
- 	
+	mainApp.SaveMgr()->save_usd_system("usd_system_list.json");
 }
