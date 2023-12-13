@@ -150,6 +150,7 @@ namespace DarkHorse {
 			start_dm_account_asset();
 		}
 		break;
+		
 		case DhTaskType::DmAccountAsset:
 		{
 			start_dm_symbol_quote();
@@ -171,6 +172,11 @@ namespace DarkHorse {
 			start_dm_symbol_position();
 		}
 		break;
+		case DhTaskType::AbAccountAsset:
+		{
+			start_ab_symbol_quote();
+		}
+		break;
 		case DhTaskType::AbSymbolQuote:
 		{
 			start_ab_symbol_hoga();
@@ -181,36 +187,20 @@ namespace DarkHorse {
 			start_ab_symbol_profit_loss();
 		}
 		break;
-
-		case DhTaskType::AbAccountAsset:
+		case DhTaskType::AbSymbolProfitLoss:
 		{
-			start_ab_symbol_quote();
+			start_ab_accepted_order();
 		}
 		break;
+		
 		case DhTaskType::AbAcceptedOrderList:
 		{
 			start_ab_symbol_position();
 		}
 		break;
-		case DhTaskType::DmAcceptedOrderList:
-		{
-			register_realtime();
-
-
-			server_data_receive_on_ = false;
-			end_all_task();
-		}
-		break;
 		case DhTaskType::AbSymbolPosition:
 		{
 			start_ab_trade_profit_loss();
-			/*
-			register_ab_symbol();
-			register_account();
-
-			server_data_receive_on_ = false;
-			end_all_task();
-			*/
 		}
 		break;
 		case DhTaskType::AbTradeProfitLoss:
@@ -221,6 +211,17 @@ namespace DarkHorse {
 			server_data_receive_on_ = false;
 			end_all_task();
 		}
+		case DhTaskType::DmAcceptedOrderList:
+		{
+			register_realtime();
+
+
+			server_data_receive_on_ = false;
+			end_all_task();
+		}
+		break;
+		
+		
 		case DhTaskType::DmSymbolPosition:
 		{
 			start_dm_account_profit_loss();
@@ -232,11 +233,7 @@ namespace DarkHorse {
 			start_dm_accepted_order();
 		}
 		break;
-		case DhTaskType::AbSymbolProfitLoss:
-		{
-			start_ab_accepted_order();
-		}
-		break;
+		
 		case DhTaskType::DmSymbolProfitLoss:
 		{
 			start_ab_account_profit_loss();
@@ -1135,7 +1132,7 @@ namespace DarkHorse {
 	void YaServerDataReceiver::start_ab_trade_profit_loss()
 	{
 		make_ab_trade_profit_loss();
-		((CMainFrame*)AfxGetMainWnd())->start_timer(100);
+		((CMainFrame*)AfxGetMainWnd())->start_timer(700);
 	}
 
 }

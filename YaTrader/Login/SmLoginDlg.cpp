@@ -168,6 +168,13 @@ void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 		mainApp.mode = 1;
 	}
 
+	if (cur_index == 0 || cur_index == 2) {
+		mainApp.is_simul(true);
+	}
+	else {
+		mainApp.is_simul(false);
+	}
+
 	mainApp.LoginMgr()->ya_server_index(cur_index - 1);
 	mainApp.Client()->init();
 }

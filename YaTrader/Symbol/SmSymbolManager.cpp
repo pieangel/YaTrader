@@ -787,14 +787,15 @@ void SmSymbolManager::InitFavoriteProduct()
 		_FavoriteProduct.insert("SFC");
 		_FavoriteProduct.insert("MHI");
 		_FavoriteProduct.insert("CES");
-		/*
-		_FavoriteProduct.insert("CL");
-		_FavoriteProduct.insert("MNQ");
-		_FavoriteProduct.insert("CN");
-		_FavoriteProduct.insert("GC");
-		_FavoriteProduct.insert("NKD");
-		_FavoriteProduct.insert("NQ");
-		*/
+		
+		//if (mainApp.is_simul()) {
+			_FavoriteProduct.insert("CL");
+			_FavoriteProduct.insert("MNQ");
+			_FavoriteProduct.insert("CN");
+			_FavoriteProduct.insert("GC");
+			_FavoriteProduct.insert("NKD");
+			_FavoriteProduct.insert("NQ");
+		//}
 	}
 }
 
