@@ -1594,7 +1594,9 @@ void YaClient::on_dm_accepted_order(const YA_REQ_INFO& req_info)
 		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 계좌번호[%s]"), data);
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), i);		// 주문번호 값을 가져옵니다.
-		order_info["order_no"] = data;
+		std::string order_no = data;
+		VtStringUtil::trim(order_no);
+		order_info["order_no"] = order_no;
 		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문번호[%s]"), data);
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("jong_code"), data, sizeof(data), i);		// 종목코드 값을 가져옵니다.
@@ -1618,7 +1620,8 @@ void YaClient::on_dm_accepted_order(const YA_REQ_INFO& req_info)
 		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 매도매수구분[%s]"), data);
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("order_qty"), data, sizeof(data), i);		// 주문수량 값을 가져옵니다.
-		order_info["order_amount"] = _ttoi(data);
+		const int order_amount = _ttoi(data);
+		order_info["order_amount"] = order_amount;
 		LOGINFO(CMyLogger::getInstance(), _T("on_dm_accepted:: 주문수량[%s]"), data);
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("order_idx"), data, sizeof(data), i);		// 주문지수 값을 가져옵니다.
@@ -1640,7 +1643,7 @@ void YaClient::on_dm_accepted_order(const YA_REQ_INFO& req_info)
 		order_info["original_order_no"] = "";
 		order_info["first_order_no"] = "";
 		//order_info["order_type"] = static_cast<const char*>(strMan.Trim());
-		order_info["remain_count"] = 0;
+		order_info["remain_count"] = order_amount;
 		order_info["cancelled_count"] = 0;
 		order_info["modified_count"] = 0;
 		order_info["filled_count"] = 0;
@@ -5406,8 +5409,9 @@ void YaClient::on_ab_accepted_order(const YA_REQ_INFO& req_info)
 	for (int i = 0; i < list_cnt; i++) {
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("ord_no"), data, sizeof(data), 0);		// 주문번호 값을 가져옵니다.
-		order_info["order_no"] = data;
 		std::string order_no = data;
+		VtStringUtil::trim(order_no);
+		order_info["order_no"] = order_no;
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("acnt_aid"), data, sizeof(data), 0);		// 계좌번호 값을 가져옵니다.
 		std::string account_no = data;
@@ -5445,7 +5449,8 @@ void YaClient::on_ab_accepted_order(const YA_REQ_INFO& req_info)
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("org_no"), data, sizeof(data), 0);		// 원주문번호 값을 가져옵니다.
 		std::string original_order_no = data;
-		std::string first_order_no = data;
+		VtStringUtil::trim(original_order_no);
+		std::string first_order_no = original_order_no;
 		memset(data, 0x00, sizeof(data));
 		g_iYuantaAPI.YOA_GetFieldString(_T("frntrd_akprc_tp_cd"), data, sizeof(data), 0);		// 주문구분 값을 가져옵니다.
 		memset(data, 0x00, sizeof(data));

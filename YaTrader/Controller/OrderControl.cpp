@@ -156,6 +156,8 @@ namespace DarkHorse {
 			on_order_accepted(order);
 		else if (order_event == OrderEvent::OE_Unfilled)
 			on_order_unfilled(order);
+		else if (order_event == OrderEvent::OE_Filled)
+			remove_order(order);
 
 		if (event_handler_) event_handler_();
 	}
@@ -169,7 +171,14 @@ namespace DarkHorse {
 
 	void OrderControl::on_order_accepted(std::shared_ptr<Order> order)
 	{
-		add_order(order);
+		if (order->order_type == SmOrderType::Modify) {
+			remove_order(order->original_order_no);
+			add_order(order);
+		}
+		else if (order->order_type == SmOrderType::Cancel)
+			remove_order(order->original_order_no);
+		else if (order->order_type == SmOrderType::New)
+			add_order(order);
 	}
 
 	std::pair<int, int> OrderControl::get_order_count(const SmPositionType& position, const int price)
@@ -205,6 +214,13 @@ namespace DarkHorse {
 			buy_order_control_.remove_order(order->order_price, order->order_no);
 		else
 			sell_order_control_.remove_order(order->order_price, order->order_no);
+	}
+
+	void OrderControl::remove_order(const std::string& order_no)
+	{
+		auto order = mainApp.total_order_manager()->find_order(order_no);
+		if (!order) return;
+		remove_order(order);
 	}
 
 	void OrderControl::get_order(const SmPositionType& position, const int& price, std::vector<std::shared_ptr<Order>>& order_vector)

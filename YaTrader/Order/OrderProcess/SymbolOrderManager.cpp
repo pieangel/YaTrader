@@ -122,7 +122,8 @@ void SymbolOrderManager::remove_accepted_order(const std::string& order_no)
 	std::lock_guard<std::mutex> lock(mutex_); // Lock the mutex
 	auto it = accepted_order_map_.find(order_no);
 	if (it == accepted_order_map_.end()) return;
-	auto order = it->second;
+	order_p order = it->second;
+	order->remain_count = 0;
 	accepted_order_map_.erase(it);
 
 	mainApp.event_hub()->process_order_event(order, OrderEvent::OE_Unfilled);

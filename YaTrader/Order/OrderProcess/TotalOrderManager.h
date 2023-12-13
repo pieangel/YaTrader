@@ -26,11 +26,11 @@ public:
 	std::pair<bool, int> get_init_and_acpt_order_count_from_account(const std::string& account_no, const std::string& symbol_code);
 	std::pair<bool, int> get_init_and_acpt_order_count_from_fund(const std::string& fund_name, const std::string& symbol_code);
 	std::pair<bool, int> get_init_and_acpt_order_count_from_parent_account(const std::string& account_no, const std::string& symbol_code);
+	order_p find_order(const std::string& order_no);
 private:
 	void write_order_history(const OrderEvent order_event, order_p order) ;
 	void dispatch_order(const OrderEvent order_event, order_p order) ;
 	order_p get_order(const std::string& order_no) ;
-	order_p find_order(const std::string& order_no) ;
 	order_p create_order(const std::string& order_no);
 	order_p make_order(const order_event& order_info);
 	void set_order_request_info(const std::string& custom_info, order_p order);

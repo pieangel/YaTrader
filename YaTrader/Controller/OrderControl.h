@@ -46,6 +46,7 @@ namespace DarkHorse {
 		void on_order_unfilled(std::shared_ptr<Order> order);
 		void on_order_accepted(std::shared_ptr<Order> order);
 		void remove_order(std::shared_ptr<Order> order);
+		void remove_order(const std::string& order_no);
 		std::pair<int, int> get_order_count(SubOrderControl& order_control, const int price);
 		SubOrderControl buy_order_control_;
 		SubOrderControl sell_order_control_;

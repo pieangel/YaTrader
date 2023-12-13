@@ -186,7 +186,7 @@ order_p TotalOrderManager::make_order(const order_event& order_info)
 			if (order_type.compare("1") == 0) order->order_type = SmOrderType::New;
 			else if (order_type.compare("2") == 0) order->order_type = SmOrderType::Modify;
 			else if (order_type.compare("3") == 0) order->order_type = SmOrderType::Cancel;
-
+			order->remain_count = order_info["remain_count"];
 			order->filled_price = order_info["filled_price"];
 			order->filled_count = order_info["filled_count"];
 			order->filled_time = order_info["filled_time"];
