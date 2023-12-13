@@ -2836,6 +2836,7 @@ void YaClient::get_symbol_list(const int market_type)
 {
 	mainApp.SymMgr()->read_domestic_productfile();
 	mainApp.SymMgr()->read_dm_masterfile_ya();
+	mainApp.SymMgr()->MakeAbFavorite();
 }
 
 

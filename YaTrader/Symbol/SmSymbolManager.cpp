@@ -764,6 +764,10 @@ void SmSymbolManager::AddDomesticSymbolCode(const std::string& product_code, con
 
 void SmSymbolManager::MakeAbFavorite()
 {
+	CString strMsg;
+	strMsg.Format(_T("MakeAbFavorite :: favorite symbol count[%d]"), _FavoriteProduct.size());
+	LOGINFO(CMyLogger::getInstance(), "%s", strMsg);
+
 	for (auto it = _FavoriteProduct.begin(); it != _FavoriteProduct.end(); it++) {
 		std::string product_code = *it;
 		std::shared_ptr<SmProduct> product = FindProduct(product_code);
@@ -772,6 +776,8 @@ void SmSymbolManager::MakeAbFavorite()
 		if (symbol) {
 			_FavoriteMap[symbol->Id()] = symbol;
 			//mainApp.SymMgr()->RegisterSymbolToServer(symbol->SymbolCode(), true);
+			strMsg.Format(_T("MakeAbFavorite :: favorite symbol[%s]"), symbol->SymbolCode().c_str());
+			LOGINFO(CMyLogger::getInstance(), "%s", strMsg);
 		}
 	}
 }
@@ -784,18 +790,19 @@ void SmSymbolManager::InitFavoriteProduct()
 	//favorite = mainApp.ConfigMgr().getString(section, name);
 	if (favorite.length() == 0) {
 		_FavoriteProduct.insert("HSI");
-		_FavoriteProduct.insert("SFC");
 		_FavoriteProduct.insert("MHI");
-		_FavoriteProduct.insert("CES");
 		
-		//if (mainApp.is_simul()) {
+		if (mainApp.is_simul()) {
+			_FavoriteProduct.insert("SFC");
+			_FavoriteProduct.insert("CES");
 			_FavoriteProduct.insert("CL");
 			_FavoriteProduct.insert("MNQ");
 			_FavoriteProduct.insert("CN");
 			_FavoriteProduct.insert("GC");
 			_FavoriteProduct.insert("NKD");
 			_FavoriteProduct.insert("NQ");
-		//}
+		}
+		
 	}
 }
 

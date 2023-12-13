@@ -18,6 +18,7 @@
 #include "../Symbol/SmProduct.h"
 #include "../Symbol/SmProductYearMonth.h"
 #include "../Util/VtStringUtil.h"
+#include "../Log/MyLogger.h"
 
 #include <set>
 
@@ -928,6 +929,11 @@ namespace DarkHorse {
 	void YaServerDataReceiver::make_ab_symbol_quote()
 	{
 		const std::map<int, std::shared_ptr<SmSymbol>>& ab_symbol_favorite = mainApp.SymMgr()->get_ab_favorite_map();
+
+		CString strMsg;
+		strMsg.Format(_T("make_ab_symbol_quote :: ab favorite symbol count[%d]"), ab_symbol_favorite.size());
+		LOGINFO(CMyLogger::getInstance(), "%s", strMsg);
+
 		for (auto it = ab_symbol_favorite.begin(); it != ab_symbol_favorite.end(); it++) {
 			DhTaskArg arg;
 			arg.detail_task_description = it->second->SymbolCode();
