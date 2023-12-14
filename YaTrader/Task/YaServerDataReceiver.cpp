@@ -212,6 +212,7 @@ namespace DarkHorse {
 			server_data_receive_on_ = false;
 			end_all_task();
 		}
+		break;
 		case DhTaskType::DmAcceptedOrderList:
 		{
 			register_realtime();
@@ -244,7 +245,7 @@ namespace DarkHorse {
 		case DhTaskType::AbAccountProfitLoss:
 		{
 			server_data_receive_on_ = false;
-			end_all_task();
+			//end_all_task();
 		}
 		break;
 

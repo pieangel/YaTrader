@@ -25,6 +25,7 @@
 #include "../OutSystem/SmUsdSystem.h"
 #include "../Global/SmTotalManager.h"
 #include "../Archieve/SmSaveManager.h"
+#include "../Symbol/AbFavoriteSymbolSelector.h"
 // SmAddUsdSystemDlg dialog
 using namespace DarkHorse;
 
@@ -120,10 +121,18 @@ void SmAddUsdSystemDlg::OnCbnSelchangeComboSymbol()
 
 void SmAddUsdSystemDlg::OnBnClickedBtnFindSymbol()
 {
-	_SymbolSelecter = std::make_shared<HdSymbolSelecter>();
-	_SymbolSelecter->set_source_window_id(id_);
-	_SymbolSelecter->Create(IDD_SYMBOL_SELECTER_HD, this);
-	_SymbolSelecter->ShowWindow(SW_SHOW);
+	if (mainApp.mode == 0) {
+		dm_symbol_selector_ = std::make_shared<HdSymbolSelecter>();
+		dm_symbol_selector_->set_source_window_id(id_);
+		dm_symbol_selector_->Create(IDD_SYMBOL_SELECTER_HD, this);
+		dm_symbol_selector_->ShowWindow(SW_SHOW);
+	}
+	else {
+		ab_symbol_selector_ = std::make_shared<AbFavoriteSymbolSelector>();
+		ab_symbol_selector_->set_source_window_id(id_);
+		ab_symbol_selector_->Create(IDD_AB_SYMBOL_SELECTOR, this);
+		ab_symbol_selector_->ShowWindow(SW_SHOW);
+	}
 }
 
 
@@ -300,7 +309,7 @@ void SmAddUsdSystemDlg::set_symbol_from_out(const int window_id, std::shared_ptr
 	int index = _ComboSymbol.AddString(symbol->SymbolCode().c_str());
 	combo_to_symbol_map_[index] = symbol;
 	_ComboSymbol.SetCurSel(index);
-	if (_SymbolSelecter) _SymbolSelecter->SendMessage(WM_CLOSE);
+	if (dm_symbol_selector_) dm_symbol_selector_->SendMessage(WM_CLOSE);
 }
 
 

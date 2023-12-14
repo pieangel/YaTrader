@@ -38,6 +38,7 @@ void HdFuturePage::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(HdFuturePage, CBCGPDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_FUT_MARKET, &HdFuturePage::OnCbnSelchangeComboFutMarket)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -58,7 +59,7 @@ BOOL HdFuturePage::OnInitDialog()
 	ScreenToClient(&rect);
 	// Create the Windows control and attach it to the Grid object
 	future_view_.Create(WS_CHILD | WS_VISIBLE | WS_BORDER, rect, this, WND_ID10);
-
+	SetTimer(1, 500, NULL);
 	init_future_view();
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
@@ -75,6 +76,13 @@ void HdFuturePage::OnCbnSelchangeComboFutMarket()
 	int cur_sel = _ComboFutureMarket.GetCurSel();
 	if (cur_sel < 0) return;
 	future_view_.init_symbol(cur_sel);
+}
+
+void HdFuturePage::OnTimer(UINT_PTR nIDEvent)
+{
+	//future_view_.OnQuoteEvent("");
+	//future_view_.Update();
+	CBCGPDialog::OnTimer(nIDEvent);
 }
 
 void HdFuturePage::init_future_view()

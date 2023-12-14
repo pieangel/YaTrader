@@ -515,6 +515,8 @@
     <ClInclude Include="StatusBar\extstatuscontrolbar.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SymbolBar.h" />
+    <ClInclude Include="Symbol\AbFavoriteSymbolSelector.h" />
+    <ClInclude Include="Symbol\AbFavoriteSymbolView.h" />
     <ClInclude Include="Symbol\MarketDefine.h" />
     <ClInclude Include="Symbol\SmMarket.h" />
     <ClInclude Include="Symbol\SmMarketConst.h" />
@@ -911,6 +913,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SymbolBar.cpp" />
+    <ClCompile Include="Symbol\AbFavoriteSymbolSelector.cpp" />
+    <ClCompile Include="Symbol\AbFavoriteSymbolView.cpp" />
     <ClCompile Include="Symbol\SmMarket.cpp" />
     <ClCompile Include="Symbol\SmProduct.cpp" />
     <ClCompile Include="Symbol\SmProductYearMonth.cpp" />

@@ -1019,6 +1019,12 @@
     <ClCompile Include="Util\VtTime.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Symbol\AbFavoriteSymbolSelector.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol\AbFavoriteSymbolView.cpp">
+      <Filter>Symbol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h">
@@ -2327,6 +2333,12 @@
       <Filter>OutSystem</Filter>
     </ClInclude>
     <ClInclude Include="VtGlobal.h" />
+    <ClInclude Include="Symbol\AbFavoriteSymbolSelector.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol\AbFavoriteSymbolView.h">
+      <Filter>Symbol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DarkHorse.ico">

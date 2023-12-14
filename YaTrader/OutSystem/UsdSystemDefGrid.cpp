@@ -29,7 +29,7 @@
 #include "SmUsdSystem.h"
 #include "SmActiveUsdSystemGrid.h"
 #include "SmUsdSystemModDialog.h"
-
+#include "../Symbol/AbFavoriteSymbolSelector.h"
 using namespace DarkHorse;
 UsdSystemDefGrid::UsdSystemDefGrid()
 	:id_(IdGenerator::get_id())
@@ -1000,9 +1000,16 @@ int UsdSystemDefGrid::OnEllipsisButton(long ID, int col, long row, long msg, lon
 		else if (nParam == ELLIPSISBUTTON_CLICK_PRDT) {
 			_ButtonRow = row;
 			_ButtonCol = col;
-			HdSymbolSelecter dlg;
-			dlg.set_source_window_id(id_);
-			dlg.DoModal();
+			if (mainApp.mode == 0) {
+				HdSymbolSelecter dlg;
+				dlg.set_source_window_id(id_);
+				dlg.DoModal();
+			}
+			else {
+				AbFavoriteSymbolSelector dlg;
+				dlg.set_source_window_id(id_);
+				dlg.DoModal();
+			}
 		}
 		else if (nParam == ELLIPSISBUTTON_CLICK_ALGO_SET) {
 			_ButtonRow = row;

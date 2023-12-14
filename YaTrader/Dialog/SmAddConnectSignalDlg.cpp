@@ -21,6 +21,7 @@
 #include <functional>
 #include "../OutSystem/VtAutoSignalManagerDialog.h"
 #include "../Util/IdGenerator.h"
+#include "../Symbol/AbFavoriteSymbolSelector.h"
 // VtAddConnectSignalDlg dialog
 using namespace DarkHorse;
 
@@ -110,10 +111,18 @@ void SmAddConnectSignalDlg::OnCbnSelchangeComboSymbol()
 
 void SmAddConnectSignalDlg::OnBnClickedBtnFindSymbol()
 {
-	_SymbolSelecter = std::make_shared<HdSymbolSelecter>();
-	_SymbolSelecter->set_source_window_id(id_);
-	_SymbolSelecter->Create(IDD_SYMBOL_SELECTER_HD, this);
-	_SymbolSelecter->ShowWindow(SW_SHOW);
+	if (mainApp.mode == 0) {
+		dm_symbol_selector_ = std::make_shared<HdSymbolSelecter>();
+		dm_symbol_selector_->set_source_window_id(id_);
+		dm_symbol_selector_->Create(IDD_SYMBOL_SELECTER_HD, this);
+		dm_symbol_selector_->ShowWindow(SW_SHOW);
+	}
+	else {
+		ab_symbol_selector_ = std::make_shared<AbFavoriteSymbolSelector>();
+		ab_symbol_selector_->set_source_window_id(id_);
+		ab_symbol_selector_->Create(IDD_AB_SYMBOL_SELECTOR, this);
+		ab_symbol_selector_->ShowWindow(SW_SHOW);
+	}
 }
 
 
@@ -228,7 +237,7 @@ void SmAddConnectSignalDlg::set_symbol_from_out(const int window_id, std::shared
 	int index = _ComboSymbol.AddString(symbol->SymbolCode().c_str());
 	combo_to_symbol_map_[index] = symbol;
 	_ComboSymbol.SetCurSel(index);
-	if (_SymbolSelecter) _SymbolSelecter->SendMessage(WM_CLOSE);
+	if (dm_symbol_selector_) dm_symbol_selector_->SendMessage(WM_CLOSE);
 }
 
 

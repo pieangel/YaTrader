@@ -54,6 +54,7 @@
 #define IDD_DIALOG3                     149
 #define IDD_GIGA_SPREAD_CHART           150
 #define IDD_DIALOG4                     151
+#define IDD_AB_SYMBOL_SELECTOR          151
 #define IDD_SPRD_CHART_SET              152
 #define IDD_DIALOG5                     153
 #define IDD_STOCK_CHART                 154

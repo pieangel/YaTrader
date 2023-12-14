@@ -41,6 +41,7 @@ public:
 	//HdFutureGrid _FutureGrid;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnCbnSelchangeComboFutMarket();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 private:
 	HdSymbolSelecter* _SymSelecter;

@@ -161,7 +161,7 @@ void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 		return;
 	}
 
-	if (cur_index == 0 || cur_index == 1 || cur_index == 2) {
+	if (cur_index == 0 || cur_index == 1) {
 		mainApp.mode = 0;
 	}
 	else {

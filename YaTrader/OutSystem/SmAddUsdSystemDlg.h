@@ -20,6 +20,7 @@ namespace DarkHorse {
 class SmUSDSystemDialog;
 class HdSymbolSelecter;
 class VtAutoSignalManagerDialog;
+class AbFavoriteSymbolSelector;
 class SmAddUsdSystemDlg : public CBCGPDialog
 {
 	DECLARE_DYNAMIC(SmAddUsdSystemDlg)
@@ -70,7 +71,8 @@ private:
 	VtUsdStrategyConfigGrid _LiqGrid;
 	void set_strategy_type();
 	SmUSDSystemDialog* auto_connect_dialog_ = nullptr;
-	std::shared_ptr<HdSymbolSelecter> _SymbolSelecter;
+	std::shared_ptr<HdSymbolSelecter> dm_symbol_selector_;
+	std::shared_ptr<AbFavoriteSymbolSelector> ab_symbol_selector_;
 	void set_symbol_from_out(const int window_id, std::shared_ptr<DarkHorse::SmSymbol> symbol);
 	int id_ = 0;
 	std::shared_ptr<DarkHorse::SmAccount> account_;

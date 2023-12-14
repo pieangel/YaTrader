@@ -26,6 +26,8 @@
 #include "../Global/SmConst.h"
 #include "../Util/IdGenerator.h"
 #include "../Dialog/SmAccountFundSelector.h"
+#include "../Symbol/AbFavoriteSymbolSelector.h"
+
 
 using namespace DarkHorse;
 VtSignalConnectionGrid::VtSignalConnectionGrid()
@@ -911,9 +913,16 @@ int VtSignalConnectionGrid::OnEllipsisButton(long ID, int col, long row, long ms
 		else if (nParam == ELLIPSISBUTTON_CLICK_PRDT) {
 			_ButtonRow = row;
 			_ButtonCol = col;
-			HdSymbolSelecter dlg;
-			dlg.set_source_window_id(id_);
-			dlg.DoModal();
+			if (mainApp.mode == 0) {
+				HdSymbolSelecter dlg;
+				dlg.set_source_window_id(id_);
+				dlg.DoModal();
+			}
+			else {
+				AbFavoriteSymbolSelector dlg;
+				//dlg.set_source_window_id(id_);
+				dlg.DoModal();
+			}
 		}
 		else {
 			MessageBox("The button was clicked", "Cell Type Notification");
