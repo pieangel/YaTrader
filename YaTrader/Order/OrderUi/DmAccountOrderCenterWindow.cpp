@@ -926,7 +926,7 @@ void DmAccountOrderCenterWindow::OnBnClickedBtnSymbol()
 	//symbol_selecter.DoModal();
 
 	_SymbolSelecter = std::make_shared<HdSymbolSelecter>();
-	_SymbolSelecter->set_source_window_id(id_);
+	_SymbolSelecter->set_source_window_id(order_window_id_);
 	_SymbolSelecter->Create(IDD_SYMBOL_SELECTER_HD, this);
 	_SymbolSelecter->ShowWindow(SW_SHOW);
 }
