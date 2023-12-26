@@ -86,6 +86,7 @@ void SmLoginDlg::OnBnClickedBtnLogin()
 		return;
 	}
 
+	mainApp.SaveMgr()->create_config_path(std::string(id));
 	//CDialog::EndDialog(IDOK);
 }
 
@@ -161,14 +162,14 @@ void SmLoginDlg::OnCbnSelchangeComboLoginServer()
 		return;
 	}
 
-	if (cur_index == 0 || cur_index == 1) {
+	if (cur_index == 1 || cur_index == 2) {
 		mainApp.mode = 0;
 	}
 	else {
 		mainApp.mode = 1;
 	}
 
-	if (cur_index == 0 || cur_index == 2) {
+	if (cur_index == 1 || cur_index == 3) {
 		mainApp.is_simul(true);
 	}
 	else {

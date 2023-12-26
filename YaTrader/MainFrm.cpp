@@ -898,7 +898,7 @@ void CMainFrame::OnClose()
 
 		//mainApp.config_manager()->set_system_config(config);
 		mainApp.SaveMgr()->WriteSettings();
-		mainApp.SaveMgr()->save_system_config("system_config.json");
+		//mainApp.SaveMgr()->save_system_config("system_config.json");
 		mainApp.SaveMgr()->save_account("account_list.json");
 		mainApp.SaveMgr()->save_fund("fund_list.json");
 		mainApp.SaveMgr()->save_out_system("out_system_list.json");
@@ -910,11 +910,7 @@ void CMainFrame::OnClose()
 		mainApp.SaveMgr()->save_total_asset_windows("dm_total_asset_windows.json", total_asset_profit_loss_map_);
 
 		total_asset_profit_loss_map_.clear();
-		if (auto_signal_manager_dlg_) {
-			auto_signal_manager_dlg_->DestroyWindow();
-			delete auto_signal_manager_dlg_;
-			auto_signal_manager_dlg_ = nullptr;
-		}
+		
 
 		mainApp.TaskReqMgr()->StopProcess();
 		mainApp.file_watch_monitor()->Stop();
@@ -924,6 +920,19 @@ void CMainFrame::OnClose()
 		CString msg;
 		msg.Format(_T("%d년 %d월 %d일 %d시 %d분 %d초에 종료합니다."), date_time[0], date_time[1], date_time[2], date_time[3], date_time[4], date_time[5]);
 		AfxMessageBox(msg, MB_ICONEXCLAMATION);
+
+
+		if (auto_signal_manager_dlg_) {
+			auto_signal_manager_dlg_->DestroyWindow();
+			delete auto_signal_manager_dlg_;
+			auto_signal_manager_dlg_ = nullptr;
+		}
+
+		if (usd_system_dlg_) {
+			usd_system_dlg_->DestroyWindow();
+			delete usd_system_dlg_;
+			usd_system_dlg_ = nullptr;
+		}
 
 		//SaveMDIState(theApp.GetRegSectionPath());
 		//Sleep(1000);
@@ -963,8 +972,10 @@ void CMainFrame::StartLoad()
 		mainApp.Client()->RegisterSymbol(it->second->SymbolCode());
 	}
 	mainApp.SaveMgr()->restore_system_config("system_config.json");
-
-	mainApp.file_watch_monitor()->AddMonDir(mainApp.config_manager()->system_config().yes_path.c_str(), true);
+	if (mainApp.mode == 0)
+		mainApp.file_watch_monitor()->AddMonDir(mainApp.config_manager()->system_config().yes_path.c_str(), true);
+	else
+		mainApp.file_watch_monitor()->AddMonDir(mainApp.config_manager()->system_config().ab_yes_path.c_str(), true);
 	//_FildMonitor->AddMonDir(_T("C:\\WRFutures\\YesGlobalPro\\YesLang"), true);
 	//_FildMonitor->AddMonDir(_T("C:\\WRFutures\\YesGlobalPro\\Spot\\Export"), true);
 	mainApp.file_watch_monitor()->Start();

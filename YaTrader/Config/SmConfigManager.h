@@ -33,12 +33,17 @@ namespace DarkHorse {
 		void loadConfig(const std::string& filePath) {
 			try {
 				std::ifstream file(filePath);
+				if (!file.is_open()) {
+					std::cerr << "Failed to open file for restore: " << filePath << std::endl;
+					return;
+				}
 				nlohmann::json j;
 				file >> j;
 
 				system_config_.app_name = j["app_name"];
 				system_config_.version = j["version"];
 				system_config_.yes_path = SmUtil::Utf8ToMultiByte(j["yes_path"]);
+				system_config_.ab_yes_path = SmUtil::Utf8ToMultiByte(j["ab_yes_path"]);
 			}
 			catch (const nlohmann::json::exception& e) {
 				std::cerr << "Error loading JSON: " << e.what() << std::endl;

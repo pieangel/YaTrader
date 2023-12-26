@@ -2870,18 +2870,23 @@ void YaClient::on_dm_realtime_order()
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 체결번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("origno"), data, sizeof(data), 0);		// 원주문번호(0) 값을 가져옵니다.
+	const std::string ori_order_no = data;
 	order_info["original_order_no"] = data;
 	order_info["first_order_no"] = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 원주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunno"), data, sizeof(data), 0);		// 내부주문번호 값을 가져옵니다.
-	//order_info["order_no"] = data;
+	const std::string intra_order_no = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 내부주문번호[%s]"), data);
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("bpjumunno"), data, sizeof(data), 0);		// 지점별 주문번호 값을 가져옵니다.
 	// 이번호가 내부 처리용 주문 번호가 됩니다. 그리고 정정, 취소 주문시 이 주문 번호를 사용해야 합니다. 
 	order_info["order_no"] = data;
+	const std::string order_no = data;
 	LOGINFO(CMyLogger::getInstance(), _T("on_realtime_order:: 지점별 주문번호[%s]"), data);
+
+	intra_order_no_map_[intra_order_no] = order_no;
+
 	memset(data, 0x00, sizeof(data));
 	g_iYuantaAPI.YOA_GetFieldString(_T("jumunuv"), data, sizeof(data), 0);		// 주문단가(jumun_su) 값을 가져옵니다.
 	order_info["order_price"] = _ttoi(data);
@@ -2935,7 +2940,7 @@ void YaClient::on_dm_realtime_order()
 	BYTE buy_or_sell;
 	g_iYuantaAPI.YOA_GetFieldByte(_T("gubun48"), &buy_or_sell);		// 매수(4) 매도(8) 값을 가져옵니다.
 	
-
+	int order_type = 0;
 	switch (buy_or_sell)
 	{
 	case '4': // 메수
@@ -2943,6 +2948,7 @@ void YaClient::on_dm_realtime_order()
 	case '1': // 매수주문
 	case '2': // 매도주문
 		order_info["order_type"] = "1";
+		order_type = 1;
 		break;
 	case 'N': // 정정주문
 	case 'J': // 매수정정주문
@@ -2950,6 +2956,7 @@ void YaClient::on_dm_realtime_order()
 	case 'M': // 매수정정주문
 	case 'm': // 매도정정주문
 		order_info["order_type"] = "2";
+		order_type = 2;
 		break;
 	case 'D': // 취소주문
 	case 'Z': // 매수취소주문
@@ -2957,6 +2964,7 @@ void YaClient::on_dm_realtime_order()
 	case 'C': // 매수취소주문
 	case 'c': // 매도취소주문
 		order_info["order_type"] = "3";
+		order_type = 3;
 		break;
 	case 'R': // 매수주문거부
 	case 'r': // 매도주문거부
@@ -2965,12 +2973,15 @@ void YaClient::on_dm_realtime_order()
 	case 'T': // 정정거부
 	case 't': // 취소거부
 		order_info["order_type"] = "1";
+		order_type = 1;
 		break;
 	case 'U': // 알수없음.
 		order_info["order_type"] = "1";
+		order_type = 1;
 		break;
 	default:
 		order_info["order_type"] = "1";
+		order_type = 1;
 		break;
 	}
 
@@ -3113,6 +3124,13 @@ void YaClient::on_dm_realtime_order()
 		order_info["order_event"] = OrderEvent::OE_Accepted;
 		
 		break;
+	}
+
+	if (order_type == 2 || order_type == 3) {
+		auto found = intra_order_no_map_.find(ori_order_no);
+		if (found != intra_order_no_map_.end()) {
+			order_info["original_order_no"] = found->second;
+		}
 	}
 
 	if (filled_count > 0) {

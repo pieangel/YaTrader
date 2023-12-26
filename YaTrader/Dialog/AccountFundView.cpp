@@ -83,7 +83,16 @@ void AccountFundView::init_grid()
 		SetColumnName(1, _T("°èÁÂ¹øÈ£"));
 		row_to_account_map_.clear();
 		std::vector<std::shared_ptr<SmAccount>> main_account_vector;
-		mainApp.AcntMgr()->get_main_account_vector(main_account_vector);
+
+		std::string account_type;
+		if (mainApp.mode == 0) {
+			account_type = "9";
+		}
+		else {
+			account_type = "1";
+		}
+
+		mainApp.AcntMgr()->get_main_account_vector(account_type, main_account_vector);
 		if (main_account_vector.empty()) return;
 		for (auto ita = main_account_vector.begin(); ita != main_account_vector.end(); ++ita) {
 			auto main_acnt = *ita;

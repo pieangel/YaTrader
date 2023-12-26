@@ -209,15 +209,18 @@ void SmActiveUsdSystemGrid::RefreshOrders()
 			if (out_system->fund()) QuickSetText(0, i, out_system->fund()->Name().c_str());
 		}
 
-		if (out_system->symbol()) QuickSetText(1, i, out_system->symbol()->SymbolCode().c_str());
+
+		auto symbol = out_system->symbol();
+
+		if (symbol) QuickSetText(1, i, symbol->SymbolCode().c_str());
 
 		// 포지션 표시
 		const VmPosition& posi = out_system->position_control()->get_position();
 		posi.open_quantity == 0 ? QuickSetText(2, i, _T("없음")) : posi.open_quantity > 0 ? QuickSetText(2, i, _T("매수")) : QuickSetText(2, i, _T("매도"));
 		std::string thVal;
 		std::string temp;
-		if (out_system->symbol()) {
-			thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.average_price, out_system->symbol()->decimal());
+		if (symbol) {
+			thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.average_price, symbol->decimal());
 		}
 		else {
 			thVal = "0";
@@ -228,9 +231,10 @@ void SmActiveUsdSystemGrid::RefreshOrders()
 		// 현재가 표시
 		CUGCell cell;
 		GetCell(4, i, &cell);
-		auto quote_p = mainApp.QuoteMgr()->find_quote(out_system->symbol()->SymbolCode());
+		auto quote_p = mainApp.QuoteMgr()->find_quote(symbol ? symbol->SymbolCode(): "");
 		if (quote_p) {
-			thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(quote_p->close / std::pow(10.0, out_system->symbol()->decimal()), out_system->symbol()->decimal());
+			int decimal = symbol ? symbol->decimal() : 0;
+			thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(quote_p->close / std::pow(10.0, decimal), decimal);
 		}
 		else {
 			thVal = "0";

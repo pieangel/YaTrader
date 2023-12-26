@@ -104,6 +104,7 @@ namespace DarkHorse {
 		DECLARE_MESSAGE_MAP()
 
 	private:
+		std::map<std::string, std::string> intra_order_no_map_;
 		IYOA g_iYuantaAPI;
 		BOOL g_bInitial;
 		BOOL g_bLogin;

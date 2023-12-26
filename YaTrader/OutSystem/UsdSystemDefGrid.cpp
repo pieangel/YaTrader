@@ -285,7 +285,8 @@ void UsdSystemDefGrid::InitGrid()
 				SetCell(xIndex, yIndex, &cell);
 			}
 			else if (xIndex == 5) {
-				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.open_profit_loss, usd_system->symbol()->decimal());
+				auto symbol = usd_system->symbol();
+				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.open_profit_loss, symbol ? symbol->decimal() : 0);
 				// 평가손익 표시
 				if (posi.open_profit_loss > 0) {
 					QuickSetTextColor(5, yIndex, RGB(255, 0, 0));
@@ -301,7 +302,8 @@ void UsdSystemDefGrid::InitGrid()
 				}
 			}
 			else if (xIndex == 6) {
-				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.trade_profit_loss, usd_system->symbol()->decimal());
+				auto symbol = usd_system->symbol();
+				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(posi.trade_profit_loss, symbol ? symbol->decimal() : 0);
 				// 실현손익 표시
 				if (posi.trade_profit_loss > 0) {
 					QuickSetTextColor(6, yIndex, RGB(255, 0, 0));
@@ -317,8 +319,9 @@ void UsdSystemDefGrid::InitGrid()
 				}
 			}
 			else if (xIndex == 7) {
+				auto symbol = usd_system->symbol();
 				double total_profit_loss = posi.open_profit_loss + posi.trade_profit_loss;
-				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(total_profit_loss, usd_system->symbol()->decimal());
+				std::string thVal = DarkHorse::VtStringUtil::format_with_thousand_separator(total_profit_loss, symbol ? symbol->decimal() : 0);
 
 				// 총손익 표시
 				if (total_profit_loss > 0) {

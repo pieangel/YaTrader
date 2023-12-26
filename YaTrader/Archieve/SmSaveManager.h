@@ -91,7 +91,9 @@ namespace DarkHorse {
 		void restore_usd_system(const std::string& filename);
 		void save_system_config(const std::string& filename);
 		void restore_system_config(const std::string& filename);
+		void create_config_path(const std::string& user_name);
 	private:
+		std::string get_config_path(const std::string& user_name);
 		bool ListContents(std::map<std::string, std::string>& dest, std::string dir, std::string filter, bool recursively);
 		
 		void GetSymbolMasters();

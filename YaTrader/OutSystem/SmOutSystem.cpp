@@ -126,7 +126,7 @@ namespace DarkHorse {
 		order_req->order_type = SmOrderType::New;
 		if (account->Type() == "1") {
 			order_req->request_type = OrderRequestType::Abroad;
-			order_req->fill_condition = SmFilledCondition::Day;
+			order_req->fill_condition = SmFilledCondition::Fas;
 		}
 		else {
 			order_req->request_type = OrderRequestType::Domestic;
@@ -165,7 +165,6 @@ namespace DarkHorse {
 		order_req->price_type = SmOutSystemManager::price_type;
 		SetOrderPrice(order_req);
 
-		order_req->request_type = OrderRequestType::Domestic;
 		order_req->order_context.order_control_id = id_;
 		order_req->order_context.order_source_type = OrderType::MainAccount;
 		if (parent_account) {
@@ -192,7 +191,7 @@ namespace DarkHorse {
 			order_req->future_or_option = 1;
 
 		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 시그널이름[%s]"), order_req->order_context.signal_name.c_str());
-		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 해외/국내[%s]"), std::to_string((int)order_req->request_type).c_str());
+		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 해외/국내[%s]"), order_req->request_type == OrderRequestType::Domestic ? "국내" : "해외");
 		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 계좌번호[%s]"), order_req->account_no.c_str());
 		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 비밀번호[%s]"), order_req->password.c_str());
 		LOGINFO(CMyLogger::getInstance(), _T("put_order_each:: 계좌타입[%s]"), account->Type().c_str());

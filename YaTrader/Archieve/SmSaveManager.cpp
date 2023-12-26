@@ -254,12 +254,12 @@ namespace DarkHorse {
 			mainApp.LoginMgr()->SaveToXml(login_info);
 
 			application.remove_child("account_list");
-			pugi::xml_node account_list = application.append_child("account_list");
+			//pugi::xml_node account_list = application.append_child("account_list");
 			//mainApp.AcntMgr().SaveToXml(account_list);
 
 			application.remove_child("fund_list");
-			pugi::xml_node fund_list = application.append_child("fund_list");
-			mainApp.FundMgr()->SaveToXml(fund_list);
+			//pugi::xml_node fund_list = application.append_child("fund_list");
+			//mainApp.FundMgr()->SaveToXml(fund_list);
 
 			/*
 			application.remove_child("external_system_list");
@@ -745,10 +745,10 @@ namespace DarkHorse {
 			//	VtAccountManager::GetInstance()->LoadFromXml(account_list);
 			//}
 
-			pugi::xml_node fund_list = application.child("fund_list");
-			if (fund_list) {
-				mainApp.FundMgr()->LoadFromXml(fund_list);
-			}
+			//pugi::xml_node fund_list = application.child("fund_list");
+			//if (fund_list) {
+			//	mainApp.FundMgr()->LoadFromXml(fund_list);
+			//}
 
 			/*
 			pugi::xml_node order_window_list = application.child("order_window_list");
@@ -846,28 +846,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::string full_file_name = appPath;
@@ -923,36 +902,10 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::string full_file_name = appPath;
-
-//		std::string full_file_name;
-// 		full_file_name = SmConfigManager::GetApplicationPath();
-// 		full_file_name.append(_T("\\user\\"));
-// 		full_file_name.append(filename);
 
 		if (!fs::exists(full_file_name))
 			return;
@@ -994,28 +947,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::string full_file_name = appPath;
@@ -1058,36 +990,10 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::string full_file_name = appPath;
-
-// 		std::string full_file_name;
-// 		full_file_name = SmConfigManager::GetApplicationPath();
-// 		full_file_name.append(_T("\\user\\"));
-// 		full_file_name.append(filename);
 
 		json dialog_data;
 
@@ -1144,28 +1050,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		std::string full_file_name = filename;
@@ -1239,42 +1124,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
-		if (std::filesystem::is_directory(appPath)) {
-			if (std::filesystem::is_empty(appPath)) {
-				std::cout << "The directory is empty." << std::endl;
-				return;
-			}
-			else {
-				std::cout << "The directory is not empty." << std::endl;
-			}
-		}
-		else {
-			std::cout << "The path is not a directory." << std::endl;
-			return;
-		}
+		std::string appPath = get_config_path(id);
 
 		std::string full_file_name = filename;
 		full_file_name.append("_");
@@ -1351,28 +1201,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		std::string full_file_name = filename;
@@ -1434,10 +1263,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
+		std::string appPath = get_config_path(id);
 
 		appPath.append("\\");
 		appPath.append(filename);
@@ -1533,28 +1359,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		appPath.append(filename);
@@ -1594,28 +1399,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		appPath.append(filename);
@@ -1646,12 +1430,8 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-
-		appPath.append("\\");
+		std::string appPath = get_config_path(id);
+		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::ifstream file(appPath);
 		if (!file.is_open()) {
@@ -1713,12 +1493,8 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-
-		appPath.append("\\");
+		std::string appPath = get_config_path(id);
+		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::ifstream file(appPath);
 		if (!file.is_open()) {
@@ -1765,9 +1541,9 @@ namespace DarkHorse {
 					if (!fund) continue;
 					mode = 1;
 				}
-				if (!symbol) {
-					continue;
-				}
+				//if (!symbol) {
+				//	continue;
+				//}
 
 				auto out_system = mainApp.out_system_manager()->create_out_system(
 					name,
@@ -1775,7 +1551,7 @@ namespace DarkHorse {
 					order_type,
 					mode == 0 ? account : nullptr,
 					mode == 1 ? fund : nullptr,
-					symbol
+					symbol ? symbol : nullptr
 				);
 
 				// Now you have the account information, you can use it as needed.
@@ -1796,10 +1572,8 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
+		std::string appPath = get_config_path(id);
+		appPath.append(_T("\\"));
 
 		std::string full_file_name = filename;
 		full_file_name.append("_");
@@ -1878,28 +1652,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		//appPath.append(_T("\\user\\"));
-		//appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		std::string full_file_name = filename;
@@ -1973,28 +1726,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		std::string full_file_name = filename;
@@ -2038,28 +1770,7 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
-		const fs::path directoryPath = appPath;
-
-		// Check if directory exists
-		if (fs::exists(directoryPath)) {
-			std::cout << "Directory already exists." << std::endl;
-		}
-		else {
-			// Create the directory
-			try {
-				fs::create_directory(directoryPath);
-				std::cout << "Directory created successfully." << std::endl;
-			}
-			catch (const fs::filesystem_error& e) {
-				std::cerr << "Failed to create directory: " << e.what() << std::endl;
-			}
-		}
-
+		std::string appPath = get_config_path(id);
 		appPath.append(_T("\\"));
 
 		appPath.append(filename);
@@ -2127,12 +1838,8 @@ namespace DarkHorse {
 		if (id.length() == 0)
 			return;
 
-		std::string appPath;
-		appPath = SmConfigManager::GetApplicationPath();
-		appPath.append(_T("\\user\\"));
-		appPath.append(id);
-
-		appPath.append("\\");
+		std::string appPath = get_config_path(id);
+		appPath.append(_T("\\"));
 		appPath.append(filename);
 		std::ifstream file(appPath);
 		if (!file.is_open()) {
@@ -2180,9 +1887,9 @@ namespace DarkHorse {
 					if (!fund) continue;
 					mode = 1;
 				}
-				if (!symbol) {
-					continue;
-				}
+				//if (!symbol) {
+				//	continue;
+				//}
 
 				std::string start_time_begin = out_system_data["start_time_begin"];
 
@@ -2272,7 +1979,7 @@ namespace DarkHorse {
 					order_type,
 					mode == 0 ? account : nullptr,
 					mode == 1 ? fund : nullptr,
-					symbol
+					symbol ? symbol : nullptr
 				);
 
 				out_system->order_limit_count(order_limit_count);
@@ -2290,6 +1997,81 @@ namespace DarkHorse {
 		}
 		catch (const json::parse_error& e) {
 			std::cerr << "Failed to parse JSON data: " << e.what() << std::endl;
+		}
+	}
+
+	std::string SmSaveManager::get_config_path(const std::string& user_name)
+	{
+		const int mode = mainApp.mode;
+
+		std::string appPath;
+		appPath = SmConfigManager::GetApplicationPath();
+		appPath.append(_T("\\user\\"));
+		appPath.append(user_name);
+		if (mode == 0) {
+			if (mainApp.is_simul())
+				appPath.append(_T("\\dm\\mock"));
+			else
+				appPath.append(_T("\\dm\\real"));
+		}
+		else
+		{
+			if (mainApp.is_simul())
+				appPath.append(_T("\\ab\\mock"));
+			else
+				appPath.append(_T("\\ab\\real"));
+		}
+
+		return appPath;
+	}
+
+	void SmSaveManager::create_config_path(const std::string& user_name)
+	{
+		std::string appPath;
+		appPath = SmConfigManager::GetApplicationPath();
+		appPath.append(_T("\\user\\"));
+		appPath.append(user_name);
+
+		// 사용자 디렉토리가 있나 검사하고 없으면 만들어 준다.
+		const fs::path directoryPath = appPath;
+
+		// Check if directory exists
+		if (fs::exists(directoryPath)) {
+			std::cout << "Directory already exists." << std::endl;
+		}
+		else {
+			// Create the directory
+			try {
+				fs::create_directory(directoryPath);
+				std::cout << "Directory created successfully." << std::endl;
+			}
+			catch (const fs::filesystem_error& e) {
+				std::cerr << "Failed to create directory: " << e.what() << std::endl;
+			}
+		}
+
+
+		// Specify the directory structure
+		std::vector<std::string> directories = { "dm/mock", "dm/real", "ab/mock", "ab/real" };
+
+		// Construct the base directory path
+		fs::path baseDirectory(appPath);
+
+		// Check and create the directories
+		for (const auto& subdirectory : directories) {
+			fs::path currentDirectory = baseDirectory / subdirectory;
+
+			if (!fs::exists(currentDirectory)) {
+				if (fs::create_directories(currentDirectory)) {
+					std::cout << "Created directory: " << currentDirectory.string() << std::endl;
+				}
+				else {
+					std::cerr << "Failed to create directory: " << currentDirectory.string() << std::endl;
+				}
+			}
+			else {
+				std::cout << "Directory already exists: " << currentDirectory.string() << std::endl;
+			}
 		}
 	}
 
