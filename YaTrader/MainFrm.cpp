@@ -1616,6 +1616,6 @@ void CMainFrame::copyLastLineAndAppend(const std::string& filename) {
 
 void CMainFrame::OnSimulYestest()
 {
-	std::string file_name = mainApp.config_manager()->system_config().yes_path + "\\T1-1.txt";
+	std::string file_name =  mainApp.mode == 0 ?  mainApp.config_manager()->system_config().yes_path + "\\T1-1.txt" : mainApp.config_manager()->system_config().ab_yes_path + "\\T1-1.txt";
 	copyLastLineAndAppend(file_name);
 }
