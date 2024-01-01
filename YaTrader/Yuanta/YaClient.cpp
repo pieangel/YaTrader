@@ -5206,7 +5206,7 @@ void YaClient::ab_change_order(const std::shared_ptr<OrderRequest>& order_req)
 	g_iYuantaAPI.YOA_SetTRFieldLong(_T("850002"), _T("InBlock1"), _T("mdy_ord_qty"), order_req->order_amount, 0);		// 정정수량 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850002"), _T("InBlock1"), _T("mdy_stop_prc"), _T(""), 0);		// STOP가격 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850002"), _T("InBlock1"), _T("ord_tp_cd"), _T("N"), 0);		// 주문전략구분 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("850002"), _T("InBlock1"), _T("ord_tp_day_cd"), _T("D"), 0);		// 주문기간구분(D:DAY G:GTD) 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("850002"), _T("InBlock1"), _T("ord_tp_day_cd"), _T("1"), 0);		// 주문기간구분(1:DAY 2:GTD) 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850002"), _T("InBlock1"), _T("key"), _T(""), 0);		// 주문키(주문번호 Return 필요시사 값을 설정합니다.
 
 
@@ -5268,7 +5268,7 @@ void YaClient::ab_cancel_order(const std::shared_ptr<OrderRequest>& order_req)
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("cncl_ord_no"), order_req->original_order_no.c_str(), 0);		// 취소주문번호 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("stk_cd"), order_req->symbol_code.c_str(), 0);		// 종목코드 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("ord_tp_cd"), _T("N"), 0);		// 주문전략구분 값을 설정합니다.
-	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("ord_tp_day_cd"), _T("D"), 0);		// 주문기간구분(D:DAY G:GTD) 값을 설정합니다.
+	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("ord_tp_day_cd"), _T("1"), 0);		// 주문기간구분(1:DAY 2:GTD) 값을 설정합니다.
 	g_iYuantaAPI.YOA_SetTRFieldString(_T("850003"), _T("InBlock1"), _T("key"), _T(""), 0);		// 주문키(주문번호 Return 필요시사 값을 설정합니다.
 
 

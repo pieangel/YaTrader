@@ -387,7 +387,7 @@ bool CDarkHorseApp::CheckExpire()
 
 	int curDate = std::stoi(now);
 
-	if (curDate > 20231231)
+	if (curDate > 20240231)
 		return false;
 
 	return true;
